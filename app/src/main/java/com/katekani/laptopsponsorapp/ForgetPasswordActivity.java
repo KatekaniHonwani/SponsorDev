@@ -30,9 +30,10 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        edtResetPasword = (EditText)findViewById(R.id.edtResetEmail);
-        buttonReset = (Button)findViewById(R.id.btnResetPassword);
-         firebaseAuth= FirebaseAuth.getInstance();
+        edtResetPasword = (EditText)findViewById(R.id.editResetEmail);
+        buttonReset = (Button)findViewById(R.id.buttonReset);
+
+        firebaseAuth= FirebaseAuth.getInstance();
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +45,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
                     return;
                 }
-              //  progressDialog.setMessage("reseting password");
-               // progressDialog.show();
+
 
                 firebaseAuth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

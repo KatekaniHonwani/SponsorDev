@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LaptopSponsorApp.iml" filepath="$PROJECT_DIR$/LaptopSponsorApp.iml" />
+      <module fileurl="file://C:\Users\codetribe\Downloads\Documents\LaptopSponsorApplication\LaptopSponsorApp.iml" filepath="C:\Users\codetribe\Downloads\Documents\LaptopSponsorApplication\LaptopSponsorApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LaptopSponsorApplication.iml" filepath="$PROJECT_DIR$/LaptopSponsorApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -5,7 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/list_view"
-    tools:context="com.katekani.laptopsponsorapp.SponsorActivity">
-
-
-</ListView>
+    tools:listitem="@layout/adapter_layout"
+    tools:context="com.katekani.laptopsponsorapp.SponsorActivity"/>
