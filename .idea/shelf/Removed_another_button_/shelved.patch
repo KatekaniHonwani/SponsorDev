@@ -1,0 +1,1119 @@
+Index: app/src/main/java/com/katekani/laptopsponsorapp/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.katekani.laptopsponsorapp;\n\nimport android.app.ProgressDialog;\nimport android.content.Intent;\nimport android.support.annotation.NonNull;\nimport android.support.v7.app.AppCompatActivity;\nimport android.os.Bundle;\nimport android.text.TextUtils;\nimport android.view.MenuItem;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.TextView;\nimport android.widget.Toast;\n\nimport com.google.android.gms.tasks.OnCompleteListener;\nimport com.google.android.gms.tasks.Task;\nimport com.google.firebase.auth.AuthResult;\nimport com.google.firebase.auth.FirebaseAuth;\n\nimport static com.google.firebase.auth.FirebaseAuth.getInstance;\n\n\npublic class LoginActivity extends AppCompatActivity implements  View.OnClickListener {\n\n    private EditText edtEmail;\n    private EditText edtPassword;\n    private Button btnLogin;\n    private TextView txtSponsor;\n    private TextView txtClient;\n    private FirebaseAuth firebaseAuth;\n    private ProgressDialog progressDialog;\n    private UserInformation users;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_login);\n        getSupportActionBar().setDisplayHomeAsUpEnabled(true);\n\n\n        edtEmail = (EditText)findViewById(R.id.enter_email);\n\n        edtPassword = (EditText)findViewById(R.id.enter_password);\n        btnLogin = (Button)findViewById(R.id.buttonlogin);\n        txtSponsor = (TextView)findViewById(R.id.txtSignUpSponsor);\n        txtClient =(TextView)findViewById(R.id.txtSignUpClient);\n        progressDialog = new ProgressDialog(this);\n        firebaseAuth = getInstance();\n\n        //set oncliklistners\n        btnLogin.setOnClickListener(this);\n        txtSponsor.setOnClickListener(this);\n        txtClient.setOnClickListener(this);\n\n    }\n\n    public void LoginUser()\n    {\n        String email = edtEmail.getText().toString().trim();\n        String password = edtPassword.getText().toString().trim();\n\n        if(TextUtils.isEmpty(email))\n        {\n            Toast.makeText(this,\"Enter email\",Toast.LENGTH_SHORT).show();\n            return;\n        }\n        if(TextUtils.isEmpty(password))\n        {\n            Toast.makeText(this,\"Enter password\",Toast.LENGTH_SHORT).show();\n            return;\n        }\n        progressDialog.setMessage(\"Logging in....\");\n        progressDialog.show();\n        firebaseAuth.signInWithEmailAndPassword(email,password)\n                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {\n            @Override\n            public void onComplete(@NonNull Task<AuthResult> task) {\n                if(task.isSuccessful())\n                {\n                        Toast.makeText(LoginActivity.this,\"Login successfully\",Toast.LENGTH_SHORT).show();\n                        progressDialog.dismiss();\n\n        startActivity(new Intent(LoginActivity.this, SponsorActivity.class));\n    }\n                else{\n        Toast.makeText(LoginActivity.this,\"Login unsuccesfully \",Toast.LENGTH_SHORT).show();\n        progressDialog.dismiss();\n    }\n}\n        });\n    }\n\n\n\n@Override\npublic void onClick(View view) {\n\n\n\n        if(view == btnLogin)\n        {\n            LoginUser();\n        }\n        else if(view == txtClient)\n        {\n            Intent intent = new Intent(this,RegisterActivity.class);\n            startActivity(intent);\n        }else if(view == txtSponsor)\n        {\n            startActivity(new Intent(this, UpdateSponsorActivity.class));\n        }\n\n    }\n\n    @Override\n    public boolean onOptionsItemSelected(MenuItem item) {\n\n        switch (item.getItemId()){\n            case android.R.id.home:\n                this.finish();\n                return true;\n\n            default:\n                return super.onOptionsItemSelected(item);\n        }\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/katekani/laptopsponsorapp/LoginActivity.java	(date 1504093565000)
++++ app/src/main/java/com/katekani/laptopsponsorapp/LoginActivity.java	(revision )
+@@ -6,6 +6,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
+ import android.text.TextUtils;
++import android.util.Log;
+ import android.view.MenuItem;
+ import android.view.View;
+ import android.widget.Button;
+@@ -13,10 +14,22 @@
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
++import com.firebase.client.DataSnapshot;
++import com.firebase.client.Firebase;
++import com.firebase.client.FirebaseError;
++import com.firebase.client.ValueEventListener;
+ import com.google.android.gms.tasks.OnCompleteListener;
+ import com.google.android.gms.tasks.Task;
+ import com.google.firebase.auth.AuthResult;
+ import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.auth.FirebaseUser;
++import com.google.firebase.auth.UserInfo;
++import com.google.firebase.database.DatabaseError;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++
++import java.util.ArrayList;
++import java.util.List;
+ 
+ import static com.google.firebase.auth.FirebaseAuth.getInstance;
+ 
+@@ -32,13 +45,18 @@
+     private ProgressDialog progressDialog;
+     private UserInformation users;
+ 
++
++    private Firebase mRootRefSponsor;
++    private DatabaseReference mRef;
++    String userId;
++    private List<UserInformation> userInformations;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_login);
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+ 
+-
+         edtEmail = (EditText)findViewById(R.id.enter_email);
+ 
+         edtPassword = (EditText)findViewById(R.id.enter_password);
+@@ -46,8 +64,24 @@
+         txtSponsor = (TextView)findViewById(R.id.txtSignUpSponsor);
+         txtClient =(TextView)findViewById(R.id.txtSignUpClient);
+         progressDialog = new ProgressDialog(this);
++
++
++        userInformations = new ArrayList<>();
+         firebaseAuth = getInstance();
+ 
++
++        mRootRefSponsor = new Firebase("https://laptopsponsorapplication.firebaseio.com/");
++
++        //Root reference for Sponsor
++
++
++
++
++        //Root reference for Sponsor
++        mRef = FirebaseDatabase.getInstance().getReference();
++
++
++
+         //set oncliklistners
+         btnLogin.setOnClickListener(this);
+         txtSponsor.setOnClickListener(this);
+@@ -55,6 +89,7 @@
+ 
+     }
+ 
++
+     public void LoginUser()
+     {
+         String email = edtEmail.getText().toString().trim();
+@@ -72,27 +107,45 @@
+         }
+         progressDialog.setMessage("Logging in....");
+         progressDialog.show();
++
+         firebaseAuth.signInWithEmailAndPassword(email,password)
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+             @Override
+             public void onComplete(@NonNull Task<AuthResult> task) {
+-                if(task.isSuccessful())
+-                {
+-                        Toast.makeText(LoginActivity.this,"Login successfully",Toast.LENGTH_SHORT).show();
+-                        progressDialog.dismiss();
+-
+-        startActivity(new Intent(LoginActivity.this, SponsorActivity.class));
+-    }
+-                else{
+-        Toast.makeText(LoginActivity.this,"Login unsuccesfully ",Toast.LENGTH_SHORT).show();
+-        progressDialog.dismiss();
+-    }
++                if(task.isSuccessful()) {
++
++                    Toast.makeText(getApplicationContext(), task.getResult().getUser().getUid(), Toast.LENGTH_LONG).show();
++
++                    mRootRefSponsor.child("user_type").child(task.getResult().getUser().getUid()).addValueEventListener(new ValueEventListener() {
++                        @Override
++                        public void onDataChange(DataSnapshot dataSnapshot) {
++                            progressDialog.dismiss();
++                            Log.i("Sethu",dataSnapshot.toString());
++                            if (dataSnapshot.getValue() != null ) {
++                                if (dataSnapshot.getValue().equals("Client")) {
++                                    startActivity(new Intent(LoginActivity.this, ClientActivity.class));
++                                } else {
++                                    startActivity(new Intent(LoginActivity.this, SponsorActivity.class));
++                                }
++                            }
++                        }
++
++                        @Override
++                        public void onCancelled(FirebaseError firebaseError) {
++                            firebaseError.toException().printStackTrace();
++                        }
++                    });
++
++                }  else{
++                    task.getException().printStackTrace();
++                    Toast.makeText(LoginActivity.this, "Login unsuccesfully ", Toast.LENGTH_SHORT).show();
++                    progressDialog.dismiss();
++                }
+ }
+         });
+     }
+ 
+ 
+-
+ @Override
+ public void onClick(View view) {
+ 
+Index: app/src/main/java/com/katekani/laptopsponsorapp/RegisterActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.katekani.laptopsponsorapp;\n\nimport android.app.ProgressDialog;\nimport android.content.Intent;\nimport android.support.annotation.NonNull;\nimport android.support.v7.app.AppCompatActivity;\nimport android.os.Bundle;\nimport android.text.TextUtils;\nimport android.view.MenuItem;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.RadioButton;\nimport android.widget.RadioGroup;\nimport android.widget.Toast;\n\nimport com.firebase.client.Firebase;\nimport com.google.android.gms.tasks.OnCompleteListener;\nimport com.google.android.gms.tasks.Task;\nimport com.google.firebase.auth.AuthResult;\nimport com.google.firebase.auth.FirebaseAuth;\nimport com.google.firebase.auth.FirebaseUser;\nimport com.google.firebase.database.DatabaseReference;\nimport com.google.firebase.database.FirebaseDatabase;\n\nimport static com.google.firebase.auth.FirebaseAuth.getInstance;\n\npublic class RegisterActivity extends AppCompatActivity implements View.OnClickListener {\n\n    private static final String TAG = \"addToDatabase\";\n\n    //Variebles\n    private EditText edtName;\n    private EditText edtSurname;\n    private EditText edtEmal;\n    private EditText edtpassword;\n    private EditText edtconfirmpassword;\n    private Button buttonRegister;\n    private String userID;\n    private EditText editAddress,editContacts;\n    private RadioButton male, female;\n\n    //add firebase data stuff\n    private FirebaseDatabase mFirebaseDatabase;\n    private FirebaseAuth mAuth;\n    private Firebase mRootRef;\n    private DatabaseReference mRef;\n    private ProgressDialog progressDialog;\n\n    private String gender;\n\n\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_register);\n\n        getSupportActionBar().setDisplayHomeAsUpEnabled(true);\n        editAddress= findViewById(R.id.editAddress);\n        editContacts = findViewById(R.id.edtCellNo);\n        edtName = findViewById(R.id.editname);\n        edtSurname = findViewById(R.id.editsurname);\n        edtEmal = findViewById(R.id.editemail);\n        edtpassword = findViewById(R.id.editpassword);\n        edtconfirmpassword = findViewById(R.id.editconfirm);\n        buttonRegister = findViewById(R.id.buttonsignup);\n        male = findViewById(R.id.rdMale);\n        female = findViewById(R.id.rdFemale);\n\n        progressDialog = new ProgressDialog(this);\n\n\n        mAuth = FirebaseAuth.getInstance();\n        mFirebaseDatabase = FirebaseDatabase.getInstance();\n        mRef = mFirebaseDatabase.getReference();\n        FirebaseUser user = mAuth.getCurrentUser();\n        userID = user.getUid();\n\n        mRootRef = new Firebase(\"https://laptopsponsorapplication.firebaseio.com/Users\");\n\n        buttonRegister.setOnClickListener(this);\n\n    }\n\n\n    @Override\n    public void onClick(View view) {\n\n\n        // Stores email and password entered\n        final String useremail = edtEmal.getText().toString().trim();\n        final String userpassword = edtpassword.getText().toString().trim();\n        String confirmpassword = edtconfirmpassword.getText().toString().trim();\n\n        if (TextUtils.isEmpty(useremail)) {\n            Toast.makeText(getApplicationContext(), \"Enter email address!\", Toast.LENGTH_SHORT).show();\n            return;\n        }\n\n        if (TextUtils.isEmpty(userpassword)) {\n            Toast.makeText(getApplicationContext(), \"Enter password!\", Toast.LENGTH_SHORT).show();\n            return;\n        }\n\n        if (userpassword.length() < 6) {\n            Toast.makeText(getApplicationContext(), \"Password too short, enter minimum 6 characters!\", Toast.LENGTH_SHORT).show();\n            return;\n        }\n\n        if(male.isChecked())\n        {\n            gender = \"Male\";\n        }else if(female.isChecked()){\n            gender = \"Female\";\n        }\n\n        if (userpassword.equals(confirmpassword)) {\n\n            progressDialog.setMessage(\"Registering user please wait....\");\n            progressDialog.show();\n\n            //create user\n            mAuth.createUserWithEmailAndPassword(useremail, userpassword)\n                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {\n                        @Override\n                        public void onComplete(@NonNull Task<AuthResult> task) {\n                            Toast.makeText(RegisterActivity.this, \"createUserWithEmail:onComplete:\" + task.isSuccessful(), Toast.LENGTH_SHORT).show();\n                           // progressBar.setVisibility(View.GONE);\n                            // If sign in fails, display a message to the user. If sign in succeeds\n                            // the auth state listener will be notified and logic to handle the\n                            // signed in user can be handled in the listener.\n\n                            if (!task.isSuccessful()) {\n                                Toast.makeText(RegisterActivity.this, \"Authentication failed.\" + task.getException(),\n                                        Toast.LENGTH_SHORT).show();\n\n                            } else {\n                                String name = edtName.getText().toString();\n                                String surname = edtSurname.getText().toString();\n                                String address = editAddress.getText().toString();\n                                String contacts = editContacts.getText().toString();\n\n                                if (!name.equals(\"\") & !surname.equals(\"\")) {\n                                    UserInformation uinfo = new UserInformation(name, surname, useremail,address,contacts,gender);\n                                    mRootRef.child(\"Users\").child(userID).setValue(uinfo);\n                                    startActivity(new Intent(RegisterActivity.this,ClientActivity.class));\n                                    progressDialog.dismiss();\n\n                                }\n                            }\n                        }\n                    });\n        } else {\n                Toast.makeText(RegisterActivity.this, \"password do not match failed.\",\n                        Toast.LENGTH_SHORT).show();\n\n        }\n    }\n\n    @Override\n    public boolean onOptionsItemSelected(MenuItem item) {\n\n        switch (item.getItemId()){\n            case android.R.id.home:\n                this.finish();\n                return true;\n\n            default:\n                return super.onOptionsItemSelected(item);\n        }\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/katekani/laptopsponsorapp/RegisterActivity.java	(date 1504093565000)
++++ app/src/main/java/com/katekani/laptopsponsorapp/RegisterActivity.java	(revision )
+@@ -2,6 +2,7 @@
+ 
+ import android.app.ProgressDialog;
+ import android.content.Intent;
++import android.content.ServiceConnection;
+ import android.support.annotation.NonNull;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
+@@ -36,28 +37,26 @@
+     private EditText edtpassword;
+     private EditText edtconfirmpassword;
+     private Button buttonRegister;
+-    private String userID;
+-    private EditText editAddress,editContacts;
++    private EditText editAddress, editContacts;
+     private RadioButton male, female;
+ 
+     //add firebase data stuff
+     private FirebaseDatabase mFirebaseDatabase;
+     private FirebaseAuth mAuth;
+-    private Firebase mRootRef;
++    private Firebase mRootRef,mRootUserRef;
+     private DatabaseReference mRef;
+     private ProgressDialog progressDialog;
+-
++    private String userId;
+     private String gender;
+ 
+ 
+-
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_register);
+-
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+-        editAddress= findViewById(R.id.editAddress);
++
++        editAddress = findViewById(R.id.editAddress);
+         editContacts = findViewById(R.id.edtCellNo);
+         edtName = findViewById(R.id.editname);
+         edtSurname = findViewById(R.id.editsurname);
+@@ -70,14 +69,11 @@
+ 
+         progressDialog = new ProgressDialog(this);
+ 
+-
+         mAuth = FirebaseAuth.getInstance();
+         mFirebaseDatabase = FirebaseDatabase.getInstance();
+         mRef = mFirebaseDatabase.getReference();
+-        FirebaseUser user = mAuth.getCurrentUser();
+-        userID = user.getUid();
+-
+         mRootRef = new Firebase("https://laptopsponsorapplication.firebaseio.com/Users");
++        mRootUserRef = new Firebase("https://laptopsponsorapplication.firebaseio.com/user_type");
+ 
+         buttonRegister.setOnClickListener(this);
+ 
+@@ -108,10 +104,9 @@
+             return;
+         }
+ 
+-        if(male.isChecked())
+-        {
++        if (male.isChecked()) {
+             gender = "Male";
+-        }else if(female.isChecked()){
++        } else if (female.isChecked()) {
+             gender = "Female";
+         }
+ 
+@@ -125,35 +120,45 @@
+                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                         @Override
+                         public void onComplete(@NonNull Task<AuthResult> task) {
+-                            Toast.makeText(RegisterActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+-                           // progressBar.setVisibility(View.GONE);
+-                            // If sign in fails, display a message to the user. If sign in succeeds
+-                            // the auth state listener will be notified and logic to handle the
+-                            // signed in user can be handled in the listener.
++                            if (task.isComplete()) {
++                                Toast.makeText(RegisterActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
++                                // progressBar.setVisibility(View.GONE);
++                                // If sign in fails, display a message to the user. If sign in succeeds
++                                // the auth state listener will be notified and logic to handle the
++                                // signed in user can be handled in the listener.
+ 
+-                            if (!task.isSuccessful()) {
+-                                Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
+-                                        Toast.LENGTH_SHORT).show();
++                                if (!task.isSuccessful()) {
++                                    Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
++                                            Toast.LENGTH_SHORT).show();
+ 
+-                            } else {
+-                                String name = edtName.getText().toString();
+-                                String surname = edtSurname.getText().toString();
+-                                String address = editAddress.getText().toString();
+-                                String contacts = editContacts.getText().toString();
++                                } else {
++                                    String name = edtName.getText().toString();
++                                    String surname = edtSurname.getText().toString();
++                                    String address = editAddress.getText().toString();
++                                    String contacts = editContacts.getText().toString();
++                                    String type = "Client";
++
++                                    //user = mAuth.getCurrentUser();
++                                    //updateUI(user);
+ 
+-                                if (!name.equals("") & !surname.equals("")) {
+-                                    UserInformation uinfo = new UserInformation(name, surname, useremail,address,contacts,gender);
+-                                    mRootRef.child("Users").child(userID).setValue(uinfo);
+-                                    startActivity(new Intent(RegisterActivity.this,ClientActivity.class));
+-                                    progressDialog.dismiss();
+-
++                                    if (!name.equals("") & !surname.equals("")) {
++                                        UserInformation uinfo = new UserInformation(name, surname, useremail, userpassword, address, contacts, gender, type);
++                                        mRootRef.child(task.getResult().getUser().getUid()).child("profile").setValue(uinfo);
++                                        mRootUserRef.child(task.getResult().getUser().getUid()).setValue(type);
++                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
++                                        progressDialog.dismiss();
++                                    }
+                                 }
++                            } else {
++                                System.out.println("Login did not complete");
++
+                             }
+                         }
++
+                     });
+         } else {
+-                Toast.makeText(RegisterActivity.this, "password do not match failed.",
+-                        Toast.LENGTH_SHORT).show();
++            Toast.makeText(RegisterActivity.this, "password do not match failed.",
++                    Toast.LENGTH_SHORT).show();
+ 
+         }
+     }
+@@ -161,7 +166,7 @@
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+ 
+-        switch (item.getItemId()){
++        switch (item.getItemId()) {
+             case android.R.id.home:
+                 this.finish();
+                 return true;
+Index: app/src/main/res/layout/activity_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ListView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    tools:context=\"com.katekani.laptopsponsorapp.SponsorActivity\">\n\n\n</ListView>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_home.xml	(date 1504093565000)
++++ app/src/main/res/layout/activity_home.xml	(revision )
+@@ -4,6 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
++    android:id="@+id/list_view"
+     tools:context="com.katekani.laptopsponsorapp.SponsorActivity">
+ 
+ 
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\n\nbuildscript {\n    \n    repositories {\n        google()\n        jcenter()\n    }\n    dependencies {\n        classpath 'com.android.tools.build:gradle:3.0.0-beta3'\n        classpath 'com.google.gms:google-services:3.1.0'\n\n\n        \n\n        // NOTE: Do not place your application dependencies here; they belong\n        // in the individual module build.gradle files\n    }\n}\n\nallprojects {\n    repositories {\n        google()\n        jcenter()\n    }\n}\n\ntask clean(type: Delete) {\n    delete rootProject.buildDir\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(date 1504093565000)
++++ build.gradle	(revision )
+@@ -7,7 +7,7 @@
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:3.0.0-beta3'
++        classpath 'com.android.tools.build:gradle:3.0.0-beta4'
+         classpath 'com.google.gms:google-services:3.1.0'
+ 
+ 
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <color name=\"colorPrimary\">#283655</color>\n    <color name=\"colorPrimaryDark\">#283655</color>\n    <color name=\"colorAccent\">#000000</color>\n</resources>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(date 1504093565000)
++++ app/src/main/res/values/colors.xml	(revision )
+@@ -2,5 +2,5 @@
+ <resources>
+     <color name="colorPrimary">#283655</color>
+     <color name="colorPrimaryDark">#283655</color>
+-    <color name="colorAccent">#000000</color>
++    <color name="colorAccent">#efeffe</color>
+ </resources>
+Index: app/src/main/res/drawable/ic_launcher_background.xml
+===================================================================
+--- app/src/main/res/drawable/ic_launcher_background.xml	(date 1504093565000)
++++ app/src/main/res/drawable/ic_launcher_background.xml	(date 1504093565000)
+@@ -1,113 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="24dp"
+-    android:height="24dp"
+-    android:viewportHeight="108.0"
+-    android:viewportWidth="108.0">
+-    <path
+-        android:fillColor="#26A69A"
+-        android:pathData="M0,0h108v108h-108z"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,0L19,108"
+-        android:strokeColor="#33FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M9,0L9,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M39,0L39,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M29,0L29,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M59,0L59,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M49,0L49,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M79,0L79,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M69,0L69,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M89,0L89,108"
+-        android:strokeColor="#33FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M99,0L99,108"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,89L108,89"
+-        android:strokeColor="#33FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,99L108,99"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,69L108,69"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,79L108,79"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,49L108,49"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,59L108,59"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,29L108,29"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,39L108,39"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,19L108,19"
+-        android:strokeColor="#33FFFFFF"
+-        android:strokeWidth="0.8" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,9L108,9"
+-        android:strokeColor="#66FFFFFF"
+-        android:strokeWidth="0.8" />
+-</vector>
+-
+Index: app/src/main/java/com/katekani/laptopsponsorapp/UserInformation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.katekani.laptopsponsorapp;\n\nimport android.os.Parcel;\nimport android.os.Parcelable;\n\n/**\n * Created by Code Tribe on 2017/08/25.\n */\n\npublic class UserInformation implements Parcelable {\n\n    String userName;\n    String userSurname;\n    String email;\n    String companyName;\n    String address;\n    String gender;\n    String contacts;\n    int quantity;\n\n    //String variebles that will store user answers\n    String answer1, answer2, answer3, answer4, answer5;\n\n    public UserInformation()\n    {\n\n    }\n\n\n    public UserInformation(String companyName, String email, String contacts,String address,int quantity)\n    {\n        this.companyName = companyName;\n        this.email = email;\n        this.contacts = contacts;\n        this.address = address;\n        this.quantity= quantity;\n    }\n\n    public UserInformation(String answer1, String answer2, String answer3, String answer4, String answer5)\n    {\n        this.answer1 = answer1;\n        this.answer2 = answer2;\n        this.answer3 = answer3;\n        this.answer4 = answer4;\n        this.answer5 = answer5;\n    }\n\n    public UserInformation(String name, String surname, String email,String address,String contacts, String gender)\n    {\n        this.userName = name;\n        this.userSurname = surname;\n        this.email = email;\n        this.contacts = contacts;\n        this.address = address;\n        this.gender = gender;\n\n    }\n\n\n    protected UserInformation(Parcel in) {\n        userName = in.readString();\n        userSurname = in.readString();\n        email = in.readString();\n        gender = in.readString();\n        contacts =in.readString();\n        address = in.readString();\n        quantity = in.readInt();\n\n        //Information for question\n        answer1 = in.readString();\n        answer2 = in.readString();\n        answer3 = in.readString();\n        answer4 = in.readString();\n        answer5 = in.readString();\n\n\n    }\n\n    @Override\n    public void writeToParcel(Parcel dest, int flags) {\n        dest.writeString(userName);\n        dest.writeString(userSurname);\n        dest.writeString(companyName);\n        dest.writeString(email);\n        dest.writeString(gender);\n        dest.writeString(contacts);\n        dest.writeString(address);\n        dest.writeInt(quantity);\n\n        //user information regarding questions\n        dest.writeString(answer1);\n        dest.writeString(answer2);\n        dest.writeString(answer3);\n        dest.writeString(answer4);\n        dest.writeString(answer5);\n    }\n\n    @Override\n    public int describeContents() {\n        return 0;\n    }\n\n    public static final Creator<UserInformation> CREATOR = new Creator<UserInformation>() {\n        @Override\n        public UserInformation createFromParcel(Parcel in) {\n            return new UserInformation(in);\n        }\n\n        @Override\n        public UserInformation[] newArray(int size) {\n            return new UserInformation[size];\n        }\n    };\n\n    public String getUserName() {\n        return userName;\n    }\n\n    public void setUserName(String userName) {\n        this.userName = userName;\n    }\n\n    public String getUserSurname() {\n        return userSurname;\n    }\n\n    public void setUserSurname(String userSurname) {\n        this.userSurname = userSurname;\n    }\n\n    public String getEmail() {\n        return email;\n    }\n    public void setEmail(String email) {\n        this.email = email;}\n\n\n\n\n    public String getCompanyName() {\n        return companyName;\n    }\n\n    public void setCompanyName(String companyName) {\n        this.companyName = companyName;\n    }\n\n    public String getGender() {\n        return gender;\n    }\n\n    public void setGender(String gender) {\n        this.gender = gender;\n    }\n\n    public String getContacts() {\n        return contacts;\n    }\n\n    public void setContacts(String contacts) {\n        this.contacts = contacts;\n    }\n\n\n    public String getAddress() {\n        return address;\n    }\n\n    public void setAddress(String address) {\n        this.address = address;\n    }\n\n\n\n    public int getQuantity() {\n        return quantity;\n    }\n\n    public void setQuantity(int quantity) {\n        this.quantity = quantity;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/katekani/laptopsponsorapp/UserInformation.java	(date 1504093565000)
++++ app/src/main/java/com/katekani/laptopsponsorapp/UserInformation.java	(revision )
+@@ -3,6 +3,11 @@
+ import android.os.Parcel;
+ import android.os.Parcelable;
+ 
++import com.google.firebase.database.Exclude;
++
++import java.util.HashMap;
++import java.util.Map;
++
+ /**
+  * Created by Code Tribe on 2017/08/25.
+  */
+@@ -17,6 +22,8 @@
+     String gender;
+     String contacts;
+     int quantity;
++    String password;
++    String role_type;
+ 
+     //String variebles that will store user answers
+     String answer1, answer2, answer3, answer4, answer5;
+@@ -27,25 +34,21 @@
+     }
+ 
+ 
+-    public UserInformation(String companyName, String email, String contacts,String address,int quantity)
++    public UserInformation(String companyName, String email,String password, String contacts,String address,int quantity,String role_type)
+     {
+         this.companyName = companyName;
+         this.email = email;
+         this.contacts = contacts;
+         this.address = address;
++
++        this.password = password;
++        this.role_type= role_type;
+         this.quantity= quantity;
+     }
+ 
+-    public UserInformation(String answer1, String answer2, String answer3, String answer4, String answer5)
+-    {
+-        this.answer1 = answer1;
+-        this.answer2 = answer2;
+-        this.answer3 = answer3;
+-        this.answer4 = answer4;
+-        this.answer5 = answer5;
+-    }
+ 
+-    public UserInformation(String name, String surname, String email,String address,String contacts, String gender)
++
++    public UserInformation(String name, String surname, String email,String password,String address,String contacts, String gender,String role_type)
+     {
+         this.userName = name;
+         this.userSurname = surname;
+@@ -53,8 +56,20 @@
+         this.contacts = contacts;
+         this.address = address;
+         this.gender = gender;
++        this.password = password;
++        this.role_type= role_type;
+ 
+     }
++
++    public UserInformation(String answer1,String answer2,String answer3,String answer4,String answer5)
++    {
++       this.answer1 = answer1;
++        this.answer2 = answer2;
++        this.answer3 = answer3;
++        this.answer4 = answer4;
++        this.answer5 = answer5;
++    }
++
+ 
+ 
+     protected UserInformation(Parcel in) {
+@@ -64,8 +79,11 @@
+         gender = in.readString();
+         contacts =in.readString();
+         address = in.readString();
++        password = in.readString();
++        role_type = in.readString();
+         quantity = in.readInt();
+ 
++
+         //Information for question
+         answer1 = in.readString();
+         answer2 = in.readString();
+@@ -85,6 +103,8 @@
+         dest.writeString(gender);
+         dest.writeString(contacts);
+         dest.writeString(address);
++        dest.writeString(password);
++        dest.writeString(role_type);
+         dest.writeInt(quantity);
+ 
+         //user information regarding questions
+@@ -95,6 +115,20 @@
+         dest.writeString(answer5);
+     }
+ 
++
++    @Exclude
++    public Map<String, Object> toMap() {
++        HashMap<String, Object> result = new HashMap<>();
++        result.put("Answer1", answer1);
++        result.put("Answer2", answer2);
++        result.put("Answer3", answer3);
++        result.put("Answer4", answer4);
++        result.put("Answer5", answer5);
++
++        return result;
++    }
++
++
+     @Override
+     public int describeContents() {
+         return 0;
+@@ -136,7 +170,6 @@
+ 
+ 
+ 
+-
+     public String getCompanyName() {
+         return companyName;
+     }
+@@ -179,4 +212,78 @@
+     public void setQuantity(int quantity) {
+         this.quantity = quantity;
+     }
++
++
++
++    public String getPassword() {
++        return password;
++    }
++
++    public void setPassword(String password) {
++        this.password = password;
++    }
++
++    public String getRole_type() {
++        return role_type;
++    }
++
++    public void setRole_type(String role_type) {
++        this.role_type = role_type;
++    }
++
++
++
++
++
++
++
++
++    //set and get answers
++
++    public String getAnswer1() {
++        return answer1;
++    }
++
++    public void setAnswer1(String answer1) {
++        this.answer1 = answer1;
++    }
++
++//answer2
++    public String getAnswer2() {
++        return answer2;
++    }
++
++    public void setAnswer2(String answer2) {
++        this.answer2 = answer2;
++    }
++
++    // answer 3
++
++    public String getAnswer3() {
++        return answer3;
++    }
++
++    public void setAnswer3(String answer3) {
++        this.answer1 = answer3;
++    }
++
++    //answer4
++
++    public String getAnswer4() {
++        return answer1;
++    }
++
++    public void setAnswer4(String answer4) {
++        this.answer4 = answer4;
++    }
++
++    //answer 5
++
++    public String getAnswer5() {
++        return answer5;
++    }
++
++    public void setAnswer5(String answer5) {
++        this.answer5 = answer5;
++    }
+ }
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"com.katekani.laptopsponsorapp\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n\n    <application\n        android:name=\".Person\"\n        android:allowBackup=\"true\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/AppTheme\">\n        <activity android:name=\".LoginActivity\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n        <activity\n            android:name=\".RegisterActivity\"\n            android:label=\"Register\" />\n        <activity\n            android:name=\".SponsorActivity\"\n            android:label=\"Sponsor(s)\" />\n        <activity\n            android:name=\".ForgetPasswordActivity\"\n            android:label=\"Forget Password\" />\n        <activity\n            android:name=\".ClientActivity\"\n            android:label=\"Client(s)\" />\n        <activity\n            android:name=\".UpdateClientProfileActivity\"\n            android:label=\"Update Profile\" />\n        <activity\n            android:name=\".AboutUsActivity\"\n            android:label=\"About Us\" />\n        <activity android:name=\".UpdateSponsorActivity\"></activity>\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1504093565000)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -12,7 +12,7 @@
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme">
+-        <activity android:name=".LoginActivity">
++        <activity android:name=".MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+@@ -35,9 +35,12 @@
+             android:name=".UpdateClientProfileActivity"
+             android:label="Update Profile" />
+         <activity
++            android:name=".LoginActivity"
++            android:label="Update Profile" />
++        <activity
+             android:name=".AboutUsActivity"
+             android:label="About Us" />
+-        <activity android:name=".UpdateSponsorActivity"></activity>
++        <activity android:name=".UpdateSponsorActivity" />
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    tools:context=\"com.katekani.laptopsponsorapp.LoginActivity\">\n\n    <LinearLayout\n        android:layout_centerHorizontal=\"true\"\n        android:layout_centerVertical=\"true\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\"\n        android:orientation=\"vertical\"\n        android:id=\"@+id/linearLayout2\">\n\n    <EditText\n        android:hint=\"Enter your Email\"\n        android:id=\"@+id/enter_email\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\" />\n\n\n        <EditText\n            android:hint=\"Enter your Password\"\n            android:id=\"@+id/enter_password\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\" />\n\n        <LinearLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_centerHorizontal=\"true\"\n            android:layout_centerVertical=\"true\"\n            android:orientation=\"horizontal\">\n\n\n            <TextView\n                android:id=\"@+id/txtSignUpSponsor\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_alignParentStart=\"true\"\n                android:layout_alignParentTop=\"true\"\n                android:text=\"Sign Up Sponsor\" />\n\n            <TextView\n                android:id=\"@+id/txtSignUpClient\"\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginLeft=\"190dp\"\n\n                android:text=\"Sign up client\" />\n        </LinearLayout>\n\n\n\n        <Button\n            android:id=\"@+id/buttonlogin\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Login\"\n            android:layout_below=\"@+id/linearLayout2\"\n            android:layout_alignParentStart=\"true\"\n            android:layout_marginStart=\"21dp\"\n            android:layout_marginTop=\"18dp\"\n            android:layout_gravity=\"center\"/>\n\n\n    </LinearLayout>\n\n\n\n</RelativeLayout>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_login.xml	(date 1504093565000)
++++ app/src/main/res/layout/activity_login.xml	(revision )
+@@ -1,73 +1,110 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
++    android:background="@drawable/back8"
++    android:orientation="vertical"
+     tools:context="com.katekani.laptopsponsorapp.LoginActivity">
+ 
+-    <LinearLayout
+-        android:layout_centerHorizontal="true"
+-        android:layout_centerVertical="true"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:orientation="vertical"
+-        android:id="@+id/linearLayout2">
++    <ImageView
++        android:id="@+id/image_logo"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="80dp"
++        android:scaleType="fitXY"
++        android:src="@drawable/logo4"
++        android:layout_alignParentTop="true"
++        android:layout_centerHorizontal="true" />
++
++    <RelativeLayout
++        android:layout_width="fill_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginLeft="30dp"
++        android:layout_marginRight="30dp"
++        android:orientation="vertical"
++        android:padding="20dp"
++        android:id="@+id/relativeLayout"
++        android:layout_marginTop="10dp"
++        android:layout_below="@+id/image_logo"
++        android:layout_centerHorizontal="true">
++
++        <LinearLayout
++            android:id="@+id/content"
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:weightSum="1"
++            android:layout_marginBottom="30dp"
++            android:layout_alignParentStart="true">
++
++            <android.support.design.widget.TextInputLayout
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:textColorHint="@android:color/white">
+ 
+-    <EditText
+-        android:hint="Enter your Email"
+-        android:id="@+id/enter_email"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content" />
++                <EditText
++                    android:id="@+id/enter_email"
++                    android:layout_width="match_parent"
++                    android:layout_height="wrap_content"
++                    android:layout_marginTop="24dp"
++                    android:drawableLeft="@drawable/username"
+ 
++
++                    android:hint="Username" />
++            </android.support.design.widget.TextInputLayout>
++
++            <android.support.design.widget.TextInputLayout
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:textColorHint="@android:color/white">
+ 
+-        <EditText
+-            android:hint="Enter your Password"
+-            android:id="@+id/enter_password"
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content" />
++                <EditText
++                    android:id="@+id/enter_password"
++                    android:layout_width="match_parent"
++                    android:layout_height="wrap_content"
++                    android:layout_marginTop="24dp"
++                    android:drawableLeft="@drawable/password"
++                    android:drawableTint="@android:color/white"
++                    android:hint="Password" />
++            </android.support.design.widget.TextInputLayout>
+ 
+-        <LinearLayout
+-            android:layout_width="match_parent"
++            <Button
++                android:id="@+id/buttonlogin"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_alignLeft="@+id/tv_forgot_pass"
++                android:layout_alignStart="@+id/tv_forgot_pass"
++                android:layout_below="@+id/etd_password"
++                android:layout_gravity="center"
++                android:layout_marginTop="24dp"
++                android:text="Sign in" />
++
++
++
++        </LinearLayout>
++        <LinearLayout
++            android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+-            android:layout_centerHorizontal="true"
+-            android:layout_centerVertical="true"
++            android:layout_below="@+id/content"
+             android:orientation="horizontal">
+-
+-
+             <TextView
+                 android:id="@+id/txtSignUpSponsor"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:layout_alignParentStart="true"
+-                android:layout_alignParentTop="true"
+-                android:text="Sign Up Sponsor" />
++                android:text="SignUp as sponsor"
++
++                android:layout_alignTop="@+id/tv_sponsor" />
+ 
+             <TextView
++                android:paddingLeft="60dp"
+                 android:id="@+id/txtSignUpClient"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:layout_marginLeft="190dp"
+-
+-                android:text="Sign up client" />
+-        </LinearLayout>
+-
+-
+-
+-        <Button
+-            android:id="@+id/buttonlogin"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:text="Login"
+-            android:layout_below="@+id/linearLayout2"
+-            android:layout_alignParentStart="true"
+-            android:layout_marginStart="21dp"
+-            android:layout_marginTop="18dp"
+-            android:layout_gravity="center"/>
+-
+-
+-    </LinearLayout>
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="SignUp as client"
++                />
++        </LinearLayout>
+ 
+-
++    </RelativeLayout>
+ 
+ </RelativeLayout>
+Index: app/src/main/java/com/katekani/laptopsponsorapp/SponsorActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.katekani.laptopsponsorapp;\n\nimport android.content.Intent;\nimport android.support.v7.app.AppCompatActivity;\nimport android.os.Bundle;\nimport android.view.Menu;\nimport android.view.MenuInflater;\nimport android.view.MenuItem;\nimport android.widget.Toast;\n\npublic class SponsorActivity extends AppCompatActivity {\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_home);\n        getSupportActionBar().setDisplayHomeAsUpEnabled(true);\n        Toast.makeText(this,\"sponsor\",Toast.LENGTH_SHORT).show();\n\n    }\n\n    @Override\n    public boolean onCreateOptionsMenu(Menu menu) {\n        MenuInflater inflater=getMenuInflater();\n        inflater.inflate(R.menu.menu_, menu);\n        return super.onCreateOptionsMenu(menu);\n    }\n\n    @Override\n    public boolean onOptionsItemSelected(MenuItem item) {\n\n        switch (item.getItemId()){\n            case android.R.id.home:\n                this.finish();\n                return true;\n        }\n\n        if(R.id.update == item.getItemId())\n        {\n            startActivity(new Intent(SponsorActivity.this,UpdateSponsorActivity.class));\n        }else if(R.id.aboutUs == item.getItemId())\n        {\n            startActivity(new Intent(SponsorActivity.this,AboutUsActivity.class));\n\n        }else if(R.id.signout == item.getItemId()){\n            startActivity(new Intent(SponsorActivity.this,LoginActivity.class));\n            finish();\n        }\n        return super.onOptionsItemSelected(item);\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/katekani/laptopsponsorapp/SponsorActivity.java	(date 1504093565000)
++++ app/src/main/java/com/katekani/laptopsponsorapp/SponsorActivity.java	(revision )
+@@ -1,27 +1,153 @@
+ package com.katekani.laptopsponsorapp;
+ 
+ import android.content.Intent;
++import android.net.Uri;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.Menu;
+ import android.view.MenuInflater;
+ import android.view.MenuItem;
++import android.view.View;
++import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
++import android.widget.ListView;
+ import android.widget.Toast;
+ 
++import com.firebase.client.Firebase;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.auth.FirebaseUser;
++import com.google.firebase.database.DataSnapshot;
++import com.google.firebase.database.DatabaseError;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.ValueEventListener;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import static com.google.firebase.auth.FirebaseAuth.getInstance;
++
++
+ public class SponsorActivity extends AppCompatActivity {
+ 
++    private FirebaseDatabase firebaseDatabase;
++    private DatabaseReference databaseReference;
++    private ListView listView;
++    private ClientAdapter clientAdapter;
++    FirebaseUser user;
++    Firebase mRootRef;
++    String name, gender;
++    UserInformation userInformation;
++    private FirebaseAuth firebaseAuth;
++    private List<String> userInformations;
++
++    private UserInformation ui;
++
++    ClientAdapter adapter;
++    ArrayAdapter<String> arrayAdapter;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_home);
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+-        Toast.makeText(this,"sponsor",Toast.LENGTH_SHORT).show();
+ 
++        listView = findViewById(R.id.list_view);
++
++        mRootRef = new Firebase("https://laptopsponsorapplication.firebaseio.com/Users");
++        user = FirebaseAuth.getInstance().getCurrentUser();
++
++        firebaseAuth = getInstance();
++
++        userInformations = new ArrayList<>();
++
++        if (user != null) {
++            // Name, email address, and profile photo Url
++
++            final String uid = user.getUid();
++            userInformation = new UserInformation();
++
++            //UserInformation userInformation =(UserInformation) snap.getValue(UserInformation.class);
++            name = userInformation.getUserName();
++            gender = userInformation.getGender();
++            databaseReference = FirebaseDatabase.getInstance().getReference("Users");
++
++
++            System.out.println(databaseReference);
++
++            final ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
++                @Override
++                public void onDataChange(DataSnapshot dataSnapshot) {
++
++                    if (dataSnapshot != null) {
++                       for  (DataSnapshot snap : dataSnapshot.getChildren()) {
++
++
++                           for  (DataSnapshot snapshot : snap.getChildren()) {
++                               Log.i("User", snapshot.toString());
++                               UserInformation userInformation = snapshot.getValue(UserInformation.class);
++
++                               name = userInformation.getUserName();
++                               gender = userInformation.getGender();
++
++                               userInformations.add(name + "  \n" + gender);
++
++
++                           }
++
++
++                       }
++                        arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, userInformations);
++
++
++                        listView.setAdapter(arrayAdapter);
++                    }
++                }
++
++                @Override
++                public void onCancelled(DatabaseError databaseError) {
++
++                }
++            });
++            databaseReference.addValueEventListener(valueEventListener);
++
++
++            // Check if user's email is verified
++            // boolean emailVerified = user.isEmailVerified();
++
++            // The user's ID, unique to the Firebase project. Do NOT use this value to
++            // authenticate with your backend server, if you have one. Use
++            // FirebaseUser.getToken() instead.
++
++        }
++
++        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++            @Override
++            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
++                /*TourGuide tourGuide=tours.get(position);
++                intent = new Intent(Entertainment.this,Results.class);
++                intent.putExtra("tour_guide", tourGuide);
++                startActivity(intent);*/
++
++
++                Intent intent = new Intent(Intent.ACTION_SENDTO);
++                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
++                intent.putExtra(Intent.EXTRA_SUBJECT, "User feed back   " + name);
++                intent.putExtra(Intent.EXTRA_TEXT, "Feedback regarding your laptop request");
++                if (intent.resolveActivity(getPackageManager()) != null) {
++                    startActivity(intent);
++                }
++
++            }
++        });
++
++
+     }
+ 
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+-        MenuInflater inflater=getMenuInflater();
++        MenuInflater inflater = getMenuInflater();
+         inflater.inflate(R.menu.menu_, menu);
+         return super.onCreateOptionsMenu(menu);
+     }
+@@ -29,21 +155,19 @@
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+ 
+-        switch (item.getItemId()){
++        switch (item.getItemId()) {
+             case android.R.id.home:
+                 this.finish();
+                 return true;
+         }
+ 
+-        if(R.id.update == item.getItemId())
+-        {
+-            startActivity(new Intent(SponsorActivity.this,UpdateSponsorActivity.class));
+-        }else if(R.id.aboutUs == item.getItemId())
+-        {
+-            startActivity(new Intent(SponsorActivity.this,AboutUsActivity.class));
++        if (R.id.update == item.getItemId()) {
++            startActivity(new Intent(SponsorActivity.this, UpdateSponsorActivity.class));
++        } else if (R.id.aboutUs == item.getItemId()) {
++            startActivity(new Intent(SponsorActivity.this, AboutUsActivity.class));
+ 
+-        }else if(R.id.signout == item.getItemId()){
+-            startActivity(new Intent(SponsorActivity.this,LoginActivity.class));
++        } else if (R.id.signout == item.getItemId()) {
++            startActivity(new Intent(SponsorActivity.this, LoginActivity.class));
+             finish();
+         }
+         return super.onOptionsItemSelected(item);
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\n\nandroid {\n    compileSdkVersion 26\n    buildToolsVersion \"26.0.0\"\n    defaultConfig {\n        applicationId \"com.katekani.laptopsponsorapp\"\n        minSdkVersion 19\n        targetSdkVersion 26\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\n    implementation 'com.android.support:appcompat-v7:26.0.1'\n    implementation 'com.android.support.constraint:constraint-layout:1.0.2'\n    implementation 'com.google.firebase:firebase-messaging:11.2.0'\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'com.android.support.test:runner:1.0.0'\n    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'\n\n    compile 'com.google.firebase:firebase-auth:11.2.0'\n    compile 'com.google.android.gms:play-services-auth:11.2.0'\n    compile 'com.google.firebase:firebase-database:11.2.0'\n    compile 'com.google.firebase:firebase-crash:11.2.0'\n    compile 'com.google.firebase:firebase-core:11.2.0'\n    compile 'com.firebase:firebase-client-android:2.3.1'\n\n\n}\n\n\n\napply plugin: 'com.google.gms.google-services'\napply plugin: 'com.android.application'
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1504093565000)
++++ app/build.gradle	(revision )
+@@ -20,22 +20,20 @@
+ }
+ 
+ dependencies {
+-    implementation fileTree(dir: 'libs', include: ['*.jar'])
++    implementation fileTree(include: ['*.jar'], dir: 'libs')
+     implementation 'com.android.support:appcompat-v7:26.0.1'
+     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+     implementation 'com.google.firebase:firebase-messaging:11.2.0'
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'com.android.support.test:runner:1.0.0'
+     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'
+-
+     compile 'com.google.firebase:firebase-auth:11.2.0'
+     compile 'com.google.android.gms:play-services-auth:11.2.0'
+     compile 'com.google.firebase:firebase-database:11.2.0'
+     compile 'com.google.firebase:firebase-crash:11.2.0'
+     compile 'com.google.firebase:firebase-core:11.2.0'
+     compile 'com.firebase:firebase-client-android:2.3.1'
+-
+-
++    implementation 'com.android.support:design:26.0.2'
+ }
+ 
+ 

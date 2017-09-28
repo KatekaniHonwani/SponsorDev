@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "806055809403",
+    "firebase_url": "https://laptopsponsorapplication.firebaseio.com",
+    "project_id": "laptopsponsorapplication",
+    "storage_bucket": "laptopsponsorapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806055809403:android:cb84e3ce5fbdb2d6",
+        "android_client_info": {
+          "package_name": "com.katekani.laptopsponsorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806055809403-dnvjd55d0h93c0ui5ksggsg6irb494ju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.katekani.laptopsponsorapp",
+            "certificate_hash": "7909f3792004dc93b82fc79337258c801cddf8b5"
+          }
+        },
+        {
+          "client_id": "806055809403-aobhd2tupf8n0qpl71uu2smk8tpnv286.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsSTP_SopXJ5g86HzgAZ--ApTfE7PJCyA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "806055809403-aobhd2tupf8n0qpl71uu2smk8tpnv286.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

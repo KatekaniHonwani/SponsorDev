@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+    tools:context="com.katekani.laptopsponsorapp.ClientActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Questions/Form"
+        android:paddingBottom="30dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+
+    <TextView
+        android:id="@+id/question1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="where have you heard about us?"
+        />
+    <EditText
+        android:id="@+id/answer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/question2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="paste your gitHub Link"/>
+    <EditText
+        android:id="@+id/answer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/question3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="what kind of a computer do you own ?"/>
+    <EditText
+        android:id="@+id/answer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/question4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="why should we sponsor you?"/>
+    <EditText
+        android:id="@+id/answer4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/question5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="what kind of a Laptop are you looking for? (inluding requirements)"/>
+    <EditText
+        android:id="@+id/answer5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/submitForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit form"
+
+        />
+
+
+</LinearLayout>
