@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://C:\Users\codetribe\Downloads\Documents\LaptopSponsorApplication\LaptopSponsorApp.iml" filepath="C:\Users\codetribe\Downloads\Documents\LaptopSponsorApplication\LaptopSponsorApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/LaptopSponsorApplication.iml" filepath="$PROJECT_DIR$/LaptopSponsorApplication.iml" />
+      <module fileurl="file://C:\Users\codetribe\Documents\LaptopSponsorApplication\LaptopSponsorApplication.iml" filepath="C:\Users\codetribe\Documents\LaptopSponsorApplication\LaptopSponsorApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\codetribe\Documents\LaptopSponsorApplication\app\app.iml" filepath="C:\Users\codetribe\Documents\LaptopSponsorApplication\app\app.iml" />
     </modules>
   </component>
 </project>
