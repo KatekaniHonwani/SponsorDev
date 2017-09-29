@@ -30,8 +30,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        edtResetPasword = (EditText)findViewById(R.id.editResetEmail);
-        buttonReset = (Button)findViewById(R.id.buttonReset);
+        edtResetPasword = findViewById(R.id.editResetEmail);
+        buttonReset = findViewById(R.id.buttonReset);
 
         firebaseAuth= FirebaseAuth.getInstance();
         buttonReset.setOnClickListener(new View.OnClickListener() {
