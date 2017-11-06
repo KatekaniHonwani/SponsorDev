@@ -126,8 +126,6 @@ public class SponsorActivity extends AppCompatActivity {
 
         if (R.id.update == item.getItemId()) {
             startActivity(new Intent(SponsorActivity.this, UpdateSponsorActivity.class));
-        } else if (R.id.aboutUs == item.getItemId()) {
-            startActivity(new Intent(SponsorActivity.this, AboutUsActivity.class));
         } else if (R.id.signout == item.getItemId()) {
             startActivity(new Intent(SponsorActivity.this, LoginActivity.class));
             finish();

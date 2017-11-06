@@ -54,12 +54,9 @@ public class UpdateSponsorActivity extends AppCompatActivity implements View.OnC
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference();
-       // FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        //userID = user.getUid();
 
         mRootRef = new Firebase("https://laptopsponsorapplication.firebaseio.com/Sponsor");
-        mRootUserRef = new Firebase("https://laptopsponsorapplication.firebaseio.com/user_type");
+
 
         btnRegister.setOnClickListener(this);
 
@@ -129,12 +126,8 @@ public class UpdateSponsorActivity extends AppCompatActivity implements View.OnC
 
                                 startActivity(new Intent(UpdateSponsorActivity.this, SponsorActivity.class));
                                 finish();
-
                                 progressDialog.dismiss();
-
                             }
-
-
                         }
                     }
                 });
