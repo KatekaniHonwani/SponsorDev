@@ -4,6 +4,9 @@
         android:id="@+id/update"
         android:title="Update Profile"/>
     <item
+        android:id="@+id/clientlist"
+        android:title="Signout"/>
+    <item
         android:id="@+id/aboutUs"
         android:title="About Us"/>
     <item

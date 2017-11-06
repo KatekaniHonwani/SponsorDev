@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,11 @@
     android:padding="16dp"
     android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
     tools:context="com.katekani.laptopsponsorapp.ClientActivity">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,6 +76,30 @@
         android:id="@+id/answer5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtQualification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="what qualification do you have?"/>
+    <EditText
+        android:id="@+id/editQualification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtSkils"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="what are your skills?"/>
+    <EditText
+        android:id="@+id/editSkills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
     <Button
         android:id="@+id/submitForm"
         android:layout_width="wrap_content"
@@ -78,6 +107,6 @@
         android:text="Submit form"
 
         />
-
-
 </LinearLayout>
+
+</ScrollView>

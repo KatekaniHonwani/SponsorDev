@@ -2,6 +2,7 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,86 +18,44 @@ import java.util.List;
  * Created by Code Tribe on 2017/08/28.
  */
 
-public class ClientAdapter extends ArrayAdapter<UserInformation> {
+public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHolder>{
 
-    Context context;
-    private List<UserInformation> items;
-    private int resource;
+    private List<UserInformation> usersList;
 
-    public ClientAdapter(Context context, int resource, List<UserInformation> items) {
-        super(context, resource, items);
-        this.context = context;
-        this.items = items;
-        this.resource = resource;
-    }
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView name, gender;
 
-    @Override
-    public UserInformation getItem(int position) {
-        if (this.items != null) {
-            return this.items.get(position);
-        } else {
-            return null;
+        public MyViewHolder(View view) {
+            super(view);
+            name =  view.findViewById(R.id.tvName);
+            gender =  view.findViewById(R.id.tvgender);
+
         }
     }
 
-    @Override
-    public int getCount() {
-        if (this.items != null) {
-            return this.items.size();
-        } else {
-            return 0;
-        }
+    public ClientAdapter(List<UserInformation> usersList) {
+        this.usersList = usersList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_layout, parent, false);
 
-        if(convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(resource, null);
-        }
-
-
-        //ImageView clientImage =  convertView.findViewById(R.id.imageView);
-        TextView clientName = convertView.findViewById(R.id.tvName);
-        TextView gender = convertView.findViewById(R.id.tvgender);
-
-        UserInformation userInformation = getItem(position);
-        Log.i("Ygritte",userInformation.getUserName());
-        //boolean isPhoto = message.getPhotoUrl() != null;
-
-        //if (isPhoto) {
-
-        //clientName.setVisibility(View.GONE);
-        //gender.setVisibility(View.GONE);
-        //clientImage.setVisibility(View.VISIBLE);
-        //Glide.with(clientImage.getContext())
-        //.load(userInformation.getPhotoUrl())
-        //.into(clientImage);
-        //} else {
-        //clientName.setVisibility(View.VISIBLE);
-        //gender.setVisibility(View.VISIBLE);
-        //clientImage.setVisibility(View.GONE);
-        clientName.setText(userInformation.getUserName());
-        gender.setText(userInformation.getGender());
-
-        //}
-
-
-           /* if (clientImage != null) {
-                //clientImage.setId(userInformation.getImage());
-            }
-
-            if (clientName != null) {
-
-            }
-
-            if (gender != null) {
-
-            }
-        }*/
-
-        return convertView;
+        return new MyViewHolder(itemView);
     }
 
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        UserInformation userInformation = usersList.get(position);
+        holder.name.setText(userInformation.getUserName());
+        holder.gender.setText(userInformation.getGender());
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return usersList.size();
+    }
 
 }

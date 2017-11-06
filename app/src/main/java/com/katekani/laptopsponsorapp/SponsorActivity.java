@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,22 +21,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SponsorActivity extends AppCompatActivity {
 
-    private ListView listView;
     private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUsersDatabaseReference;
-    private ChildEventListener mChildEventListener;
-
+    private ValueEventListener valueEventListener;
     Context context;
-    List<UserInformation> allUsers = new ArrayList<>();
 
     UserInformation userInformation;
+    List<UserInformation> allUsers = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ClientAdapter cAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,90 +46,66 @@ public class SponsorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
-        Toast.makeText(this, "sponsor", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "sponsor", Toast.LENGTH_SHORT).show();
 
-        listView = findViewById(R.id.list_view);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
 
-        mChildEventListener = new ChildEventListener() {
-
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                UserInformation userInformation = allUsers.get(position);
+                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SponsorActivity.this, UserProfileActivity.class));
+            }
 
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onLongClick(View view, int position) {
 
-                //Log.i("Ygritte", dataSnapshot.toString());
-                String user_key = dataSnapshot.getKey();
+            }
+        }));
 
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     userInformation = snapshot.getValue(UserInformation.class);
+                    if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                        allUsers.add(userInformation);
+                    }
+                    //Log.i("Ygritte", userInformation.toString());
+                    //Log.i("Ygritte", userInformation.getUserName());
                     allUsers.add(userInformation);
                 }
-                clientAdapter = new ClientAdapter(context, R.layout.adapter_layout, allUsers);
-                listView.setAdapter(clientAdapter);
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        //startActivity(new Intent(SponsorActivity.this,UserProfileActivity.class));
-                        UserInformation userInfo = allUsers.get(i);
-                        Intent intent = new Intent(SponsorActivity.this, UserProfileActivity.class);
-                        // Log.i("Ygritte", userInfo.toString());
-                        intent.putExtra("user_profile", userInfo);
-                        startActivity(intent);
-                    }
-                });
+                cAdapter = new ClientAdapter(allUsers);
+                recyclerView.setAdapter(cAdapter);
 
             }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                /*String user_key  = dataSnapshot.getKey();
-                for ( DataSnapshot snapshot: dataSnapshot.getChildren() ) {
-
-                    for (DataSnapshot profile : snapshot.getChildren()) {
-                        if ("type".equals(profile.getKey()) && "Client".equals(profile.getValue())) {
-                           userInformation = snapshot.getValue(UserInformation.class);
-                            allUsers.add(userInformation);
-
-                        }
-                    }
-                }
-                clientAdapter = new ClientAdapter(context, R.layout.adapter_layout, allUsers);
-                listView.setAdapter(clientAdapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        //startActivity(new Intent(SponsorActivity.this,UserProfileActivity.class))
-                         UserInformation userInfo =allUsers.get(i);;
-                        Intent intent = new Intent(SponsorActivity.this,UserProfileActivity.class);
-
-                        intent.putExtra("user_profile", userInfo);
-                        startActivity(intent);
-                    }
-                });*/
-
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         };
-        mUsersDatabaseReference.addChildEventListener(mChildEventListener);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mUsersDatabaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mUsersDatabaseReference.removeEventListener(valueEventListener);
     }
 
     @Override
@@ -147,7 +128,6 @@ public class SponsorActivity extends AppCompatActivity {
             startActivity(new Intent(SponsorActivity.this, UpdateSponsorActivity.class));
         } else if (R.id.aboutUs == item.getItemId()) {
             startActivity(new Intent(SponsorActivity.this, AboutUsActivity.class));
-
         } else if (R.id.signout == item.getItemId()) {
             startActivity(new Intent(SponsorActivity.this, LoginActivity.class));
             finish();
@@ -155,3 +135,4 @@ public class SponsorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+

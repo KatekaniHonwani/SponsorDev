@@ -31,7 +31,7 @@ public class UserProfileActivity extends AppCompatActivity {
         sendComment = findViewById(R.id.submitFeedback);
         viewMoreClient = findViewById(R.id.submitMore);
 
-
+        /*
 
         tvAnswer1 = findViewById(R.id.user_answer1);
         tvAnswer2 = findViewById(R.id.user_answer2);
@@ -39,7 +39,7 @@ public class UserProfileActivity extends AppCompatActivity {
         tvAnswer4 = findViewById(R.id.user_answer4);
         tvAnswer5 = findViewById(R.id.user_answer5);
     // fullnames of the client
-        fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
+        //fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
@@ -55,8 +55,6 @@ public class UserProfileActivity extends AppCompatActivity {
         submitConfirmation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
@@ -98,7 +96,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 startActivity(new Intent(UserProfileActivity.this,SponsorActivity.class));
             }
-        });
+        });*/
 
     }
 }

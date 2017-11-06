@@ -3,6 +3,8 @@
     package="com.katekani.laptopsponsorapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Person"
@@ -30,15 +32,18 @@
             android:label="Forget Password" />
         <activity
             android:name=".ClientActivity"
-            android:label="Client(s)" />
-        <activity
-            android:name=".UpdateClientProfileActivity"
-            android:label="Update Profile" />
+            android:label="Client" />
         <activity
             android:name=".AboutUsActivity"
             android:label="About Us" />
         <activity android:name=".UpdateSponsorActivity" />
-        <activity android:name=".UserProfileActivity"></activity>
+        <activity android:name=".UserProfileActivity" />
+
+        <activity
+            android:name=".ClientAndSponsorActivity"
+            android:label="@string/title_activity_client_and_sponsor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Notification"></activity>
     </application>
 
 </manifest>
