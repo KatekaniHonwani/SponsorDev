@@ -51,6 +51,15 @@
                     android:maxLines="1"
                     android:hint="Company name"
                     android:inputType="text" />
+                <EditText
+                    android:id="@+id/EditRegno"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/business_icon"
+                    android:maxLines="1"
+                    android:hint="Reg No"
+                    android:inputType="text" />
+
 
 
 

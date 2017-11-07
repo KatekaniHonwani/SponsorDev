@@ -31,10 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    private TextView txtqoute1,txtqoute2,txtqoute3;
-    private TextView txtphrase1,txtphrase2,txtphrase3;
-    private ImageView imgView1,imgView2,imgView3;
     private TextView notification_badge;
     FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -43,6 +39,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private DatabaseReference mRef;
     private UserInformation userInformation;
     private static final String TAG = "ClientAndSponsor;";
+
+    private TextView txtqoute1;
+    private TextView txtTeam;
+    private TextView txtphrase1;
+    private ImageView imgView1,imgView2,imgView3,imgView4,imgView5,imgView6;
     NavigationView navigationView;
 
     @Override
@@ -51,20 +52,31 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_client_and_sponsor);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         Picasso.with(this).load("https://cdn.wallpapersafari.com/82/78/oIPHuv.jpg  ").fetch();
-
         txtqoute1 = findViewById(R.id.txt1);
-        txtqoute2 = findViewById(R.id.txt2);
-        txtqoute3 = findViewById(R.id.txt3);
-
         txtphrase1 = findViewById(R.id.textPhrase1);
-        txtqoute2= findViewById(R.id.textPhrase2);
-        txtphrase3 = findViewById(R.id.textPhrase3);
-
         imgView1= findViewById(R.id.img1);
-        imgView2= findViewById(R.id.img3);
+        imgView2= findViewById(R.id.img2);
         imgView3= findViewById(R.id.img3);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        imgView4= findViewById(R.id.img4);
+        imgView5= findViewById(R.id.img5);
+        imgView6= findViewById(R.id.img6);
+
+
+        imgView2.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+
+        txtphrase1.setText (" As The Brainex we seek to aspire and contribute positivily to the startup developers," +
+                "by giving them an oppotunity in this paltform to request for resources like, laptop and PCs.\n" +
+                "We have discovered that there are many companies who are willing to sponsor the startup developers.\n" +
+                "We aim to reach out to multiple organisations and help donate laptops to the in need developers.");
+
+
+
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);

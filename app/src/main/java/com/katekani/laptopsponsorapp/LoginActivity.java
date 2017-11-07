@@ -60,12 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private ChildEventListener mChildEventListener;
     //google buttons
-    private SignInButton signInButton;
-    private GoogleApiClient mGoogleApiClient;
-    GoogleSignInOptions signInOptions;
-    private static final String TAG = "SignInActivity;";
-    private static final int RC_SIGN_IN = 9001;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
         txtSignUp = findViewById(R.id.txtSignUp);
         progressDialog = new ProgressDialog(this);
-        signInButton = findViewById(R.id.sign_in_button);
+
 
         firebaseAuth = getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -118,73 +112,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onCancelled(DatabaseError error) {
                             // Failed to read value
-                            Log.w(TAG, "Failed to read value.", error.toException());
+
                         }
                     });
                 }
             }
         };
 
-        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this).
-                enableAutoManage(this/*FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this, "wrong", Toast.LENGTH_SHORT).show();
-                    }
-                }).
-                addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).build();
-
-        //set oncliklistners
         btnLogin.setOnClickListener(this);
-        txtSignUp.setOnClickListener(this);
-        txtForgotPassword.setOnClickListener(this);
-        signInButton.setOnClickListener(this);
 
     }
 
-    public void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
 
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        String value = edtEmail.getText().toString();
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthGoolge(account);
-
-            } else {
-                Toast.makeText(this, "auth went wrong", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
-
-    private void firebaseAuthGoolge(GoogleSignInAccount account) {
-        AuthCredential crdentials = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        firebaseAuth.signInWithCredential(crdentials).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    //FirebaseUser user = firebaseAuth.getCurrentUser();
-                    //updateUI(user);
-                } else {
-                    Toast.makeText(LoginActivity.this, "authentication failed", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
 
     public void LoginUser() {
         String email = edtEmail.getText().toString().trim();

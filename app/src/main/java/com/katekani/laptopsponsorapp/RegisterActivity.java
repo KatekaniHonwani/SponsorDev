@@ -44,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtSurname;
     private EditText edtEmal;
     private EditText edtpassword;
+    private EditText regNo;
     private Button buttonRegister;
     private String userID;
     private EditText editAddress,editContacts;
@@ -76,6 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edtSurname = findViewById(R.id.editsurname);
         edtEmal = findViewById(R.id.editemail);
         edtpassword = findViewById(R.id.editpassword);
+        regNo= findViewById(R.id.EditRegno);
         buttonRegister = findViewById(R.id.buttonsignup);
         male = findViewById(R.id.rdMale);
         female = findViewById(R.id.rdFemale);
@@ -116,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         female.setVisibility(View.VISIBLE);
                         male.setVisibility(View.VISIBLE);
                         edtCompanyName.setVisibility(View.INVISIBLE);
+                        regNo.setVisibility(View.INVISIBLE);
                         edtQuantity.setVisibility(View.INVISIBLE);
                     }
 
@@ -127,6 +130,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         edtCompanyName.setVisibility(View.VISIBLE);
                         edtQuantity.setVisibility(View.VISIBLE);
+                        regNo.setVisibility(View.VISIBLE);
                         edtName.setVisibility(View.INVISIBLE);
                         edtSurname.setVisibility(View.INVISIBLE);
                         female.setVisibility(View.INVISIBLE);
@@ -238,11 +242,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             String contacts = editContacts.getText().toString();
                             int quantity = edtQuantity.getInputType();
                             String email = edtEmal.getText().toString();
+                            String registraNo = regNo.getText().toString();
                             String type  = "Sponsor";
 
                             if (!companyname.equals("") & !address.equals("")) {
 
-                                UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type);
+                                UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,registraNo);
                                 mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

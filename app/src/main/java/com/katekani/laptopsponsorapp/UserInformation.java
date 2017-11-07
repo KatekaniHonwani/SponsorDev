@@ -22,6 +22,7 @@ public class UserInformation implements Parcelable {
     String type;
     String skills;
     String qualification;
+    String regNo;
 
     //String variebles that will store user answers
     String answer1, answer2, answer3, answer4, answer5;
@@ -35,7 +36,7 @@ public class UserInformation implements Parcelable {
 
     }
 
-    public UserInformation(String companyName, String email, String contacts,String address,int quantity, String type)
+    public UserInformation(String companyName, String email, String contacts,String address,int quantity, String type,String regNo)
     {
         this.companyName = companyName;
         this.email = email;
@@ -43,6 +44,7 @@ public class UserInformation implements Parcelable {
         this.address = address;
         this.type = type;
         this.quantity= quantity;
+        this.regNo = regNo;
     }
     private HashMap<String, String> stats;
 
@@ -59,7 +61,7 @@ public class UserInformation implements Parcelable {
 
     }
 
-    public UserInformation(String name, String surname, String email,String address,String contacts, String gender, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
+    public UserInformation(String name, String surname, String email,String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
     {
         this.userName = name;
         this.userSurname = surname;
@@ -70,7 +72,7 @@ public class UserInformation implements Parcelable {
         this.type = type;
         this.skills = skills;
         this.qualification = qualification;
-
+        this.regNo = regNo;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
@@ -92,6 +94,7 @@ public class UserInformation implements Parcelable {
         type = in.readString();
         skills = in.readString();
         qualification = in.readString();
+        regNo =in.readString();
 
         //Information for question
         answer1 = in.readString();
@@ -122,6 +125,7 @@ public class UserInformation implements Parcelable {
         dest.writeString(answer3);
         dest.writeString(answer4);
         dest.writeString(answer5);
+        dest.writeString(regNo);
     }
 
     @Override
@@ -140,6 +144,14 @@ public class UserInformation implements Parcelable {
             return new UserInformation[size];
         }
     };
+    public String getRegNo() {
+        return regNo;
+    }
+
+    public void setRegNo(String regNo) {
+        this.regNo = regNo;
+    }
+
 
     public String getUserName() {
         return userName;

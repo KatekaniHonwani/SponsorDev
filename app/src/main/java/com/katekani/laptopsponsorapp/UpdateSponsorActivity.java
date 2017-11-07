@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class UpdateSponsorActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editCompanyName,editEmail,editPassword,editContacts,editAddress,editQuantity;
+    private EditText editCompanyName,editEmail,editPassword,editContacts,editAddress,editQuantity,editRegno;
     private Button btnRegister;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -50,7 +50,7 @@ public class UpdateSponsorActivity extends AppCompatActivity implements View.OnC
         editAddress = findViewById(R.id.editAddress);
         editQuantity = findViewById(R.id.editQuantity);
         btnRegister = findViewById(R.id.buttonsignup);
-
+        editRegno= findViewById(R.id.EditRegno);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference();
@@ -112,11 +112,12 @@ public class UpdateSponsorActivity extends AppCompatActivity implements View.OnC
                             String contacts = editContacts.getText().toString();
                             int quantity = Integer.parseInt(editQuantity.getText().toString());
                             String email = editEmail.getText().toString();
+                            String registrationNo =editRegno.getText().toString();
                             String type  = "Sponsor";
 
                             if (!companyname.equals("") & !address.equals("")) {
 
-                                UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type);
+                                UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,registrationNo);
 
                                 mRootRef.child(task.getResult().getUser().getUid()).setValue(uinfo);
 
