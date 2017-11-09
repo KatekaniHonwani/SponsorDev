@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class AboutUsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView txtqoute1;
     private TextView txtTeam;
@@ -25,12 +27,11 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         imgView5= findViewById(R.id.img5);
         imgView6= findViewById(R.id.img6);
 
-
-        imgView2.setImageDrawable(getResources().getDrawable(R.drawable.naledi));
-        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
-        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
-        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
-        imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        Picasso.with(this).load(R.drawable.naledi).into(imgView2);
+        Picasso.with(this).load(R.drawable.nokuthula).into(imgView3);
+        Picasso.with(this).load(R.drawable.makhosi).into(imgView4);
+        Picasso.with(this).load(R.drawable.katekani).into(imgView5);
+        Picasso.with(this).load(R.drawable.sethu).into(imgView6);
 
         txtphrase1.setText (" The Brainex we seek to aspire and contribute positivily to the startup developers," +
                 "by giving them an oppotunity in this paltform to request for resources like, laptop and PCs.\n" +
