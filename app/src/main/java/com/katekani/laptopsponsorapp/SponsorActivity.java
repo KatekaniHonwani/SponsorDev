@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class SponsorActivity extends AppCompatActivity {
     private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUsersDatabaseReference;
+    FirebaseStorage storage;
     private ValueEventListener valueEventListener;
     Context context;
 
@@ -42,22 +45,27 @@ public class SponsorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
-        //Toast.makeText(this, "sponsor", Toast.LENGTH_SHORT).show();
-
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+        storage = FirebaseStorage.getInstance();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
-                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SponsorActivity.this, UserProfileActivity.class));
+
+
+
+                //startActivity(new Intent(SponsorActivity.this, UserProfileActivity.class));
+                Intent intent = new Intent(SponsorActivity.this, UserProfileActivity.class);
+                intent.putExtra("UserInfo", userInformation);
+                startActivity(intent);
             }
 
             @Override
@@ -77,13 +85,13 @@ public class SponsorActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    userInformation = snapshot.getValue(UserInformation.class);
+                    userInformation = dataSnapshot.getValue(UserInformation.class);
                     if ("Client".equalsIgnoreCase(userInformation.getType())) {
-                        allUsers.add(userInformation);
+                       // allUsers.add(userInformation);
+
                     }
-                    //Log.i("Ygritte", userInformation.toString());
-                    //Log.i("Ygritte", userInformation.getUserName());
                     allUsers.add(userInformation);
+                    Log.v("jfksdkb", userInformation.toString());
                 }
 
                 cAdapter = new ClientAdapter(SponsorActivity.this,allUsers);
@@ -92,7 +100,7 @@ public class SponsorActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                valueEventListener.onCancelled(DatabaseError.zzov(databaseError.getMessage()));
             }
         };
 
