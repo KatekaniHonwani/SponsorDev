@@ -27,7 +27,7 @@ public class UserInformation implements Parcelable {
     String skills;
     String qualification;
     String regNo;
-
+    String image = "";
     //String variebles that will store user answers
     String answer1, answer2, answer3, answer4, answer5;
 
@@ -88,11 +88,13 @@ public class UserInformation implements Parcelable {
         return result;
     }
 
-    public UserInformation(String name, String surname, String email,String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
+
+    public UserInformation(String name, String surname, String email,String imageResourceId, String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
     {
         this.userName = name;
         this.userSurname = surname;
         this.email = email;
+        this.image = imageResourceId;
         this.contacts = contacts;
         this.address = address;
         this.gender = gender;
@@ -146,6 +148,7 @@ public class UserInformation implements Parcelable {
         dest.writeString(type);
         dest.writeString(skills);
         dest.writeString(qualification);
+        dest.writeString(image);
         //user information regarding questions
         dest.writeString(answer1);
         dest.writeString(answer2);
@@ -284,4 +287,11 @@ public class UserInformation implements Parcelable {
         this.qualification = qualification;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

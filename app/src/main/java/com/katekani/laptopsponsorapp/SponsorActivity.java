@@ -2,8 +2,8 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +42,6 @@ public class SponsorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
-        //Toast.makeText(this, "sponsor", Toast.LENGTH_SHORT).show();
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
@@ -60,8 +55,9 @@ public class SponsorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
-                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SponsorActivity.this, UserProfileActivity.class));
+                Intent intent = new Intent(SponsorActivity.this, UserProfileActivity.class);
+                intent.putExtra("user_profile", userInformation);
+                startActivity(intent);
             }
 
             @Override
@@ -79,12 +75,10 @@ public class SponsorActivity extends AppCompatActivity {
                     if ("Client".equalsIgnoreCase(userInformation.getType())) {
                         allUsers.add(userInformation);
                     }
-                    //Log.i("Ygritte", userInformation.toString());
-                    //Log.i("Ygritte", userInformation.getUserName());
-                    allUsers.add(userInformation);
+                    Log.i("Ygritte", snapshot.toString());
                 }
 
-                cAdapter = new ClientAdapter(allUsers);
+                cAdapter = new ClientAdapter(SponsorActivity.this,allUsers);
                 recyclerView.setAdapter(cAdapter);
 
             }

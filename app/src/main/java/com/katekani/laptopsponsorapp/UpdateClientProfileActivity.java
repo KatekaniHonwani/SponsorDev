@@ -45,7 +45,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT=2;
     private ImageView imageView;
     private ProgressDialog progressDialog;
-    private String imageURL;
+    private Uri downloadUri;
     ValueEventListener postListener;
 
     @Override
@@ -118,7 +118,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                     String userAddress = edtAddress.getText().toString();
                     String userContact = edtContacts.getText().toString();
                     String userGender = edtGender.getText().toString();
-                    final String type= userInfo.getType();
+                    String type= userInfo.getType();
 
                     writeNewPost(name,surname,userEmail,userAddress,userContact,userGender,type);
                     Toast.makeText(UpdateClientProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
@@ -128,7 +128,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -211,7 +210,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 //                            });
 //
 //                        }
-//                    }
+ 
 //                });
 
                   progressDialog.setMessage("Uploading image...");
@@ -223,9 +222,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
                         Toast.makeText(UpdateClientProfileActivity.this,"Uploading done",Toast.LENGTH_LONG).show();
-                        final Uri downloadUri=taskSnapshot.getDownloadUrl();
-                        //Picasso.with(UpdateClientProfileActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
-
+                        downloadUri=taskSnapshot.getDownloadUrl();
                         UserProfileChangeRequest profileUpdates=new UserProfileChangeRequest.Builder()
                                 .setPhotoUri(downloadUri).build();
 
@@ -235,7 +232,13 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        displayProfilePic(downloadUri);
+
+//                                        //store image on the database
+                                        //DatabaseReference newPost = mUserDatabaseReference.push();
+                                        userInfo.setImage(String.valueOf(downloadUri));
+                                        mUserDatabaseReference.child("image").setValue(userInfo.getImage());
+
+                                        displayProfilePic(Uri.parse(userInfo.getImage()));
                                         Log.d(TAG, "User profile updated.");
                                     }
                                 }
