@@ -56,7 +56,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         Toolbar toolbar = findViewById(R.id.toolbar);
         mStorageRef= FirebaseStorage.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         etdCompanyName = findViewById(R.id.editCompanyname);
         edtCompanyTelephone = findViewById(R.id.edtCompanyTelephone);
         etdEmail = findViewById(R.id.edit_email);
