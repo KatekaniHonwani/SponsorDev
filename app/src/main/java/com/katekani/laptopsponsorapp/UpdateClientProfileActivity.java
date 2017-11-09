@@ -127,7 +127,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                     String userAddress = edtAddress.getText().toString();
                     String userContact = edtContacts.getText().toString();
                     String userGender = edtGender.getText().toString();
-                    final String type= userInfo.getType();
+                    String type= userInfo.getType();
 
                     writeNewPost(name,surname,userEmail,userAddress,userContact,userGender,type);
                     Toast.makeText(UpdateClientProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
@@ -220,7 +220,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 //                            });
 //
 //                        }
-//                    }
+ 
 //                });
 
                   progressDialog.setMessage("Uploading image...");

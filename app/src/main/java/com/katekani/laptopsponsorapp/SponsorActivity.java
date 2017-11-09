@@ -24,6 +24,7 @@ import java.util.List;
 
 public class SponsorActivity extends AppCompatActivity {
 
+    private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
@@ -55,8 +56,7 @@ public class SponsorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
-            Toast.makeText(SponsorActivity.this," Url ="+userInformation.getImageResourceId(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SponsorActivity.this, UserProfileActivity.class));
             }
 
@@ -80,12 +80,10 @@ public class SponsorActivity extends AppCompatActivity {
                     userInformation = snapshot.getValue(UserInformation.class);
                     if ("Client".equalsIgnoreCase(userInformation.getType())) {
                         allUsers.add(userInformation);
-
                     }
                     //Log.i("Ygritte", userInformation.toString());
                     //Log.i("Ygritte", userInformation.getUserName());
-
-                   // allUsers.add(userInformation);
+                    allUsers.add(userInformation);
                 }
 
                 cAdapter = new ClientAdapter(SponsorActivity.this,allUsers);
