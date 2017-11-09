@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if ("Client".equalsIgnoreCase(userInformation.getType()))
                                 {
                                     //Log.i("Ygritte", userInformation.getType());
-                                    if(dataSnapshot.hasChild("answer1") && dataSnapshot.hasChild("answer2") && dataSnapshot.hasChild("answer3") && dataSnapshot.hasChild("answer4") && dataSnapshot.hasChild("answer5")) 
+                                    if(dataSnapshot.hasChild("answer1") && dataSnapshot.hasChild("answer2") && dataSnapshot.hasChild("answer3") && dataSnapshot.hasChild("answer4") && dataSnapshot.hasChild("answer5"))
                                     {
                                         startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
                                     }else {
