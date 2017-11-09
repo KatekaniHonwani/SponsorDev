@@ -52,7 +52,7 @@
                     android:hint="Company name"
                     android:inputType="text" />
                 <EditText
-                    android:id="@+id/EditRegno"
+                    android:id="@+id/editRegno"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/business_icon"

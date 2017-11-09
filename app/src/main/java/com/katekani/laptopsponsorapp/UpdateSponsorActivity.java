@@ -50,7 +50,7 @@ public class UpdateSponsorActivity extends AppCompatActivity implements View.OnC
         editAddress = findViewById(R.id.editAddress);
         editQuantity = findViewById(R.id.editQuantity);
         btnRegister = findViewById(R.id.buttonsignup);
-        editRegno= findViewById(R.id.EditRegno);
+        editRegno= findViewById(R.id.editRegno);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference();
