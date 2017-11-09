@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,8 +55,8 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_profile);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mStorageRef= FirebaseStorage.getInstance().getReference();
-
         progressDialog = new ProgressDialog(this);
+        //setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Personal Details");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,10 +111,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*" );
-                startActivityForResult(intent,GALLERY_INTENT);
-                //Toast.makeText(UpdateClientProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
             }
         });
         Button mButtonUpdate =findViewById(R.id.btn_update);
@@ -135,6 +132,21 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(UpdateClientProfileActivity.this, "Please fill the empty field", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        //Floating
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*" );
+                startActivityForResult(intent,GALLERY_INTENT);
+                //Toast.makeText(UpdateClientProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
             }
         });
     }
