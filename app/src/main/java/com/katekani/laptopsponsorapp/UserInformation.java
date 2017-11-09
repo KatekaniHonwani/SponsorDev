@@ -27,7 +27,7 @@ public class UserInformation implements Parcelable {
     String skills;
     String qualification;
     String regNo;
-
+    String imageResourceId = "";
     //String variebles that will store user answers
     String answer1, answer2, answer3, answer4, answer5;
 
@@ -284,4 +284,11 @@ public class UserInformation implements Parcelable {
         this.qualification = qualification;
     }
 
+    public String getImageResourceId() {
+        return imageResourceId;
+    }
+
+    public void setImageResourceId(String imageResourceId) {
+        this.imageResourceId = imageResourceId;
+    }
 }

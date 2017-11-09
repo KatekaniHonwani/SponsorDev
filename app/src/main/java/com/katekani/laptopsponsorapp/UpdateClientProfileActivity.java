@@ -45,7 +45,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT=2;
     private ImageView imageView;
     private ProgressDialog progressDialog;
-    private String imageURL;
+    private Uri downloadUri;
     ValueEventListener postListener;
 
     @Override
@@ -232,7 +232,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
                         Toast.makeText(UpdateClientProfileActivity.this,"Uploading done",Toast.LENGTH_LONG).show();
-                        final Uri downloadUri=taskSnapshot.getDownloadUrl();
+                        downloadUri=taskSnapshot.getDownloadUrl();
                         //Picasso.with(UpdateClientProfileActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
 
                         UserProfileChangeRequest profileUpdates=new UserProfileChangeRequest.Builder()
@@ -244,7 +244,8 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        displayProfilePic(downloadUri);
+                                        userInfo.setImageResourceId(String.valueOf(downloadUri));
+                                        displayProfilePic(Uri.parse(userInfo.getImageResourceId()));
                                         Log.d(TAG, "User profile updated.");
                                     }
                                 }

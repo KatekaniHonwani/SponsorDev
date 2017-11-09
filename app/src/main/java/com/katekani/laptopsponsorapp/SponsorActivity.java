@@ -2,21 +2,17 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,6 +66,12 @@ public class SponsorActivity extends AppCompatActivity {
             }
         }));
 
+        /*if (userInformation.getImageResourceId().isEmpty()) {
+            imageView.setImageURI(Uri.parse(userInformation.getImageResourceId()));
+        }else {
+            Picasso.with(context).load(Uri.parse(userInformation.getImageResourceId())).into(imageView);
+        }*/
+
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,7 +86,7 @@ public class SponsorActivity extends AppCompatActivity {
                     allUsers.add(userInformation);
                 }
 
-                cAdapter = new ClientAdapter(allUsers);
+                cAdapter = new ClientAdapter(SponsorActivity.this,allUsers);
                 recyclerView.setAdapter(cAdapter);
 
             }
