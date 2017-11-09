@@ -137,7 +137,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
+        Log.i("Ygritte", userInfo.getImageResourceId());
     }
 
     @Override
@@ -233,8 +233,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(UpdateClientProfileActivity.this,"Uploading done",Toast.LENGTH_LONG).show();
                         downloadUri=taskSnapshot.getDownloadUrl();
-                        //Picasso.with(UpdateClientProfileActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
-
                         UserProfileChangeRequest profileUpdates=new UserProfileChangeRequest.Builder()
                                 .setPhotoUri(downloadUri).build();
 
@@ -244,7 +242,12 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+
+//                                        //store image on the database
+                                        //DatabaseReference newPost = mUserDatabaseReference.push();
                                         userInfo.setImageResourceId(String.valueOf(downloadUri));
+                                        mUserDatabaseReference.child("image").setValue(userInfo.getImageResourceId());
+
                                         displayProfilePic(Uri.parse(userInfo.getImageResourceId()));
                                         Log.d(TAG, "User profile updated.");
                                     }
