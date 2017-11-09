@@ -50,7 +50,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         setSupportActionBar(toolbar);
         txtqoute1 = findViewById(R.id.txt1);
         txtphrase1 = findViewById(R.id.textPhrase1);
-        imgView1= findViewById(R.id.img1);
         imgView2= findViewById(R.id.img2);
         imgView3= findViewById(R.id.img3);
         imgView4= findViewById(R.id.img4);
@@ -59,10 +58,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
 
         imgView2.setImageDrawable(getResources().getDrawable(R.drawable.naledi));
-       // imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
-        //imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
-        //mgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
-      //  imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
+        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
+        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
+        imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
 
         txtphrase1.setText (" As The Brainex we seek to aspire and contribute positivily to the startup developers," +
                 "by giving them an oppotunity in this paltform to request for resources like, laptop and PCs.\n" +
@@ -103,8 +102,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 Menu menuNav = navigationView.getMenu();
                                 if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                     Log.i("Ygritte", userInformation.getType());
-                                    MenuItem client_list = menuNav.findItem(R.id.nav_clientlist);
-                                    client_list.setVisible(false);
+                                    MenuItem client_list = menuNav.findItem(R.id.nav_about_us);
+
 
                                 } else if("Sponsor".equalsIgnoreCase(userInformation.getType())) {
                                     Log.i("Ygritte", userInformation.getType());
@@ -197,8 +196,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 startActivity(new Intent(ClientAndSponsorActivity.this,UpdateSponsorActivity.class));
             }
 
-        } else if (id == R.id.nav_clientlist) {
-            startActivity(new Intent(ClientAndSponsorActivity.this, SponsorActivity.class));
+        } else if (id == R.id.nav_about_us) {
+            startActivity(new Intent(ClientAndSponsorActivity.this, AboutUsActivity.class));
         }else if(id == R.id.nav_notification){
 
             startActivity(new Intent(ClientAndSponsorActivity.this, Notification.class));

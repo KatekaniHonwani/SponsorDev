@@ -48,12 +48,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private String userID;
     private EditText editAddress,editContacts;
     private RadioButton male, female;
-    private ImageButton image1;
     private RadioButton client,sponsor;
     private  EditText edtQuantity;
     private EditText edtCompanyName;
     private EditText editReg;
     private  RadioGroup rgType;
+    FirebaseUser user;
 
     //add firebase data stuff
     private FirebaseDatabase mFirebaseDatabase;
@@ -61,8 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Firebase mRootRef;
     private DatabaseReference mRef;
     private ProgressDialog progressDialog;
-    private StorageReference mStorageRef ;
-    private static final int GALLERY_INTENT=2;
     private FirebaseAuth.AuthStateListener mAuthListener;
     String useremail, userpassword, gender;
 
@@ -81,7 +79,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         buttonRegister = findViewById(R.id.buttonsignup);
         male = findViewById(R.id.rdMale);
         female = findViewById(R.id.rdFemale);
-        image1=findViewById(R.id.user_profile_photo);
         edtCompanyName = findViewById(R.id.editCompanyname);
         edtQuantity =  findViewById(R.id.editQuantity);
         editReg = findViewById(R.id.editRegno);
@@ -92,19 +89,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         mRef = mFirebaseDatabase.getReference().child("Users");
-        FirebaseUser user = mAuth.getCurrentUser();
+         user = mAuth.getCurrentUser();
 
         mAuth = FirebaseAuth.getInstance();
-
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*" );
-                startActivityForResult(intent,GALLERY_INTENT);
-
-            }
-        });
 
         //dialog
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
@@ -142,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         edtSurname.setVisibility(View.INVISIBLE);
                         female.setVisibility(View.INVISIBLE);
                         male.setVisibility(View.INVISIBLE);
-                        image1.setVisibility(View.INVISIBLE);
+
 
                         // startActivity(new Intent(RegisterActivity.this, UpdateClientProfileActivity.class));
 
@@ -154,8 +141,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
                     String name = edtName.getText().toString();
@@ -175,47 +160,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 if (databaseError != null) {
                                     Toast.makeText(RegisterActivity.this, "Data could not be saved " + databaseError.getMessage(),Toast.LENGTH_LONG).show();
                                 } else {
-                                    System.out.println("Data saved successfully.");
                                     Toast.makeText(RegisterActivity.this, "Data saved successfully.",Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                                    progressDialog.dismiss();
                                 }
+
+
                             }
                         });
-                        startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
-                        progressDialog.dismiss();
+
                     }
                 }
             }
         };
-
-
-        mStorageRef= FirebaseStorage.getInstance().getReference();
-
-
-
         buttonRegister.setOnClickListener(this);
 
     }
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent data)
-    {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(requestCode==GALLERY_INTENT&& resultCode==RESULT_OK) {
 
-            progressDialog.setMessage("Uploading image...");
-            progressDialog.show();
-            Uri uri=data.getData();
-            StorageReference filepath=mStorageRef.child("Photo").child(uri.getLastPathSegment());
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast.makeText(RegisterActivity.this,"Uploading done",Toast.LENGTH_LONG).show();
-                    Uri downloadUri=taskSnapshot.getDownloadUrl();
-                    Picasso.with(RegisterActivity.this).load(downloadUri).fit().centerCrop().into(image1);
-                }
-            });
-        }
-    }
+
 
     @Override
     public void onClick(View view) {
@@ -258,10 +220,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -275,7 +234,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     String type  = "Sponsor";
 
                                     if (!companyname.equals("") & !address.equals("")) {
-
                                         UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,regno);
                                         mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
                                             @Override
@@ -283,20 +241,56 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 if (databaseError != null) {
                                                     Toast.makeText(RegisterActivity.this, "Data could not be saved " + databaseError.getMessage(),Toast.LENGTH_LONG).show();
                                                 } else {
-                                                    System.out.println("Data saved successfully.");
                                                     Toast.makeText(RegisterActivity.this, "Data saved successfully.",Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                                    progressDialog.dismiss();
+                                                    finish();
                                                 }
                                             }
                                         });
-                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                                        finish();
-                                        progressDialog.dismiss();
+
+
                                     }
                                 }
                             }
                         });
 
 
+
+    }
+//    public void verifyEmail()
+//    {
+//        final boolean isToast = false;
+//        final FirebaseUser user = mAuth.getCurrentUser();
+//        user.sendEmailVerification()
+//                .addOnCompleteListener(this, new OnCompleteListener() {
+//                    @Override
+//                    public void onComplete(@NonNull Task task) {
+//
+//                        if (task.isSuccessful()) {
+//                            if(isToast) {
+//                                Toast.makeText(RegisterActivity.this,
+//                                        "Verification email sent to " + user.getEmail(),Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Log.e("Log", "sendEmailVerification", task.getException());
+//                            Toast.makeText(RegisterActivity.this,
+//                                    "Failed to send verification email.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//
+//    }
+
+    public void forgotPassword(String email){
+        FirebaseAuth.getInstance().sendPasswordResetEmail("user@example.com")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "Email sent.");
+                        }
                     }
                 });
     }
