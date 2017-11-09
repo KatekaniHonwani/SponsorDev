@@ -48,7 +48,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private String userID;
     private EditText editAddress,editContacts;
     private RadioButton male, female;
-    private ImageButton image1;
     private RadioButton client,sponsor;
     private  EditText edtQuantity;
     private EditText edtCompanyName;
@@ -81,7 +80,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         buttonRegister = findViewById(R.id.buttonsignup);
         male = findViewById(R.id.rdMale);
         female = findViewById(R.id.rdFemale);
-        image1=findViewById(R.id.user_profile_photo);
         edtCompanyName = findViewById(R.id.editCompanyname);
         edtQuantity =  findViewById(R.id.editQuantity);
         editReg = findViewById(R.id.editRegno);
@@ -96,15 +94,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         mAuth = FirebaseAuth.getInstance();
 
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*" );
-                startActivityForResult(intent,GALLERY_INTENT);
-
-            }
-        });
 
         //dialog
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
@@ -142,7 +131,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         edtSurname.setVisibility(View.INVISIBLE);
                         female.setVisibility(View.INVISIBLE);
                         male.setVisibility(View.INVISIBLE);
-                        image1.setVisibility(View.INVISIBLE);
 
                         // startActivity(new Intent(RegisterActivity.this, UpdateClientProfileActivity.class));
 
@@ -210,8 +198,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
                     Toast.makeText(RegisterActivity.this,"Uploading done",Toast.LENGTH_LONG).show();
-                    Uri downloadUri=taskSnapshot.getDownloadUrl();
-                    Picasso.with(RegisterActivity.this).load(downloadUri).fit().centerCrop().into(image1);
+
+
                 }
             });
         }
