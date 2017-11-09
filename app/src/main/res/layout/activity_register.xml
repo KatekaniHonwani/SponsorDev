@@ -118,6 +118,7 @@
                     android:singleLine="true"
                     android:drawableLeft="@drawable/phone_icon"
                     android:hint="Contacts"
+                    android:maxLength="10"
                     android:inputType="phone"/>
 
                 <EditText
