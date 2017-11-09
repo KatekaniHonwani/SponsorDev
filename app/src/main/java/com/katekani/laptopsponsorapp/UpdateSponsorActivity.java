@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
@@ -94,17 +94,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
                 }
             };
         }
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent=new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*" );
-                startActivityForResult(intent,GALLERY_INTENT);
-                //Toast.makeText(UpdateClientProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-            }
-        });
+        
         Button mButtonUpdate =findViewById(R.id.btn_update);
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +116,19 @@ public class UpdateSponsorActivity extends AppCompatActivity{
             }
         });
 
-
+//Floating
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*" );
+                startActivityForResult(intent,GALLERY_INTENT);
+                //Toast.makeText(UpdateClientProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     protected void onStart() {
@@ -201,10 +203,9 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         }
     }
 
-
     private void displayProfilePic(Uri downloadUri) {
         if (downloadUri != null) {
-            Picasso.with(UpdateSponsorActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
+//            Picasso.with(UpdateSponsorActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
         }
     }
 

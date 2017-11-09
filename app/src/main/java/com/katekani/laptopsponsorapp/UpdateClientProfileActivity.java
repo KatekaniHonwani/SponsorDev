@@ -107,12 +107,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
             };
         }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         Button mButtonUpdate =findViewById(R.id.btn_update);
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
