@@ -137,7 +137,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 }
             }
         });
-        Log.i("Ygritte", userInfo.getImageResourceId());
     }
 
     @Override
@@ -245,10 +244,10 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 
 //                                        //store image on the database
                                         //DatabaseReference newPost = mUserDatabaseReference.push();
-                                        userInfo.setImageResourceId(String.valueOf(downloadUri));
-                                        mUserDatabaseReference.child("image").setValue(userInfo.getImageResourceId());
+                                        userInfo.setImage(String.valueOf(downloadUri));
+                                        mUserDatabaseReference.child("image").setValue(userInfo.getImage());
 
-                                        displayProfilePic(Uri.parse(userInfo.getImageResourceId()));
+                                        displayProfilePic(Uri.parse(userInfo.getImage()));
                                         Log.d(TAG, "User profile updated.");
                                     }
                                 }

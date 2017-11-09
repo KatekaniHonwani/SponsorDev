@@ -59,10 +59,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
 
         imgView2.setImageDrawable(getResources().getDrawable(R.drawable.naledi));
-        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
-        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
-        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
-        imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+       // imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
+        //imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
+        //mgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
+      //  imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
 
         txtphrase1.setText (" As The Brainex we seek to aspire and contribute positivily to the startup developers," +
                 "by giving them an oppotunity in this paltform to request for resources like, laptop and PCs.\n" +

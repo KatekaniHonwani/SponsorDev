@@ -3,7 +3,6 @@ package com.katekani.laptopsponsorapp;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +53,11 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHold
         UserInformation userInformation = usersList.get(position);
         holder.name.setText(userInformation.getUserName());
         holder.gender.setText(userInformation.getGender());
-        holder.imageView.setImageURI(Uri.parse(userInformation.getImageResourceId()));
 
-        Log.i("Ygritte", userInformation.getImageResourceId());
-        if (userInformation.getImageResourceId().isEmpty()) {
+        if (userInformation.getImage().isEmpty()) {
             holder.imageView.setImageResource((R.drawable.user_photo));
         }else {
-            Picasso.with(context).load(Uri.parse(userInformation.getImageResourceId())).into(holder.imageView);
+            Picasso.with(context).load(Uri.parse(userInformation.getImage())).into(holder.imageView);
         }
     }
 
