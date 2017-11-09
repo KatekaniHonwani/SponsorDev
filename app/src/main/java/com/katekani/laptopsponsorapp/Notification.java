@@ -26,7 +26,7 @@ public class Notification extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txtRegId = findViewById(R.id.txtNotId);
         txtMessage = findViewById(R.id.txtNotiText);
 
