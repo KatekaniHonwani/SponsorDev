@@ -56,16 +56,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         mStorageRef= FirebaseStorage.getInstance().getReference();
 
         progressDialog = new ProgressDialog(this);
-        getSupportActionBar().setTitle("Personal Details");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                Intent intent = new Intent(UpdateClientProfileActivity.this, ClientAndSponsorActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         etdName = findViewById(R.id.name);
         etdSurname = findViewById(R.id.surname);
         edtContacts = findViewById(R.id.contact);

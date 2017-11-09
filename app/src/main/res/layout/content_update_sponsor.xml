@@ -20,7 +20,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvCompanyName"
@@ -49,7 +50,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvEmail"
@@ -76,7 +78,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvAddress"
@@ -104,7 +107,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp">
+
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvCompanyTelephone"
@@ -130,7 +134,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvQuantuty"
@@ -152,7 +157,7 @@
 
         <Button
             android:id="@+id/btn_update"
-            android:layout_width="wrap_content"
+            android:layout_width="400dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="Update" />

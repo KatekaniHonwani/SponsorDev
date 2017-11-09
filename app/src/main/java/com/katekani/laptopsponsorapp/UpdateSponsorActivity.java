@@ -55,18 +55,8 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         setContentView(R.layout.activity_update_sponsor);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mStorageRef= FirebaseStorage.getInstance().getReference();
-
         progressDialog = new ProgressDialog(this);
-        getSupportActionBar().setTitle("Personal Details");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                Intent intent = new Intent(UpdateSponsorActivity.this, ClientAndSponsorActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+
         etdCompanyName = findViewById(R.id.editCompanyname);
         edtCompanyTelephone = findViewById(R.id.edtCompanyTelephone);
         etdEmail = findViewById(R.id.edit_email);

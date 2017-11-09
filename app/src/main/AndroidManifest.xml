@@ -39,14 +39,23 @@
         <activity
             android:name=".ClientActivity"
             android:label="Client" />
-        <activity android:name=".UpdateSponsorActivity" />
+        <activity android:name=".UpdateSponsorActivity"
+            android:label="Sponsor Profile"
+            />
+
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".UpdateClientProfileActivity" />
+
+        <activity android:name=".UpdateClientProfileActivity"
+            android:label="Developer Profile"
+            />
         <activity
             android:name=".ClientAndSponsorActivity"
             android:label="@string/title_activity_client_and_sponsor"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Notification"></activity>
+        <activity android:name=".Notification" />
+        <activity android:name=".AboutUsActivity"
+            android:label="About Us">
+        </activity>
     </application>
 
 </manifest>
