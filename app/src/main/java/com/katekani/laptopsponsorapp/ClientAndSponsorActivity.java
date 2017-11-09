@@ -4,18 +4,15 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -28,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView notification_badge;
@@ -190,12 +186,19 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if(id==R.id.nav_update)
+        {
+            if("Client".equalsIgnoreCase(userInformation.getType()))
+            {
+                startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
+            }
+            else if("Sponsor".equalsIgnoreCase(userInformation.getType()))
+            {
+                startActivity(new Intent(ClientAndSponsorActivity.this,UpdateSponsorActivity.class));
+            }
 
-        if (id == R.id.nav_update) {
-            // Handle the camera action
         } else if (id == R.id.nav_clientlist) {
             startActivity(new Intent(ClientAndSponsorActivity.this, SponsorActivity.class));
-
         }else if(id == R.id.nav_notification){
 
             startActivity(new Intent(ClientAndSponsorActivity.this, Notification.class));
