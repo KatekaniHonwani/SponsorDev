@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         btnLogin.setOnClickListener(this);
+        txtSignUp.setOnClickListener(this);
 
     }
 
