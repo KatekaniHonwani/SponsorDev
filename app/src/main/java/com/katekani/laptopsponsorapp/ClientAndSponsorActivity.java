@@ -58,10 +58,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         imgView6= findViewById(R.id.img6);
 
 
-        imgView2.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
-        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
-        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
-        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
+        imgView2.setImageDrawable(getResources().getDrawable(R.drawable.naledi));
+        imgView3.setImageDrawable(getResources().getDrawable(R.drawable.nokuthula));
+        imgView4.setImageDrawable(getResources().getDrawable(R.drawable.makhosi));
+        imgView5.setImageDrawable(getResources().getDrawable(R.drawable.katekani));
         imgView6.setImageDrawable(getResources().getDrawable(R.drawable.sethu));
 
         txtphrase1.setText (" As The Brainex we seek to aspire and contribute positivily to the startup developers," +

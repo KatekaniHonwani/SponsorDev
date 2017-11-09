@@ -44,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtSurname;
     private EditText edtEmal;
     private EditText edtpassword;
-    private EditText regNo;
     private Button buttonRegister;
     private String userID;
     private EditText editAddress,editContacts;
@@ -53,11 +52,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private RadioButton client,sponsor;
     private  EditText edtQuantity;
     private EditText edtCompanyName;
+    private EditText editReg;
     private  RadioGroup rgType;
 
     //add firebase data stuff
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
+    private Firebase mRootRef;
     private DatabaseReference mRef;
     private ProgressDialog progressDialog;
     private StorageReference mStorageRef ;
@@ -77,26 +78,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edtSurname = findViewById(R.id.editsurname);
         edtEmal = findViewById(R.id.editemail);
         edtpassword = findViewById(R.id.editpassword);
-        regNo= findViewById(R.id.EditRegno);
         buttonRegister = findViewById(R.id.buttonsignup);
         male = findViewById(R.id.rdMale);
         female = findViewById(R.id.rdFemale);
         image1=findViewById(R.id.user_profile_photo);
         edtCompanyName = findViewById(R.id.editCompanyname);
         edtQuantity =  findViewById(R.id.editQuantity);
+        editReg = findViewById(R.id.editRegno);
         progressDialog = new ProgressDialog(this);
-          mAuth = FirebaseAuth.getInstance();
+
+
+        mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+
         mRef = mFirebaseDatabase.getReference().child("Users");
+        FirebaseUser user = mAuth.getCurrentUser();
 
         mAuth = FirebaseAuth.getInstance();
 
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            Intent intent=new Intent(Intent.ACTION_PICK);
-              intent.setType("image/*" );
-              startActivityForResult(intent,GALLERY_INTENT);
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*" );
+                startActivityForResult(intent,GALLERY_INTENT);
 
             }
         });
@@ -118,8 +123,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         female.setVisibility(View.VISIBLE);
                         male.setVisibility(View.VISIBLE);
                         edtCompanyName.setVisibility(View.INVISIBLE);
-                        regNo.setVisibility(View.INVISIBLE);
+                        editReg.setVisibility(View.INVISIBLE);
                         edtQuantity.setVisibility(View.INVISIBLE);
+
+
                     }
 
                 });
@@ -130,12 +137,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         edtCompanyName.setVisibility(View.VISIBLE);
                         edtQuantity.setVisibility(View.VISIBLE);
-                        regNo.setVisibility(View.VISIBLE);
+                        editReg.setVisibility(View.VISIBLE);
                         edtName.setVisibility(View.INVISIBLE);
                         edtSurname.setVisibility(View.INVISIBLE);
                         female.setVisibility(View.INVISIBLE);
                         male.setVisibility(View.INVISIBLE);
                         image1.setVisibility(View.INVISIBLE);
+
+                        // startActivity(new Intent(RegisterActivity.this, UpdateClientProfileActivity.class));
+
                     }
                 });
 
@@ -147,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+
                     String name = edtName.getText().toString();
                     String surname = edtSurname.getText().toString();
                     String address = editAddress.getText().toString();
@@ -156,16 +167,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     userID = user.getUid();
                     if (!name.equals("") & !surname.equals("")) {
                         UserInformation uinfo = new UserInformation(name, surname, user.getEmail() ,address,contacts,gender, type);
+                        //Log.v("dkjvdsjk", uinfo.getUserName().toString());
 
-                        mRef.child(userID).setValue(uinfo);
-                        startActivity(new Intent(RegisterActivity.this,ClientActivity.class));
+                        mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (databaseError != null) {
+                                    Toast.makeText(RegisterActivity.this, "Data could not be saved " + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                                } else {
+                                    System.out.println("Data saved successfully.");
+                                    Toast.makeText(RegisterActivity.this, "Data saved successfully.",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                        startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                         progressDialog.dismiss();
                     }
                 }
             }
         };
 
+
         mStorageRef= FirebaseStorage.getInstance().getReference();
+
+
+
         buttonRegister.setOnClickListener(this);
 
     }
@@ -220,9 +246,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             gender = "Female";
         }
 
-            progressDialog.setMessage("Registering user please wait....");
-            progressDialog.show();
-            //create user
+        progressDialog.setMessage("Registering user please wait....");
+        progressDialog.show();
+        //create user
         mAuth.createUserWithEmailAndPassword(useremail, userpassword)
                 .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -232,41 +258,48 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    String companyname= edtCompanyName.getText().toString();
+                                    String address = editAddress.getText().toString();
+                                    String contacts = editContacts.getText().toString();
+                                    int quantity = edtQuantity.getInputType();
+                                    String email = edtEmal.getText().toString();
+                                    String regno = editReg.getText().toString();
+                                    String type  = "Sponsor";
 
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            String companyname= edtCompanyName.getText().toString();
-                            String address = editAddress.getText().toString();
-                            String contacts = editContacts.getText().toString();
-                            int quantity = edtQuantity.getInputType();
-                            String email = edtEmal.getText().toString();
-                            String registraNo = regNo.getText().toString();
-                            String type  = "Sponsor";
+                                    if (!companyname.equals("") & !address.equals("")) {
 
-                            if (!companyname.equals("") & !address.equals("")) {
-
-                                UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,registraNo);
-                                mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        if (databaseError != null) {
-                                            Toast.makeText(RegisterActivity.this, "Data could not be saved " + databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                                        } else {
-                                            System.out.println("Data saved successfully.");
-                                            Toast.makeText(RegisterActivity.this, "Data saved successfully.",Toast.LENGTH_LONG).show();
-                                        }
+                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,regno);
+                                        mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
+                                            @Override
+                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                if (databaseError != null) {
+                                                    Toast.makeText(RegisterActivity.this, "Data could not be saved " + databaseError.getMessage(),Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    System.out.println("Data saved successfully.");
+                                                    Toast.makeText(RegisterActivity.this, "Data saved successfully.",Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        finish();
+                                        progressDialog.dismiss();
                                     }
-                                });
-                                startActivity(new Intent(RegisterActivity.this, ClientAndSponsorActivity.class));
-                                finish();
-                                progressDialog.dismiss();
+                                }
                             }
-                        }
+                        });
+
+
                     }
                 });
-        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
