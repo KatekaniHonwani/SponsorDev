@@ -3,7 +3,10 @@ package com.katekani.laptopsponsorapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Code Tribe on 2017/08/25.
@@ -11,6 +14,7 @@ import java.util.HashMap;
 
 public class UserInformation implements Parcelable {
 
+    String uId;
     String userName;
     String userSurname;
     String email;
@@ -36,7 +40,16 @@ public class UserInformation implements Parcelable {
 
     }
 
-    public UserInformation(String companyName, String email, String contacts,String address,int quantity, String type,String regNo)
+    public UserInformation(String companyName, String contacts,String email,  String address,int quantity, String type) {
+        this.email = email;
+        this.companyName = companyName;
+        this.address = address;
+        this.contacts = contacts;
+        this.quantity = quantity;
+        this.type = type;
+    }
+
+    public UserInformation(String companyName, String email, String contacts, String address, int quantity, String type, String regNo)
     {
         this.companyName = companyName;
         this.email = email;
@@ -59,6 +72,20 @@ public class UserInformation implements Parcelable {
         this.gender = gender;
         this.type = type;
 
+    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uId", uId);
+        result.put("userName",userName);
+        result.put("userSurname",userSurname);
+        result.put("email", email);
+        result.put("contacts", contacts);
+        result.put("address", address);
+        result.put("gender", gender);
+        result.put("type", type);
+
+        return result;
     }
 
     public UserInformation(String name, String surname, String email,String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)

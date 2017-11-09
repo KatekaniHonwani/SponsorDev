@@ -41,7 +41,7 @@
             android:label="Client" />
         <activity android:name=".UpdateSponsorActivity" />
         <activity android:name=".UserProfileActivity" />
-
+        <activity android:name=".UpdateClientProfileActivity" />
         <activity
             android:name=".ClientAndSponsorActivity"
             android:label="@string/title_activity_client_and_sponsor"

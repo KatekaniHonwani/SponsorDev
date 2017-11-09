@@ -23,6 +23,4 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Sign out" />
     </group>
-
-
 </menu>

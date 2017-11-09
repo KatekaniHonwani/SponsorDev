@@ -90,7 +90,7 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
 
         if(R.id.signout == item.getItemId()){
          FirebaseAuth.getInstance().signOut();
-         startActivity(new Intent(ClientActivity.this, LoginActivity.class));
+         startActivity(new Intent(ClientActivity.this, ClientAndSponsorActivity.class));
          return true;
 
         }
