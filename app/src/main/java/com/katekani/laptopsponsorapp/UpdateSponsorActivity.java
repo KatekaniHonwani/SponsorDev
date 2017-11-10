@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
@@ -94,7 +95,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
                 }
             };
         }
-        
+
         Button mButtonUpdate =findViewById(R.id.btn_update);
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +206,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
 
     private void displayProfilePic(Uri downloadUri) {
         if (downloadUri != null) {
-//            Picasso.with(UpdateSponsorActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
+            Picasso.with(UpdateSponsorActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
         }
     }
 

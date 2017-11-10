@@ -34,53 +34,29 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tvName"
+                    android:id="@+id/tvCompanyName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Name: "
+                    android:text="Company Name: "
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/name"
+                    android:id="@+id/editCompanyname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tvName"
+                    android:layout_toEndOf="@+id/tvCompanyName"
                     android:textColor="@android:color/black" />
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvSurname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Surname: "
-                    android:textColor="@android:color/black" />
-
-                <EditText
-                    android:id="@+id/surname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tvSurname"
-                    android:textColor="@android:color/black" />
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -88,7 +64,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvEmail"
@@ -115,7 +92,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvAddress"
@@ -143,21 +121,22 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp">
+
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tvContact"
+                    android:id="@+id/tvCompanyTelephone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Contact: "
+                    android:text="Company Telephone: "
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/contact"
+                    android:id="@+id/edtCompanyTelephone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tvContact"
+                    android:layout_toEndOf="@+id/tvCompanyTelephone"
                     android:textColor="@android:color/black" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -169,21 +148,22 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/tvGender"
+                    android:id="@+id/tvQuantuty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Gender: "
+                    android:text="Quantity: "
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/gender"
+                    android:id="@+id/edtQuantuty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tvGender"
+                    android:layout_toEndOf="@+id/tvQuantuty"
                     android:textColor="@android:color/black" />
 
             </RelativeLayout>
@@ -191,7 +171,7 @@
 
         <Button
             android:id="@+id/btn_update"
-            android:layout_width="wrap_content"
+            android:layout_width="400dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="Update" />
