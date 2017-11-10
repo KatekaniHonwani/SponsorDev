@@ -33,50 +33,95 @@
                 android:orientation="vertical"
                 android:paddingTop="30dp">
 
-                <EditText
-                    android:hint="Name"
-                    android:id="@+id/editname"
-                    android:layout_width="fill_parent"
+
+                <!--start-->
+                <ViewSwitcher
+                    android:id="@+id/viewSwitcher1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/username"
-                    android:maxLines="1"
-                    android:inputType="text"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:inAnimation="@android:anim/slide_in_left" >
 
-                <EditText
-                    android:id="@+id/editCompanyname"
-                    android:layout_width="fill_parent"
+                    <LinearLayout
+                        android:id="@+id/view_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <EditText
+                            android:hint="Name"
+                            android:id="@+id/edt_name"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:drawableLeft="@drawable/business_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        </EditText>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/view_company_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <EditText
+                            android:id="@+id/editCompanyname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/business_icon"
+                            android:maxLines="1"
+                            android:hint="Company name"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+                </ViewSwitcher>
+
+                <!--start-->
+                <ViewSwitcher
+                    android:id="@+id/viewSwitcher2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/business_icon"
-                    android:maxLines="1"
-                    android:hint="Company name"
-                    android:inputType="text" />
-                <EditText
-                    android:id="@+id/editRegno"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/business_icon"
-                    android:maxLines="1"
-                    android:hint="Reg No"
-                    android:inputType="text" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:inAnimation="@android:anim/slide_in_left" >
+                    <LinearLayout
+                        android:id="@+id/view_surname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <EditText
+                            android:id="@+id/editsurname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:singleLine="true"
+                            android:drawableLeft="@drawable/surname_icon"
+                            android:hint="Surname"
+                            android:inputType="text" />
 
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/view_reg_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <EditText
+                            android:id="@+id/editRegno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/business_icon"
+                            android:maxLines="1"
+                            android:hint="Reg No"
+                            android:inputType="text" />
 
+                    </LinearLayout>
 
+                </ViewSwitcher>
+                <!--end-->
 
-                <EditText
-                    android:id="@+id/editsurname"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:singleLine="true"
-                    android:drawableLeft="@drawable/surname_icon"
-                    android:hint="Surname"
-                    android:inputType="text" />
 
                 <EditText
                     android:id="@+id/editemail"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:singleLine="true"
                     android:drawableLeft="@drawable/email_icon"
                     android:hint="Email"

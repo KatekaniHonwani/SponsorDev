@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -73,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         editAddress= findViewById(R.id.editAddress);
         editContacts = findViewById(R.id.edtContact);
-        edtName = findViewById(R.id.editname);
+        edtName = findViewById(R.id.edt_name);
         edtSurname = findViewById(R.id.editsurname);
         edtEmal = findViewById(R.id.editemail);
         edtpassword = findViewById(R.id.editpassword);
@@ -100,21 +102,39 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         builder1.setMessage("Do you want to sign up as? ");
         builder1.setTitle("Registration");
         builder1.setCancelable(true);
+        final ViewSwitcher viewSwitcher1;
+        final ViewSwitcher viewSwitcher2;
 
+        final LinearLayout myNameView;
+        final LinearLayout myCompanyNameView;
+        final LinearLayout myRegNoView;
+        final LinearLayout mySurnameView;
+        viewSwitcher1 =   findViewById(R.id.viewSwitcher1);
+        viewSwitcher2 =   findViewById(R.id.viewSwitcher2);
+        myNameView= findViewById(R.id.view_name);
+        myCompanyNameView = findViewById(R.id.view_company_name);
+        myRegNoView= findViewById(R.id.view_reg_no);
+        mySurnameView = findViewById(R.id.view_surname);
         builder1.setNegativeButton(
                 "Client",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onStart();
 
-                        edtName.setVisibility(View.VISIBLE);
-                        edtSurname.setVisibility(View.VISIBLE);
-                        female.setVisibility(View.VISIBLE);
-                        male.setVisibility(View.VISIBLE);
-                        edtCompanyName.setVisibility(View.INVISIBLE);
-                        editReg.setVisibility(View.INVISIBLE);
-                        edtQuantity.setVisibility(View.INVISIBLE);
+//                        edtName.setVisibility(View.VISIBLE);
+//                        edtSurname.setVisibility(View.VISIBLE);
+//                        female.setVisibility(View.VISIBLE);
+//                        male.setVisibility(View.VISIBLE);
+//                        edtCompanyName.setVisibility(View.INVISIBLE);
+//                        editReg.setVisibility(View.INVISIBLE);
+//                        edtQuantity.setVisibility(View.INVISIBLE);
 
+                        //Start
+
+                        if (viewSwitcher1.getCurrentView() != myNameView && viewSwitcher2.getCurrentView()!=mySurnameView){
+                            viewSwitcher1.showPrevious();
+                            viewSwitcher2.showPrevious();
+                        }
 
                     }
 
@@ -124,16 +144,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        edtCompanyName.setVisibility(View.VISIBLE);
-                        edtQuantity.setVisibility(View.VISIBLE);
-                        editReg.setVisibility(View.VISIBLE);
-                        edtName.setVisibility(View.INVISIBLE);
-                        edtSurname.setVisibility(View.INVISIBLE);
-                        female.setVisibility(View.INVISIBLE);
-                        male.setVisibility(View.INVISIBLE);
+//                        edtCompanyName.setVisibility(View.VISIBLE);
+//                        edtQuantity.setVisibility(View.VISIBLE);
+////                        editReg.setVisibility(View.VISIBLE);
+//                        edtName.setVisibility(View.INVISIBLE);
+//                        edtSurname.setVisibility(View.INVISIBLE);
+                       female.setVisibility(View.INVISIBLE);
+                       male.setVisibility(View.INVISIBLE);
 
                         // startActivity(new Intent(RegisterActivity.this, UpdateClientProfileActivity.class));
+                        if (viewSwitcher1.getCurrentView() != myCompanyNameView && viewSwitcher2.getCurrentView()!=myRegNoView){
 
+                            viewSwitcher1.showNext();
+                            viewSwitcher2.showNext();
+                        }
                     }
                 });
 
@@ -246,10 +270,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+
+
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -281,8 +303,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         progressDialog.dismiss();
                                     }
                                 }
-                            }
-                        });
+
+
 
 
                     }
