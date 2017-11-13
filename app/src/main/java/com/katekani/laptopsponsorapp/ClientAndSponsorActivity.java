@@ -70,10 +70,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
 
-        recyclerView.setAdapter(cAdapter);
+        //recyclerView.setAdapter(cAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -93,19 +92,59 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot1) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.v("Ygritteeee", dataSnapshot.toString());
+                /*for (DataSnapshot snapshot : dataSnapshot1.getChildren()) {
+                    Log.v("Ygritteeee", dataSnapshot1.toString());
                     userInformation = snapshot.getValue(UserInformation.class);
-                    if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                    if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
                         allUsers.add(userInformation);
                     }
                     Log.v("Ygritteeee", userInformation.toString());
                 }
                 cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                recyclerView.setAdapter(cAdapter);
+                recyclerView.setAdapter(cAdapter);*/
                 //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                firebaseAuth = FirebaseAuth.getInstance();
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                assert userInformation != null;
+
+                                Log.i("Ygritte", dataSnapshot.toString());
+
+                                if ("Client".equalsIgnoreCase(userInformation.getType()))
+                                {
+
+                                }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+                                    for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
+                                        Log.v("Ygritteeee", dataSnapshot.toString());
+                                        userInformation = snapshot1.getValue(UserInformation.class);
+                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                            allUsers.add(userInformation);
+                                        }
+                                        Log.v("Ygritteeee", userInformation.toString());
+                                    }
+                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                    recyclerView.setAdapter(cAdapter);
+                                    //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -113,6 +152,45 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
+        /*authStateListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+                            userInformation = dataSnapshot.getValue(UserInformation.class);
+                            assert userInformation != null;
+                            //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.i("Ygritte", dataSnapshot.toString());
+
+                            if ("Client".equalsIgnoreCase(userInformation.getType()))
+                            {
+
+                            }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+
+                    }
+                    });
+                }
+            }
+        };*/
 
         navigationView.setNavigationItemSelectedListener(this);
 
