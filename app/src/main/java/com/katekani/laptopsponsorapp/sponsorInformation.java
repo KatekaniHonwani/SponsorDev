@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ public class sponsorInformation extends AppCompatActivity {
     String userId;
     FirebaseUser user;
     UserInformation userInfo;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,14 @@ public class sponsorInformation extends AppCompatActivity {
         edtAnswer4=findViewById(R.id.answer4);
         submit=findViewById(R.id.submit);
         images=findViewById(R.id.laptopImage);
+        progressDialog = new ProgressDialog(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if ( firebaseUser !=null) {
             userID = firebaseUser.getUid();
         }
-        mCurrentUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+
+        mCurrentUserRef = firebaseDatabase.getInstance().getReference();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,23 +97,14 @@ public class sponsorInformation extends AppCompatActivity {
                 if (!"".equals(answer1) && !"".equals(answer2) && !"".equals(answer3) && !"".equals(answer4) ) {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
-
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
-
-                    final Map<String, Object> updateUser = new HashMap<>();
-                    updateUser.put("answer1", answer1);
-                    updateUser.put("answer2", answer2);
-                    updateUser.put("answer3", answer3);
-                    updateUser.put("answer4", answer4);
-
-
-                    mCurrentUserRef.updateChildren(updateUser);
+                    UserInformation userInformation = new UserInformation(answer1,answer2,answer3,answer4);
+                    mCurrentUserRef.child("Devices").child(userID).push().setValue(userInformation);
+                    progressDialog.dismiss();
                 }
 
             }
         });
-
-
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,6 +161,18 @@ public class sponsorInformation extends AppCompatActivity {
     private void displayProfilePic(Uri downloadUri) {
         if (downloadUri != null) {
             Picasso.with(sponsorInformation.this).load(downloadUri).fit().centerCrop().into(images);
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
