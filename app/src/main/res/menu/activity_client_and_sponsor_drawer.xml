@@ -20,13 +20,18 @@
             app:actionViewClass="android.widget.TextView"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Add Item" />
-        <item
-            android:id="@+id/nav_about_us"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="About" />
-        <item
-            android:id="@+id/nav_signout"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Sign out" />
+
     </group>
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_signout"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Sign out" />
+        </menu>
+    </item>
 </menu>
