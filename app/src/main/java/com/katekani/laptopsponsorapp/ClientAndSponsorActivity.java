@@ -57,6 +57,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_and_sponsor);
+        context = getBaseContext();
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -71,16 +72,17 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         navigationView = findViewById(R.id.nav_view);
 
         //recyclerView.setAdapter(cAdapter);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(context));
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
 
                 UserInformation userInformation = allUsers.get(position);
-                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
             }
 
@@ -117,7 +119,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
                                 assert userInformation != null;
-
+                                allUsers = new ArrayList<>();
                                 Log.i("Ygritte", dataSnapshot.toString());
 
                                 if ("Client".equalsIgnoreCase(userInformation.getType()))
@@ -133,9 +135,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         Log.v("Ygritteeee", userInformation.toString());
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                                    recyclerView.setAdapter(cAdapter);
-                                    //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+
                                 }
+
+                                recyclerView.setAdapter(cAdapter);
                             }
                         }
 
