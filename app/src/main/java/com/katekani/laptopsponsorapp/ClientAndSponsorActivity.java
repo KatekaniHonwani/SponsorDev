@@ -1,5 +1,6 @@
 package com.katekani.laptopsponsorapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,13 +11,18 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView notification_badge;
     FirebaseAuth firebaseAuth;
@@ -33,9 +42,17 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private FirebaseUser user;
     private String userID;
     private DatabaseReference mRef;
-    private UserInformation userInformation;
     private static final String TAG = "ClientAndSponsor;";
 
+    Context context;
+    private ClientAdapter clientAdapter;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mUsersDatabaseReference;
+    private ValueEventListener valueEventListener;
+    UserInformation userInformation;
+    List<UserInformation> allUsers = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ClientAdapter cAdapter;
 
     NavigationView navigationView;
 
@@ -45,78 +62,76 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_client_and_sponsor);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+        recyclerView = findViewById(R.id.recycler_view);
 
-
-
-    DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
+        recyclerView.setAdapter(cAdapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onClick(View view, int position) {
 
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
+                UserInformation userInformation = allUsers.get(position);
+                Toast.makeText(getApplicationContext(), userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+            }
 
-                                userInformation = dataSnapshot.getValue(UserInformation.class);
-                                assert userInformation != null;
-                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            @Override
+            public void onLongClick(View view, int position) {
 
+            }
+        }));
 
-                                Menu menuNav = navigationView.getMenu();
-                                if ("Client".equalsIgnoreCase(userInformation.getType())) {
-                                    Log.i("Ygritte", userInformation.getType());
-                                    MenuItem client_list = menuNav.findItem(R.id.nav_about_us);
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-
-                                } else if("Sponsor".equalsIgnoreCase(userInformation.getType())) {
-                                    Log.i("Ygritte", userInformation.getType());
-                                    MenuItem notification = menuNav.findItem(R.id.nav_notification);
-                                    notification.setVisible(false);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                            Log.w(TAG, "Failed to read value.", error.toException());
-                        }
-                    });
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.v("Ygritteeee", dataSnapshot.toString());
+                    userInformation = snapshot.getValue(UserInformation.class);
+                    if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                        allUsers.add(userInformation);
+                    }
+                    Log.v("Ygritteeee", userInformation.toString());
                 }
+                cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                recyclerView.setAdapter(cAdapter);
+                //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         };
 
 
+        navigationView.setNavigationItemSelectedListener(this);
 
-
-        notification_badge=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notification));
-
+        //notification_badge=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notification));
+        mUsersDatabaseReference.addValueEventListener(valueEventListener);
         setNotificationCountDrawer();
+
     }
 
     private void setNotificationCountDrawer(){
 
 
-        notification_badge.setGravity(Gravity.CENTER_VERTICAL);
-        notification_badge.setTypeface(null, Typeface.BOLD);
-        notification_badge.setTextColor(getResources().getColor(R.color.colorAccent));
+//        notification_badge.setGravity(Gravity.CENTER_VERTICAL);
+  //      notification_badge.setTypeface(null, Typeface.BOLD);
+    //    notification_badge.setTextColor(getResources().getColor(R.color.colorAccent));
         //count is added
-        notification_badge.setText("7");
+      //  notification_badge.setText("7");
     }
 
 
@@ -124,13 +139,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
+//        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseAuth.removeAuthStateListener(authStateListener);
+        //firebaseAuth.removeAuthStateListener(authStateListener);
     }
 
     @Override
@@ -180,7 +195,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
             startActivity(new Intent(ClientAndSponsorActivity.this, Notification.class));
 
-        }else if (id == R.id.nav_signout) {
+        }
+        else if(id == R.id.nav_addItem){
+
+            startActivity(new Intent(ClientAndSponsorActivity.this, sponsorInformation.class));
+
+        }
+        else if (id == R.id.nav_signout) {
 
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(ClientAndSponsorActivity.this,LoginActivity.class);

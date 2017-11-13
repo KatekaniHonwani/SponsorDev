@@ -28,6 +28,7 @@ public class UserInformation implements Parcelable {
     String qualification;
     String regNo;
     String image = "";
+    String imageResourceId = "";
     //String variebles that will store user answers
     String answer1, answer2, answer3, answer4, answer5;
 
@@ -87,7 +88,17 @@ public class UserInformation implements Parcelable {
 
         return result;
     }
+    public Map<String, Object> map() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uId", uId);
+        result.put("email",email);
+        result.put("companyName",companyName);
+        result.put("contacts", contacts);
+        result.put("quantity", quantity);
+        result.put("type", type);
 
+        return result;
+    }
 
     public UserInformation(String name, String surname, String email,String imageResourceId, String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
     {
