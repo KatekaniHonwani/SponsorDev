@@ -161,7 +161,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
     private void writeNewPost(String companyName, String companyTelephone, String companyEmail,String companyAddress,int quantity, String type) {
         Log.i("Ygritte", companyName);
         UserInformation userInformation = new UserInformation(companyName,companyTelephone,companyEmail,companyAddress,quantity,type);
-        Map<String, Object> userInforValues = userInformation.toMap();
+        Map<String, Object> userInforValues = userInformation.map();
         mUserDatabaseReference.updateChildren(userInforValues);
     }
 

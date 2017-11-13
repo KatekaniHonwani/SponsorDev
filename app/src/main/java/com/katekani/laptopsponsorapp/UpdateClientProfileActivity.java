@@ -74,7 +74,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         edtAddress = findViewById(R.id.edit_address);
         edtGender = findViewById(R.id.gender);
         imageView = findViewById(R.id.header);
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             if (user.getPhotoUrl() != null) {
@@ -106,7 +105,6 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 }
             };
         }
-
         Button mButtonUpdate =findViewById(R.id.btn_update);
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
