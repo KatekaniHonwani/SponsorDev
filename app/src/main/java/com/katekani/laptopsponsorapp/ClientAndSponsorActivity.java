@@ -39,6 +39,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private FirebaseUser user;
     private String userID;
     private DatabaseReference mRef;
+    private DatabaseReference mRefDevice;
     private static final String TAG = "ClientAndSponsor;";
 
     Context context;
@@ -74,7 +75,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         //recyclerView.setAdapter(cAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -112,6 +113,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 if (user != null) {
                     userID = user.getUid();
                     mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRefDevice = FirebaseDatabase.getInstance().getReference("Devices").child(userID);
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,24 +122,40 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
-                                Log.i("Ygritte", dataSnapshot.toString());
+                                //Log.i("Ygritte", dataSnapshot.toString());
 
-                                if ("Client".equalsIgnoreCase(userInformation.getType()))
-                                {
-
-                                }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+                                if("Sponsor".equalsIgnoreCase(userInformation.getType())){
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
-                                        Log.v("Ygritteeee", dataSnapshot.toString());
+                                        //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                         }
-                                        Log.v("Ygritteeee", userInformation.toString());
+                                        //Log.v("Ygritteeee", userInformation.toString());
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
 
-                                }
+                                }else if("Client".equalsIgnoreCase(userInformation.getType())){
+                                    /*mRefDevice.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                                            {
+                                                userInformation = snapshot.getValue(UserInformation.class);
+                                                Log.v("Ygritteeee", userInformation.toString());
+                                                allUsers.add(userInformation);
+                                            }
+                                            cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                        }
 
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });*/
+                                }
+                                //cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                 recyclerView.setAdapter(cAdapter);
                             }
                         }
@@ -155,59 +173,15 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    userID = user.getUid();
-
-                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-                    mRef.addValueEventListener(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() != null) {
-                            userInformation = dataSnapshot.getValue(UserInformation.class);
-                            assert userInformation != null;
-                            //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Log.i("Ygritte", dataSnapshot.toString());
-
-                            if ("Client".equalsIgnoreCase(userInformation.getType()))
-                            {
-
-                            }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
-
-
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-
-                    }
-                    });
-                }
-            }
-        };*/
-
         navigationView.setNavigationItemSelectedListener(this);
-
-        //notification_badge=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notification));
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
-
-
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-//        firebaseAuth.addAuthStateListener(authStateListener);
+        //firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     @Override
