@@ -40,6 +40,13 @@ public class UserInformation implements Parcelable {
     {
 
     }
+    public UserInformation(String answer1,String answer2,String answer3,String answer4)
+    {
+        this.answer1 = answer1;
+        this.answer2 = answer2;
+        this.answer3 = answer3;
+        this.answer4 = answer4;
+    }
 
     public UserInformation(String companyName, String contacts,String email,  String address,int quantity, String type) {
         this.email = email;
