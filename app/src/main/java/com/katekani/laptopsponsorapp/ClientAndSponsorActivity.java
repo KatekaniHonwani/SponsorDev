@@ -120,20 +120,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         //notification_badge=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notification));
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
-        setNotificationCountDrawer();
+
 
     }
-
-    private void setNotificationCountDrawer(){
-
-
-//        notification_badge.setGravity(Gravity.CENTER_VERTICAL);
-  //      notification_badge.setTypeface(null, Typeface.BOLD);
-    //    notification_badge.setTextColor(getResources().getColor(R.color.colorAccent));
-        //count is added
-      //  notification_badge.setText("7");
-    }
-
 
 
     @Override
@@ -191,10 +180,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         } else if (id == R.id.nav_about_us) {
             startActivity(new Intent(ClientAndSponsorActivity.this, AboutUsActivity.class));
-        }else if(id == R.id.nav_notification){
-
-            startActivity(new Intent(ClientAndSponsorActivity.this, Notification.class));
-
         }
         else if(id == R.id.nav_addItem){
 
