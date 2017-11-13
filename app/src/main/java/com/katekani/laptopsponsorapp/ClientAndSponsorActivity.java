@@ -212,7 +212,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             startActivity(intent);
             finish();
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
