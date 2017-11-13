@@ -2,12 +2,9 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView notification_badge;
@@ -66,16 +63,16 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
         recyclerView = findViewById(R.id.recycler_view);
-
+        firebaseAuth = getInstance();
+        user = firebaseAuth.getCurrentUser();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
 
-        recyclerView.setAdapter(cAdapter);
+        //recyclerView.setAdapter(cAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -95,19 +92,59 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot1) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.v("Ygritteeee", dataSnapshot.toString());
+                /*for (DataSnapshot snapshot : dataSnapshot1.getChildren()) {
+                    Log.v("Ygritteeee", dataSnapshot1.toString());
                     userInformation = snapshot.getValue(UserInformation.class);
-                    if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                    if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
                         allUsers.add(userInformation);
                     }
                     Log.v("Ygritteeee", userInformation.toString());
                 }
                 cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                recyclerView.setAdapter(cAdapter);
+                recyclerView.setAdapter(cAdapter);*/
                 //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                firebaseAuth = FirebaseAuth.getInstance();
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                assert userInformation != null;
+
+                                Log.i("Ygritte", dataSnapshot.toString());
+
+                                if ("Client".equalsIgnoreCase(userInformation.getType()))
+                                {
+
+                                }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+                                    for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
+                                        Log.v("Ygritteeee", dataSnapshot.toString());
+                                        userInformation = snapshot1.getValue(UserInformation.class);
+                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                            allUsers.add(userInformation);
+                                        }
+                                        Log.v("Ygritteeee", userInformation.toString());
+                                    }
+                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                    recyclerView.setAdapter(cAdapter);
+                                    //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -115,25 +152,53 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
+        /*authStateListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+                            userInformation = dataSnapshot.getValue(UserInformation.class);
+                            assert userInformation != null;
+                            //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.i("Ygritte", dataSnapshot.toString());
+
+                            if ("Client".equalsIgnoreCase(userInformation.getType()))
+                            {
+
+                            }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+
+                    }
+                    });
+                }
+            }
+        };*/
 
         navigationView.setNavigationItemSelectedListener(this);
 
         //notification_badge=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_notification));
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
-        setNotificationCountDrawer();
+
 
     }
-
-    private void setNotificationCountDrawer(){
-
-
-//        notification_badge.setGravity(Gravity.CENTER_VERTICAL);
-  //      notification_badge.setTypeface(null, Typeface.BOLD);
-    //    notification_badge.setTextColor(getResources().getColor(R.color.colorAccent));
-        //count is added
-      //  notification_badge.setText("7");
-    }
-
 
 
     @Override
@@ -180,21 +245,38 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         int id = item.getItemId();
         if(id==R.id.nav_update)
         {
-            if("Client".equalsIgnoreCase(userInformation.getType()))
-            {
-                startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
-            }
-            else if("Sponsor".equalsIgnoreCase(userInformation.getType()))
-            {
-                startActivity(new Intent(ClientAndSponsorActivity.this,UpdateSponsorActivity.class));
-            }
+            if (user != null) {
+                userID = user.getUid();
+                mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+
+                            userInformation = dataSnapshot.getValue(UserInformation.class);
+                            assert userInformation != null;
+                            //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.i("Ygritte", dataSnapshot.toString());
+
+                            if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
+                                startActivity(new Intent(ClientAndSponsorActivity.this, UpdateSponsorActivity.class));
+                            }
+                            if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+
+                    }
+                });
+                }
         } else if (id == R.id.nav_about_us) {
             startActivity(new Intent(ClientAndSponsorActivity.this, AboutUsActivity.class));
-        }else if(id == R.id.nav_notification){
-
-            startActivity(new Intent(ClientAndSponsorActivity.this, Notification.class));
-
         }
         else if(id == R.id.nav_addItem){
 
