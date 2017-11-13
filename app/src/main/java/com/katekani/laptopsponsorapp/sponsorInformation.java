@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -160,6 +161,18 @@ public class sponsorInformation extends AppCompatActivity {
     private void displayProfilePic(Uri downloadUri) {
         if (downloadUri != null) {
             Picasso.with(sponsorInformation.this).load(downloadUri).fit().centerCrop().into(images);
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

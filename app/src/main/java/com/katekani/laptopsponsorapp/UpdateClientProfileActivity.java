@@ -57,6 +57,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         mStorageRef= FirebaseStorage.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
         //setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Personal Details");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
