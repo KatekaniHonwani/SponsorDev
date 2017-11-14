@@ -3,6 +3,7 @@ package com.katekani.laptopsponsorapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -120,8 +121,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                                }else if("Client".equalsIgnoreCase(userInformation.getType())){
-
                                 }
                                 recyclerView.setAdapter(cAdapter);
                             }
@@ -137,6 +136,50 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
             }
         };
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+                    mRef = FirebaseDatabase.getInstance().getReference("Mobile").child(userID);
+                    mRef.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                assert userInformation != null;
+                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Log.i("Ygritte", dataSnapshot.toString());
+
+                                if ("Client".equalsIgnoreCase(userInformation.getType()))
+                                {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                        userInformation = snapshot.getValue(UserInformation.class);
+                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                            allUsers.add(userInformation);
+                                        }
+                                    }
+                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                }
+                                recyclerView.setAdapter(cAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+
+                        }
+                    });
+                }
+            }
+        };
+
         navigationView.setNavigationItemSelectedListener(this);
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
