@@ -144,14 +144,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     @Override
     protected void onStart() {
         super.onStart();
-        //firebaseAuth.addAuthStateListener(authStateListener);
+        mUsersDatabaseReference.addValueEventListener(valueEventListener);
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //firebaseAuth.removeAuthStateListener(authStateListener);
+        mUsersDatabaseReference.removeEventListener(valueEventListener);
 
     }
 
