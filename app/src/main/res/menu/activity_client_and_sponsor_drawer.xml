@@ -9,12 +9,7 @@
             android:id="@+id/nav_update"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="View Profile" />
-        <item
-            android:id="@+id/nav_notification"
-            app:actionViewClass="android.widget.TextView"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Notifications" />
-
+       
         <item
             android:id="@+id/nav_addItem"
             app:actionViewClass="android.widget.TextView"
