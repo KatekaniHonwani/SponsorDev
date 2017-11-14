@@ -169,4 +169,5 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
         super.onStop();
 
     }
-}
+
+    }
