@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -37,19 +39,24 @@ public class sponsorInformation extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     DatabaseReference mCurrentUserRef;
     private String userID;
+    private DatabaseReference databaseReference;
     private StorageReference mStorageRef ;
     private static final int GALLERY_INTENT=2;
     private ProgressDialog progressDialog;
     private Uri downloadUri;
-    String userId;
-    FirebaseUser user;
+   // String userId;
+   //FirebaseUser user;
     UserInformation userInfo;
+    private final String TAG = sponsorInformation.class.getName();
     private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_information2);
+
+        mStorageRef= FirebaseStorage.getInstance().getReference();
+        progressDialog = new ProgressDialog(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Device Details");
@@ -65,9 +72,13 @@ public class sponsorInformation extends AppCompatActivity {
         if ( firebaseUser !=null) {
             userID = firebaseUser.getUid();
         }
-
+//
+//        if (firebaseUser.getPhotoUrl() != null) {
+//            Log.i(TAG, firebaseUser.getPhotoUrl().toString());
+//            displayProfilePic(firebaseUser.getPhotoUrl());
+//        }
         mCurrentUserRef = firebaseDatabase.getInstance().getReference();
-
+        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +136,7 @@ public class sponsorInformation extends AppCompatActivity {
             progressDialog.setMessage("Uploading image...");
             progressDialog.show();
             Uri uri=data.getData();
-            StorageReference filepath=mStorageRef.child(userId).child(uri.getLastPathSegment());
+            StorageReference filepath=mStorageRef.child(userID).child(uri.getLastPathSegment());
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -136,20 +147,34 @@ public class sponsorInformation extends AppCompatActivity {
 
                     UserProfileChangeRequest profileUpdates=new UserProfileChangeRequest.Builder()
                             .setPhotoUri(downloadUri).build();
+//
+//                    if(user!=null) {
+//                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if (task.isSuccessful()) {
+//                                    userInfo.setImage(String.valueOf(downloadUri));
+//                                    displayProfilePic(Uri.parse(userInfo.getImage()));
+//                                    Log.d(TAG, "User profile updated.");
+//                                }
+//                            }
+//                        });
+//                    }
 
-                    if(user!=null)
+                    if(firebaseUser!=null)
                     {
-                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        firebaseUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    userInfo.setImage(String.valueOf(downloadUri));
-                                    displayProfilePic(Uri.parse(userInfo.getImage()));
-                                    // Log.d(TAG, "User profile updated.");
+                                    displayProfilePic(downloadUri);
+                                    //databaseReference.child("image").setValue(userInfo.getImage());
+                                    Log.d(TAG, "User profile updated.");
                                 }
                             }
                         });
                     }
+
                 }
             });
         }
