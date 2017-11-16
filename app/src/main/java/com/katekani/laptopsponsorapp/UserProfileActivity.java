@@ -25,9 +25,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         userInfo = intent.getParcelableExtra("UserProfile");
-
-        Intent intent1 = getIntent();
-        developerAnswers = intent1.getParcelableExtra("UserProfile");
+        //developerAnswers = intent.getParcelableExtra("UserProfile");
 
         fullname = findViewById(R.id.fullnames);
         contacts = findViewById(R.id.contacts);
@@ -47,13 +45,13 @@ public class UserProfileActivity extends AppCompatActivity {
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
         //answers of the client
-        site_name.setText(developerAnswers.getSite_name());
+        /*site_name.setText(developerAnswers.getSite_name());
         adress_link.setText(developerAnswers.getAdress_link());
         current_computer.setText(developerAnswers.getCurrent_computer());
         developer_bio.setText(developerAnswers.getDeveloper_bio());
         new_device.setText(developerAnswers.getNew_device());
         qualification.setText(developerAnswers.getQualification());
-        skills.setText(developerAnswers.getSkills());
+        skills.setText(developerAnswers.getSkills());*/
 
         //Log.i("Ygritte", tvAnswer5.toString());
 
