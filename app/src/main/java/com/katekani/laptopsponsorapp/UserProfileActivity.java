@@ -24,7 +24,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         userInfo = intent.getParcelableExtra("UserProfile");
-        //developerAnswers = intent.getParcelableExtra("UserProfile");
+        developerAnswers = intent.getParcelableExtra("UserProfile");
 
         fullname = findViewById(R.id.fullnames);
         contacts = findViewById(R.id.contacts);
@@ -46,26 +46,25 @@ public class UserProfileActivity extends AppCompatActivity {
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
-        /*
-
-        tvAnswer1 = findViewById(R.id.user_answer1);
-        tvAnswer2 = findViewById(R.id.user_answer2);
-        tvAnswer3 = findViewById(R.id.user_answer3);
-        tvAnswer4 = findViewById(R.id.user_answer4);
-        tvAnswer5 = findViewById(R.id.user_answer5);
-    // fullnames of the client
-        //fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
-        contacts.setText(userInfo.getAddress());
-        email.setText(userInfo.getGender());
-
         //answers of the client
-        /*site_name.setText(developerAnswers.getSite_name());
+        site_name.setText(developerAnswers.getSite_name());
         adress_link.setText(developerAnswers.getAdress_link());
         current_computer.setText(developerAnswers.getCurrent_computer());
         developer_bio.setText(developerAnswers.getDeveloper_bio());
         new_device.setText(developerAnswers.getNew_device());
         qualification.setText(developerAnswers.getQualification());
-        skills.setText(developerAnswers.getSkills());*/
+        skills.setText(developerAnswers.getSkills());
+
+        /*
+        tvAnswer1 = findViewById(R.id.user_answer1);
+        tvAnswer2 = findViewById(R.id.user_answer2);
+        tvAnswer3 = findViewById(R.id.user_answer3);
+        tvAnswer4 = findViewById(R.id.user_answer4);
+        tvAnswer5 = findViewById(R.id.user_answer5);
+
+        */
+
+
 
         //Log.i("Ygritte", tvAnswer5.toString());
 
@@ -93,7 +92,7 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        */
+
 
 
     }

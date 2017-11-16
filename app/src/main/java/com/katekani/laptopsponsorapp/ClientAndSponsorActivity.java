@@ -46,6 +46,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
+    DeveloperAnswers developerAnswers;
     List<UserInformation> allUsers = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
@@ -90,6 +91,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
                 startActivity(intent);
+
+
+                Intent intent1 = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                intent1.putExtra("UserProfile", developerAnswers);
+                startActivity(intent);
+
+
             }
 
             @Override

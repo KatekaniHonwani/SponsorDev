@@ -42,7 +42,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="Company : "
+                    android:text="Company:"
                     android:textColor="@android:color/black" />
 
                 <EditText
@@ -130,7 +130,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text=" Telephone: "
+                    android:text=" Telephone:"
                     android:textColor="@android:color/black" />
 
                 <EditText
