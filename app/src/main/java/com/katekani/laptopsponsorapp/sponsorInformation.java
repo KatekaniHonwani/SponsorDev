@@ -62,7 +62,6 @@ public class sponsorInformation extends AppCompatActivity {
         getSupportActionBar().setTitle("Device Details");
         edtAnswer1=findViewById(R.id.answer1);
         edtAnswer2=findViewById(R.id.answer2);
-        edtAnswer3=findViewById(R.id.answer3);
         edtAnswer4=findViewById(R.id.answer4);
         submit=findViewById(R.id.submit);
         images=findViewById(R.id.laptopImage);
@@ -83,34 +82,30 @@ public class sponsorInformation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String answer1=edtAnswer1.getText().toString();
-                String answer2=edtAnswer2.getText().toString();
-                String answer3=edtAnswer3.getText().toString();
-                String answer4=edtAnswer4.getText().toString();
+                String device_name = edtAnswer1.getText().toString();
+                String device_description = edtAnswer2.getText().toString();
+                String scree_size = edtAnswer4.getText().toString();
 
 
-                if (TextUtils.isEmpty(answer1)) {
+
+                if (TextUtils.isEmpty(device_name)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 1", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(answer2)) {
+                } else if (TextUtils.isEmpty(device_description)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 2", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(answer3)) {
+                } else if (TextUtils.isEmpty(scree_size)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 3", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (TextUtils.isEmpty(answer4)) {
-                    Toast.makeText(getApplicationContext(), "provide answer for question 4", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
-
-                if (!"".equals(answer1) && !"".equals(answer2) && !"".equals(answer3) && !"".equals(answer4) ) {
+                if (!"".equals(device_name) && !"".equals(device_description) && !"".equals(scree_size)  ) {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
-                    UserInformation userInformation = new UserInformation(answer1,answer2,answer3,answer4);
-                    mCurrentUserRef.child("Devices").child(userID).push().setValue(userInformation);
+                    Devices devices = new Devices(device_name,device_description,scree_size);
+                    mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
 

@@ -42,7 +42,9 @@
         <activity
             android:name=".UpdateSponsorActivity"
             android:label="Sponsor Profile" />
-        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".UserProfileActivity"
+            android:label="Developer Profile"
+            />
         <activity
             android:name=".UpdateClientProfileActivity"
             android:label="Developer Profile" />

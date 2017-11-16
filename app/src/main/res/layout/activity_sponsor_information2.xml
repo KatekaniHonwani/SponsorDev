@@ -46,17 +46,6 @@
 
 
         <TextView
-            android:id="@+id/question3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contact numbers" />
-
-        <EditText
-            android:id="@+id/answer3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
             android:id="@+id/question4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

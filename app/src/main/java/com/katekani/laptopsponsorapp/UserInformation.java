@@ -30,7 +30,6 @@ public class UserInformation implements Parcelable {
     String image = "";
     String imageResourceId = "";
     //String variebles that will store user answers
-    String answer1, answer2, answer3, answer4, answer5;
 
 
 
@@ -40,13 +39,7 @@ public class UserInformation implements Parcelable {
     {
 
     }
-    public UserInformation(String answer1,String answer2,String answer3,String answer4)
-    {
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-    }
+
 
     public UserInformation(String companyName, String contacts,String email,  String address,int quantity, String type) {
         this.email = email;
@@ -107,7 +100,7 @@ public class UserInformation implements Parcelable {
         return result;
     }
 
-    public UserInformation(String name, String surname, String email,String imageResourceId, String address,String contacts, String gender,String regNo, String type,String answer1, String answer2,String answer3,String answer4,String answer5,String skills,String qualification)
+    public UserInformation(String name, String surname, String email,String imageResourceId, String address,String contacts, String gender,String regNo, String type)
     {
         this.userName = name;
         this.userSurname = surname;
@@ -117,14 +110,8 @@ public class UserInformation implements Parcelable {
         this.address = address;
         this.gender = gender;
         this.type = type;
-        this.skills = skills;
-        this.qualification = qualification;
         this.regNo = regNo;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.answer5 = answer5;
+
 
     }
 
@@ -139,17 +126,7 @@ public class UserInformation implements Parcelable {
         address = in.readString();
         quantity = in.readInt();
         type = in.readString();
-        skills = in.readString();
-        qualification = in.readString();
         regNo =in.readString();
-
-        //Information for question
-        answer1 = in.readString();
-        answer2 = in.readString();
-        answer3 = in.readString();
-        answer4 = in.readString();
-        answer5 = in.readString();
-
 
     }
 
@@ -164,15 +141,7 @@ public class UserInformation implements Parcelable {
         dest.writeString(address);
         dest.writeInt(quantity);
         dest.writeString(type);
-        dest.writeString(skills);
-        dest.writeString(qualification);
         dest.writeString(image);
-        //user information regarding questions
-        dest.writeString(answer1);
-        dest.writeString(answer2);
-        dest.writeString(answer3);
-        dest.writeString(answer4);
-        dest.writeString(answer5);
         dest.writeString(regNo);
     }
 
@@ -199,7 +168,6 @@ public class UserInformation implements Parcelable {
     public void setRegNo(String regNo) {
         this.regNo = regNo;
     }
-
 
     public String getUserName() {
         return userName;
@@ -269,25 +237,6 @@ public class UserInformation implements Parcelable {
     public void setType (String type) {
         this.type = type;
     }
-
-    public String getAnswer1() {return answer1;}
-
-    public void setAnswer1(String answer1) {this.answer1 = answer1;}
-
-    public String getAnswer2() {return answer2;}
-
-    public void setAnswer2(String answer2) {this.answer2 = answer2;}
-
-    public String getAnswer3() {return answer3;}
-
-    public void setAnswer3(String answer3) {this.answer3 = answer3;}
-
-    public String getAnswer4() {return answer4;}
-    public void setAnswer4(String answer4) {this.answer4 = answer4;}
-
-    public String getAnswer5() {return answer5;}
-
-    public void setAnswer5(String answer5) {this.answer5 = answer5;}
 
     public String getSkills() {
         return skills;
