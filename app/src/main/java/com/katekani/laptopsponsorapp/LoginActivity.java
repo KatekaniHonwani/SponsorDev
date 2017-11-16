@@ -134,11 +134,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         };
 
+
+
         btnLogin.setOnClickListener(this);
         txtSignUp.setOnClickListener(this);
         txtForgotPassword.setOnClickListener(this);
-
+        
     }
+
+
 
     public void LoginUser() {
         String email = edtEmail.getText().toString().trim();
@@ -207,6 +211,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
+       firebaseAuth.addAuthStateListener(authStateListener);
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         firebaseAuth.addAuthStateListener(authStateListener);
     }
 

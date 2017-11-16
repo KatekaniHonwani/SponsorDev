@@ -26,25 +26,33 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="Login Account" />
+            android:label="Login Account"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".RegisterActivity"
-            android:label="Register" />
+            android:label="Register"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".SponsorActivity"
-            android:label="Sponsor" />
+            android:label="Sponsor"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ForgetPasswordActivity"
-            android:label="Forget Password" />
+            android:label="Forget Password"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ClientActivity"
-            android:label="Questionnaire Form" />
+            android:label="Questionnaire Form"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".UpdateSponsorActivity"
-            android:label="Sponsor Profile" />
+            android:label="Sponsor Profile"
+            android:windowSoftInputMode="stateHidden"/>
+
         <activity android:name=".UserProfileActivity"
             android:label="Developer Profile"
-            />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".UpdateClientProfileActivity"
             android:label="Developer Profile" />
