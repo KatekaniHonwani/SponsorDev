@@ -141,7 +141,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
-                                    nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
                                     mDevicesReference.addValueEventListener(new ValueEventListener() {
@@ -311,8 +311,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         } else if (id == R.id.nav_about_us) {
             startActivity(new Intent(ClientAndSponsorActivity.this, AboutUsActivity.class));
         }
-        else if(id == R.id.nav_addItem){
-            startActivity(new Intent(ClientAndSponsorActivity.this, sponsorInformation.class));
+        else if(id == R.id.nav_myItem){
+            startActivity(new Intent(ClientAndSponsorActivity.this, SponsorAddItemActivity.class));
         }
         else if (id == R.id.nav_signout) {
 

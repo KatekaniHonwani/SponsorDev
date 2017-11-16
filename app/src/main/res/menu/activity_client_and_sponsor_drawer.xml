@@ -10,10 +10,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="View Profile" />
         <item
-            android:id="@+id/nav_addItem"
+            android:id="@+id/nav_myItem"
             app:actionViewClass="android.widget.TextView"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Add Item" />
+            android:title="My Items" />
 
     </group>
     <item android:title="Other">
