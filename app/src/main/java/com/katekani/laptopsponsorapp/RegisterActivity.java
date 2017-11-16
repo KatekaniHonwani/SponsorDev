@@ -103,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final LinearLayout myCompanyNameView;
         final LinearLayout myRegNoView;
         final LinearLayout mySurnameView;
+
         viewSwitcher1 =   findViewById(R.id.viewSwitcher1);
         viewSwitcher2 =   findViewById(R.id.viewSwitcher2);
         myNameView= findViewById(R.id.view_name);
@@ -271,7 +272,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                     if (!companyname.equals("") & !address.equals("")) {
 
-                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address,type,regno);
+                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,regno);
                                         mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
                                             @Override
                                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

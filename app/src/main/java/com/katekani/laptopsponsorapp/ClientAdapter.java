@@ -21,7 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHolder>{
 
     private List<UserInformation> usersList;
-
     Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, gender;

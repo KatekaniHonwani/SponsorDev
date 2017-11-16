@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by Code Tribe on 2017/08/25.
  */
 
-public class UserInformation implements Parcelable {
+public class UserInformation extends DeveloperAnswers implements Parcelable {
 
     String uId;
     String userName;
@@ -22,6 +22,7 @@ public class UserInformation implements Parcelable {
     String address;
     String gender;
     String contacts;
+    int quantity;
     String type;
     String skills;
     String qualification;
@@ -40,21 +41,23 @@ public class UserInformation implements Parcelable {
     }
 
 
-    public UserInformation(String companyName, String contacts,String email,  String address, String type) {
+    public UserInformation(String companyName, String contacts,String email,  String address,int quantity, String type) {
         this.email = email;
         this.companyName = companyName;
         this.address = address;
         this.contacts = contacts;
+        this.quantity = quantity;
         this.type = type;
     }
 
-    public UserInformation(String companyName, String email, String contacts, String address, String type, String regNo)
+    public UserInformation(String companyName, String email, String contacts, String address, int quantity, String type, String regNo)
     {
         this.companyName = companyName;
         this.email = email;
         this.contacts = contacts;
         this.address = address;
         this.type = type;
+        this.quantity= quantity;
         this.regNo = regNo;
     }
     private HashMap<String, String> stats;
@@ -91,6 +94,7 @@ public class UserInformation implements Parcelable {
         result.put("email",email);
         result.put("companyName",companyName);
         result.put("contacts", contacts);
+        result.put("quantity", quantity);
         result.put("type", type);
 
         return result;
@@ -120,6 +124,7 @@ public class UserInformation implements Parcelable {
         gender = in.readString();
         contacts =in.readString();
         address = in.readString();
+        quantity = in.readInt();
         type = in.readString();
         regNo =in.readString();
 
@@ -134,6 +139,7 @@ public class UserInformation implements Parcelable {
         dest.writeString(gender);
         dest.writeString(contacts);
         dest.writeString(address);
+        dest.writeInt(quantity);
         dest.writeString(type);
         dest.writeString(image);
         dest.writeString(regNo);
@@ -214,6 +220,14 @@ public class UserInformation implements Parcelable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getType() {
