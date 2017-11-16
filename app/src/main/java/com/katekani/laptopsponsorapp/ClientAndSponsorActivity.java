@@ -114,7 +114,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                 if("Sponsor".equalsIgnoreCase(userInformation.getType())){
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
-                                        //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
@@ -126,9 +125,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
                                     nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
-
-
-
                                 }
                                 recyclerView.setAdapter(cAdapter);
                             }

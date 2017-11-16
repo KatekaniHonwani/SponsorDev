@@ -271,7 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                     if (!companyname.equals("") & !address.equals("")) {
 
-                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,regno);
+                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address,type,regno);
                                         mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
                                             @Override
                                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

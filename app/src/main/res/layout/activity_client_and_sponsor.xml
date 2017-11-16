@@ -38,12 +38,6 @@
             android:scrollbars="vertical"
             />
     </android.support.design.widget.CoordinatorLayout>
-    <!--
-    <include
-        layout="@layout/app_bar_client_and_sponsor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-        -->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -53,5 +47,4 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_client_and_sponsor"
         app:menu="@menu/activity_client_and_sponsor_drawer" />
-
 </android.support.v4.widget.DrawerLayout>
