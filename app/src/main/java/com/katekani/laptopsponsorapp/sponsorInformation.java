@@ -74,7 +74,7 @@ public class sponsorInformation extends AppCompatActivity {
 //            displayProfilePic(firebaseUser.getPhotoUrl());
 //        }
         mCurrentUserRef = firebaseDatabase.getInstance().getReference();
-        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +102,7 @@ public class sponsorInformation extends AppCompatActivity {
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
                     Devices devices = new Devices(device_name,device_description,scree_size);
-                    mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
+                    mCurrentUserRef.child("Devices").push().setValue(devices);
                     progressDialog.dismiss();
                 }
 

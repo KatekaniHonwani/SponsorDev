@@ -134,8 +134,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                     recyclerView.setAdapter(cAdapter);
+
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
-                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices").child(userID);
+
+                                    mDevicesReference = mFirebaseDatabase.getReference().child("DEvices");
                                     tvNameAndSurname.setText(userInformation.getUserName());
                                     tvEmail.setText(userInformation.getEmail());
 
@@ -147,9 +149,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     mDevicesReference.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot2) {
+
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
-                                                devices = dataSnapshot2.getValue(Devices.class);
-                                                Log.v("hdghjg", snapshot2.toString());
+
+                                                Log.v("hdghjgweew", snapshot2.toString());
+                                                devices = snapshot2.getValue(Devices.class);
                                                 allDEvices.add(devices);
                                             }
                                             mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
@@ -161,7 +165,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         }
                                     });
+
                                 }
+
                             }
                         }
                         @Override
@@ -176,48 +182,29 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Mobile").child(userID);
-                    mRef.addValueEventListener(new ValueEventListener() {
+       ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+        mDevicesReference = FirebaseDatabase.getInstance().getReference("Devices");
+        mDevicesReference.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                                for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
 
-                                userInformation = dataSnapshot.getValue(UserInformation.class);
-                                assert userInformation != null;
-                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Log.i("Ygritte", dataSnapshot.toString());
-
-                                if ("Client".equalsIgnoreCase(userInformation.getType()))
-                                {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                                        userInformation = snapshot.getValue(UserInformation.class);
-                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
-                                            allUsers.add(userInformation);
-                                        }
-                                    }
-                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                    Log.v("hdghjgweew", snapshot2.toString());
+                                    devices = snapshot2.getValue(Devices.class);
+                                    allDEvices.add(devices);
                                 }
-                                recyclerView.setAdapter(cAdapter);
-                            }
+
+                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
+                            recyclerView.setAdapter(mAdapter);
                         }
-
                         @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-
+                        public void onCancelled(DatabaseError databaseError) {
                         }
                     });
-                }
-            }
-        };*/
+
+       /// ////////////////////////////////////////////////////////////////////////////////////////////////////////
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
