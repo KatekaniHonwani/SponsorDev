@@ -151,6 +151,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     Menu nav_Menu = navigationView.getMenu();
                                     nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
 
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
 
