@@ -56,9 +56,9 @@ public class UserProfileActivity extends AppCompatActivity {
         tvAnswer3 = findViewById(R.id.user_answer3);
         tvAnswer4 = findViewById(R.id.user_answer4);
         tvAnswer5 = findViewById(R.id.user_answer5);
+        contacts.setText(userInfo.getAddress());
     // fullnames of the client
         //fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
-        contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
         //answers of the client
