@@ -28,9 +28,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class sponsorInformation extends AppCompatActivity {
 
     private EditText edtAnswer1,edtAnswer2,edtAnswer3,edtAnswer4;
@@ -66,9 +63,9 @@ public class sponsorInformation extends AppCompatActivity {
         submit=findViewById(R.id.submit);
         images=findViewById(R.id.laptopImage);
         progressDialog = new ProgressDialog(this);
-
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Devices");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if ( firebaseUser !=null) {
+        if (firebaseUser != null) {
             userID = firebaseUser.getUid();
         }
 //
@@ -183,6 +180,7 @@ public class sponsorInformation extends AppCompatActivity {
             Picasso.with(sponsorInformation.this).load(downloadUri).fit().centerCrop().into(images);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

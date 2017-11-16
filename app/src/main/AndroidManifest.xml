@@ -38,7 +38,7 @@
             android:label="Forget Password" />
         <activity
             android:name=".ClientActivity"
-            android:label="Client" />
+            android:label="Questionnaire Form" />
         <activity
             android:name=".UpdateSponsorActivity"
             android:label="Sponsor Profile" />

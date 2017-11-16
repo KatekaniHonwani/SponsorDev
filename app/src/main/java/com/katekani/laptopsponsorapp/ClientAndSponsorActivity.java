@@ -1,35 +1,34 @@
 package com.katekani.laptopsponsorapp;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import android.widget.Toast;
+import android.view.MenuItem;
+import android.content.Intent;
+import android.content.Context;
+import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.support.annotation.NonNull;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -125,6 +124,12 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
 
+                                    navigationView = findViewById(R.id.nav_view);
+                                    Menu nav_Menu = navigationView.getMenu();
+                                    nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+
+
+
                                 }
                                 recyclerView.setAdapter(cAdapter);
                             }
@@ -140,6 +145,50 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
             }
         };
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+                    mRef = FirebaseDatabase.getInstance().getReference("Mobile").child(userID);
+                    mRef.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                assert userInformation != null;
+                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Log.i("Ygritte", dataSnapshot.toString());
+
+                                if ("Client".equalsIgnoreCase(userInformation.getType()))
+                                {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                        userInformation = snapshot.getValue(UserInformation.class);
+                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                            allUsers.add(userInformation);
+                                        }
+                                    }
+                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                }
+                                recyclerView.setAdapter(cAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+
+                        }
+                    });
+                }
+            }
+        };
+
         navigationView.setNavigationItemSelectedListener(this);
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
@@ -147,14 +196,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     @Override
     protected void onStart() {
         super.onStart();
-        //firebaseAuth.addAuthStateListener(authStateListener);
+        mUsersDatabaseReference.addValueEventListener(valueEventListener);
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //firebaseAuth.removeAuthStateListener(authStateListener);
+        mUsersDatabaseReference.removeEventListener(valueEventListener);
 
     }
 
@@ -205,10 +254,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             Log.i("Ygritte", dataSnapshot.toString());
 
                             if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
+
                                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateSponsorActivity.class));
                             }
                             if ("Client".equalsIgnoreCase(userInformation.getType())) {
+
+
                                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
+
                             }
                         }
                     }

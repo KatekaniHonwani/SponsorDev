@@ -13,14 +13,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Questionnaire Form"
-        android:paddingBottom="30dp"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textStyle="bold"
-        android:gravity="center"/>
 
 
     <TextView
@@ -101,8 +93,9 @@
 
     <Button
         android:id="@+id/submitForm"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/input_outline"
         android:text="Submit form"
 
         />

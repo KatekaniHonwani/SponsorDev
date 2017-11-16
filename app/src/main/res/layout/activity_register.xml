@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+<ScrollView android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#5fb0c9"
-        android:orientation="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        tools:context="com.katekani.laptopsponsorapp.RegisterActivity">
 
-        <RelativeLayout
-            android:id="@+id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="70dp"
-            android:background="#fff"
-            android:elevation="4dp"
-            android:orientation="vertical"
-            android:padding="20dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <ImageView android:src="@drawable/logo4"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal" />
 
 
             <LinearLayout
@@ -47,16 +41,20 @@
                         android:id="@+id/view_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" >
-                        <EditText
-                            android:hint="Name"
-                            android:id="@+id/edt_name"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:drawableLeft="@drawable/business_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        </EditText>
 
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                            <EditText android:id="@+id/edt_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/business_icon"
+                                android:inputType="textCapWords"
+                                android:hint="Name" />
+                        </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
 
 
@@ -64,14 +62,19 @@
                         android:id="@+id/view_company_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" >
-                        <EditText
-                            android:id="@+id/editCompanyname"
+
+                        <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/business_icon"
-                            android:maxLines="1"
-                            android:hint="Company name"
-                            android:inputType="text" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                            <EditText android:id="@+id/editCompanyname"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/business_icon"
+                                android:inputType="textCapWords"
+                                android:hint="Company name" />
+                        </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
                 </ViewSwitcher>
@@ -202,16 +205,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="22dp"
-                    android:background="@drawable/mybutton"
+                    android:background="@drawable/input_outline"
                     android:text="Register"
                     android:textAllCaps="false"
-                    android:textColor="#fff"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"/>
 
             </LinearLayout>
-        </RelativeLayout>
+    </LinearLayout>
 
-
-
-    </RelativeLayout>
 </ScrollView>
