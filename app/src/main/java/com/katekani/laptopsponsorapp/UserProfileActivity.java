@@ -1,50 +1,32 @@
 package com.katekani.laptopsponsorapp;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class UserProfileActivity extends AppCompatActivity {
 
     UserInformation userInfo;
-    DeveloperAnswers developerAnswers;
-    TextView fullname, contacts, email, address, site_name, adress_link, current_computer, developer_bio, new_device,qualification, skills;
-    Button submitConfirmation;
+    TextView fullname, contacts, email, address, tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4, tvAnswer5;
+    Button submitConfirmation,sendComment,viewMoreClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         userInfo = intent.getParcelableExtra("user_profile");
-
-        userInfo = intent.getParcelableExtra("UserProfile");
-        //developerAnswers = intent.getParcelableExtra("UserProfile");
 
         fullname = findViewById(R.id.fullnames);
         contacts = findViewById(R.id.contacts);
         email = findViewById(R.id.email);
         address = findViewById(R.id.address);
        submitConfirmation= findViewById(R.id.submitConfirmation);
+      // viewMoreClient = findViewById(R.id.submitMore);
 
-        submitConfirmation = findViewById(R.id.submitConfirmation);
-        site_name = findViewById(R.id.user_answer1);
-        adress_link = findViewById(R.id.user_answer2);
-        current_computer = findViewById(R.id.user_answer3);
-        developer_bio = findViewById(R.id.user_answer4);
-        new_device = findViewById(R.id.user_answer5);
-        qualification = findViewById(R.id.user_answer6);
-        skills = findViewById(R.id.user_answer7);
-
-        // fullnames of the client
         fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
@@ -56,19 +38,17 @@ public class UserProfileActivity extends AppCompatActivity {
         tvAnswer3 = findViewById(R.id.user_answer3);
         tvAnswer4 = findViewById(R.id.user_answer4);
         tvAnswer5 = findViewById(R.id.user_answer5);
-        contacts.setText(userInfo.getAddress());
     // fullnames of the client
         //fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
+        contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
         //answers of the client
-        /*site_name.setText(developerAnswers.getSite_name());
-        adress_link.setText(developerAnswers.getAdress_link());
-        current_computer.setText(developerAnswers.getCurrent_computer());
-        developer_bio.setText(developerAnswers.getDeveloper_bio());
-        new_device.setText(developerAnswers.getNew_device());
-        qualification.setText(developerAnswers.getQualification());
-        skills.setText(developerAnswers.getSkills());*/
+        tvAnswer1.setText(userInfo.getAnswer1());
+        tvAnswer2.setText(userInfo.getAnswer2());
+        tvAnswer3.setText(userInfo.getAnswer3());
+        tvAnswer4.setText(userInfo.getAnswer4());
+        tvAnswer5.setText(userInfo.getAnswer5());
 
         //Log.i("Ygritte", tvAnswer5.toString());
 
@@ -96,22 +76,27 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        sendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Recommendation ");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
 
+        viewMoreClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(UserProfileActivity.this,SponsorActivity.class));
+            }
+        });*/
 
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
 }
