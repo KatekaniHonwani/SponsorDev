@@ -1,36 +1,34 @@
 package com.katekani.laptopsponsorapp;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import android.widget.Toast;
+import android.view.MenuItem;
+import android.content.Intent;
+import android.content.Context;
+import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.support.annotation.NonNull;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,14 +43,20 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     Context context;
     private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDevicesReference;
     private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
     List<UserInformation> allUsers = new ArrayList<>();
+    List<Devices> allDEvices = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
+    private DevicesAdapter mAdapter;
+    TextView tvNameAndSurname;
+    TextView tvEmail;
 
     NavigationView navigationView;
+    Devices devices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
 
@@ -86,7 +91,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                intent.putExtra("UserProfile", userInformation);
+                startActivity(intent);
             }
 
             @Override
@@ -113,6 +121,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 allUsers = new ArrayList<>();
 
                                 if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+
+                                    tvNameAndSurname.setText(userInformation.getCompanyName());
+                                    tvEmail.setText(userInformation.getEmail());
+
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
                                         //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
@@ -121,16 +133,35 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                    recyclerView.setAdapter(cAdapter);
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
+                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices").child(userID);
+                                    tvNameAndSurname.setText(userInformation.getUserName());
+                                    tvEmail.setText(userInformation.getEmail());
 
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
                                     nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+                                    tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
+                                    tvEmail.setText(userInformation.getEmail());
+                                    mDevicesReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                                            for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
+                                                devices = dataSnapshot2.getValue(Devices.class);
+                                                Log.v("hdghjg", snapshot2.toString());
+                                                allDEvices.add(devices);
+                                            }
+                                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
+                                            recyclerView.setAdapter(mAdapter);
+                                        }
 
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-
+                                        }
+                                    });
                                 }
-                                recyclerView.setAdapter(cAdapter);
                             }
                         }
                         @Override
@@ -145,7 +176,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
+        /*authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
@@ -186,9 +217,15 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     });
                 }
             }
-        };
-
+        };*/
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View navReaderView = navigationView.getHeaderView(0);
+        tvNameAndSurname = (TextView)navReaderView.findViewById(R.id.tvNameAndSurname) ;
+        tvEmail = navReaderView.findViewById(R.id.Email);
+
+
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
 
