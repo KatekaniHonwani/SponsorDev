@@ -88,7 +88,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 UserInformation userInformation = allUsers.get(position);
                 DeveloperAnswers developerAnswers = allUsers.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
                 intent.putExtra("UserProfile",developerAnswers);

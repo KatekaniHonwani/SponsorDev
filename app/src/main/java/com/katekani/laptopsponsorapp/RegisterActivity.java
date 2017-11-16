@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText editAddress,editContacts;
     private RadioButton male, female;
     private RadioButton client,sponsor;
-    private  EditText edtQuantity;
+    private  EditText edtRole;
     private EditText edtCompanyName;
     private EditText editReg;
     private  RadioGroup rgType;
@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         male = findViewById(R.id.rdMale);
         female = findViewById(R.id.rdFemale);
         edtCompanyName = findViewById(R.id.editCompanyname);
-        edtQuantity =  findViewById(R.id.editQuantity);
+        edtRole =  findViewById(R.id.edtRole);
         editReg = findViewById(R.id.editRegno);
         progressDialog = new ProgressDialog(this);
 
@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         onStart();
 
 
-                        edtQuantity.setVisibility(View.INVISIBLE);
+                        edtRole.setVisibility(View.INVISIBLE);
 
                         //Start
 
@@ -265,7 +265,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     String companyname= edtCompanyName.getText().toString();
                                     String address = editAddress.getText().toString();
                                     String contacts = editContacts.getText().toString();
-                                    int quantity = edtQuantity.getInputType();
+                                    int quantity = edtRole.getInputType();
                                     String email = edtEmal.getText().toString();
                                     String regno = editReg.getText().toString();
                                     String type  = "Sponsor";
