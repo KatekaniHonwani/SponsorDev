@@ -119,6 +119,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
+                                }else if("Client".equalsIgnoreCase(userInformation.getType())){
+
+                                    navigationView = findViewById(R.id.nav_view);
+                                    Menu nav_Menu = navigationView.getMenu();
+                                    nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+
+
+
                                 }
                                 recyclerView.setAdapter(cAdapter);
                             }
@@ -243,9 +251,12 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             Log.i("Ygritte", dataSnapshot.toString());
 
                             if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
+
                                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateSponsorActivity.class));
                             }
                             if ("Client".equalsIgnoreCase(userInformation.getType())) {
+
+
                                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
 
                             }
