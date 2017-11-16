@@ -49,7 +49,7 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Toast.makeText(this,"client",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"client",Toast.LENGTH_SHORT).show();
 
         edtAnswer1 = findViewById(R.id.answer1);
         edtAnswer2 = findViewById(R.id.answer2);
@@ -140,7 +140,7 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
             //mCurrentUserRef.child("Users").child(userID);
             startActivity(new Intent(ClientActivity.this, ClientAndSponsorActivity.class));
 
-            Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
             if (!"".equals(editAnswer1) && !"".equals(editAnswer2) && !"".equals(editAnswer3)  ) {
                 //mCurrentUserRef.child("Users").child(userID);
                 startActivity(new Intent(ClientActivity.this, ClientAndSponsorActivity.class));
