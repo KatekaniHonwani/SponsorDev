@@ -115,13 +115,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void onClick(DialogInterface dialog, int id) {
                         onStart();
 
-//                        edtName.setVisibility(View.VISIBLE);
-//                        edtSurname.setVisibility(View.VISIBLE);
-//                        female.setVisibility(View.VISIBLE);
-//                        male.setVisibility(View.VISIBLE);
-//                        edtCompanyName.setVisibility(View.INVISIBLE);
-//                        editReg.setVisibility(View.INVISIBLE);
-//                        edtQuantity.setVisibility(View.INVISIBLE);
+
+                        edtQuantity.setVisibility(View.INVISIBLE);
 
                         //Start
 
@@ -138,11 +133,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-//                        edtCompanyName.setVisibility(View.VISIBLE);
-//                        edtQuantity.setVisibility(View.VISIBLE);
-////                        editReg.setVisibility(View.VISIBLE);
-//                        edtName.setVisibility(View.INVISIBLE);
-//                        edtSurname.setVisibility(View.INVISIBLE);
+
                        female.setVisibility(View.INVISIBLE);
                        male.setVisibility(View.INVISIBLE);
 
