@@ -15,12 +15,12 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Code Tribe on 2017/08/28.
+ * Created by codetribe on 11/16/2017.
  */
 
-public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHolder>{
+public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHolder> {
 
-    private List<UserInformation> usersList;
+    private List<Devices> deviceList;
 
     Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -36,35 +36,27 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHold
         }
     }
 
-    public ClientAdapter(Context context,List<UserInformation> usersList) {
-        this.usersList = usersList;
+    public DevicesAdapter(Context context,List<Devices> deviceList) {
+        this.deviceList = deviceList;
         this.context=context;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DevicesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_layout, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new DevicesAdapter.MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        UserInformation userInformation = usersList.get(position);
-        holder.name.setText(userInformation.getUserName());
-        holder.gender.setText(userInformation.getGender());
-
-        if (userInformation.getImage().isEmpty()) {
-            holder.imageView.setImageResource((R.drawable.user_photo));
-        }else {
-            Picasso.with(context).load(Uri.parse(userInformation.getImage())).into(holder.imageView);
-        }
+        Devices devices = deviceList.get(position);
+        holder.name.setText(devices.getDevice_name());
     }
 
     @Override
     public int getItemCount() {
-        return usersList.size();
+        return deviceList.size();
     }
-
 }
