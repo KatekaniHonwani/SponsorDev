@@ -1,11 +1,8 @@
 package com.katekani.laptopsponsorapp;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,7 +25,7 @@ public class UserProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         address = findViewById(R.id.address);
         submitConfirmation= findViewById(R.id.submitConfirmation);
-        sendComment = findViewById(R.id.submitFeedback);
+        //sendComment = findViewById(R.id.submitFeedback);
         viewMoreClient = findViewById(R.id.submitMore);
 
         /*

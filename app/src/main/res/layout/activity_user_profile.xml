@@ -112,26 +112,20 @@
         android:id="@+id/user_answer5"/>
 
 
+        <Button
+            android:id="@+id/submitConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_outline"
+            android:layout_marginBottom="10dp"
+            android:text="Submit confirmation" />
 
-    <Button
-        android:id="@+id/submitConfirmation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="Submit confirmation" />
-
-    <Button
-        android:id="@+id/submitFeedback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="Send commemt" />
 
     <Button
         android:id="@+id/submitMore"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:background="@drawable/input_outline"
         android:text="Check more clients" />
 
     </LinearLayout>
