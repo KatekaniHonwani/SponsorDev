@@ -22,7 +22,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userInfo = intent.getParcelableExtra("user_profile");
-
+        
         fullname = findViewById(R.id.fullnames);
         contacts = findViewById(R.id.contacts);
         email = findViewById(R.id.email);
