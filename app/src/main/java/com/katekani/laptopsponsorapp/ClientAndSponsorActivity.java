@@ -43,20 +43,17 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     Context context;
     private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDevicesReference;
     private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
+
     List<UserInformation> allUsers = new ArrayList<>();
-    List<Devices> allDEvices = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
-    private DevicesAdapter mAdapter;
     TextView tvNameAndSurname;
     TextView tvEmail;
 
     NavigationView navigationView;
-    Devices devices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +69,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
-
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
 
@@ -90,12 +86,20 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
+                DeveloperAnswers developerAnswers = allUsers.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
+                intent.putExtra("UserProfile",developerAnswers);
                 startActivity(intent);
+
+
+
+
+
             }
+
 
             @Override
             public void onLongClick(View view, int position) {
@@ -117,6 +121,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
+
+
+
+
+
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
 
@@ -133,35 +142,23 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                                    recyclerView.setAdapter(cAdapter);
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
-                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices").child(userID);
+
                                     tvNameAndSurname.setText(userInformation.getUserName());
                                     tvEmail.setText(userInformation.getEmail());
 
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
                                     nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
-                                    mDevicesReference.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot2) {
-                                            for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
-                                                devices = dataSnapshot2.getValue(Devices.class);
-                                                Log.v("hdghjg", snapshot2.toString());
-                                                allDEvices.add(devices);
-                                            }
-                                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
-                                            recyclerView.setAdapter(mAdapter);
-                                        }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
+
+
                                 }
+                                recyclerView.setAdapter(cAdapter);
                             }
                         }
                         @Override
@@ -176,7 +173,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
@@ -217,7 +214,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     });
                 }
             }
-        };*/
+        };
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 

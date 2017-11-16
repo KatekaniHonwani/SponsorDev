@@ -9,100 +9,167 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
+            android:background="@drawable/user_photo">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/user_photo">
-
-            </de.hdodenhof.circleimageview.CircleImageView>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:layout_marginRight="100dp"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
-        </LinearLayout>
-
+        </de.hdodenhof.circleimageview.CircleImageView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginRight="100dp"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp">
-            <android.support.design.widget.TextInputLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/editCompanyname"
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvCompanyName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/black"
-                    android:hint="Company" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight=".4"
+                    android:text="Company:"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editCompanyname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.design.widget.TextInputLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/edit_email"
-                    android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/black"
-                    android:hint="Email" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight=".4"
+                    android:text="Email:"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp">
-            <android.support.design.widget.TextInputLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/edit_address"
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/black"
-                    android:hint="Address" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight=".4"
+                    android:text="Address: "
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/edit_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.design.widget.TextInputLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/edtCompanyTelephone"
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvCompanyTelephone"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@android:color/black"
-                    android:hint="Telephone" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight=".4"
+                    android:text=" Telephone:"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/edtCompanyTelephone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvQuantuty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Quantity: "
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/edtQuantuty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <Button
@@ -112,9 +179,6 @@
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:padding="16dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:background="@drawable/input_outline"
             android:text="Update" />
     </LinearLayout>

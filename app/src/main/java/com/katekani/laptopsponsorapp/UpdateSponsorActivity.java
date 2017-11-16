@@ -62,6 +62,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         edtCompanyTelephone = findViewById(R.id.edtCompanyTelephone);
         etdEmail = findViewById(R.id.edit_email);
         edtAddress = findViewById(R.id.edit_address);
+        edtQuantity = findViewById(R.id.edtQuantuty);
         imageView = findViewById(R.id.header);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -82,6 +83,7 @@ public class UpdateSponsorActivity extends AppCompatActivity{
                     edtCompanyTelephone.setText(userInfo.getContacts());
                     etdEmail.setText(userInfo.getEmail());
                     edtAddress.setText(userInfo.getAddress());
+                    edtQuantity.setText(String.valueOf(userInfo.getQuantity()));
                 }
 
                 @Override
@@ -98,16 +100,17 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!etdCompanyName.getText().toString().isEmpty()&&!edtCompanyTelephone.getText().toString().isEmpty()&&!etdEmail.getText().toString().isEmpty()&&!edtAddress.getText().toString().isEmpty()) {
+                if (!etdCompanyName.getText().toString().isEmpty()&&!edtCompanyTelephone.getText().toString().isEmpty()&&!etdEmail.getText().toString().isEmpty()&&!edtAddress.getText().toString().isEmpty()&&!edtQuantity.getText().toString().isEmpty()) {
                     String companyName = etdCompanyName.getText().toString();
                     String companyTelephone = edtCompanyTelephone.getText().toString();
                     String companyEmail = etdEmail.getText().toString();
                     String companyAddress = edtAddress.getText().toString();
+                    int quantity= Integer.parseInt(edtQuantity.getText().toString());
                     final String type= userInfo.getType();
 
-                    writeNewPost(companyName,companyTelephone,companyEmail,companyAddress,type);
+                    writeNewPost(companyName,companyTelephone,companyEmail,companyAddress,quantity,type);
                     Toast.makeText(UpdateSponsorActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UpdateSponsorActivity.this,ClientAndSponsorActivity.class));
+
                 } else {
                     Toast.makeText(UpdateSponsorActivity.this, "Please fill the empty field", Toast.LENGTH_SHORT).show();
                 }
@@ -155,9 +158,9 @@ public class UpdateSponsorActivity extends AppCompatActivity{
         }
 
     }
-    private void writeNewPost(String companyName, String companyTelephone, String companyEmail,String companyAddress, String type) {
+    private void writeNewPost(String companyName, String companyTelephone, String companyEmail,String companyAddress,int quantity, String type) {
         Log.i("Ygritte", companyName);
-        UserInformation userInformation = new UserInformation(companyName,companyTelephone,companyEmail,companyAddress,type);
+        UserInformation userInformation = new UserInformation(companyName,companyTelephone,companyEmail,companyAddress,quantity,type);
         Map<String, Object> userInforValues = userInformation.map();
         mUserDatabaseReference.updateChildren(userInforValues);
     }
