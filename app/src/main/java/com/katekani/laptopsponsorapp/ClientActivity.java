@@ -66,7 +66,7 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
         if ( firebaseUser !=null) {
             userID = firebaseUser.getUid();
         }
-        mCurrentUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);;
+        mCurrentUserRef = FirebaseDatabase.getInstance().getReference();;
         btnSubmitForm.setOnClickListener(this);
 
     }
@@ -141,17 +141,14 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(new Intent(ClientActivity.this, ClientAndSponsorActivity.class));
 
             Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
-
-            final Map<String, Object> updateUser = new HashMap<>();
-            updateUser.put("answer1", editAnswer1);
-            updateUser.put("answer2", editAnswer2);
-            updateUser.put("answer3", editAnswer3);
-            updateUser.put("answer4", editAnswer4);
-            updateUser.put("answer5", editAnswer5);
-            updateUser.put("Skills",skils);
-            updateUser.put("Qualifications",qual);
-
-          mCurrentUserRef.updateChildren(updateUser);
+            if (!"".equals(editAnswer1) && !"".equals(editAnswer2) && !"".equals(editAnswer3)  ) {
+                //mCurrentUserRef.child("Users").child(userID);
+                startActivity(new Intent(ClientActivity.this, ClientAndSponsorActivity.class));
+                Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
+                DeveloperAnswers developerAnswers = new DeveloperAnswers(editAnswer1,editAnswer2,editAnswer3,editAnswer4,editAnswer5,skils,qual);
+                mCurrentUserRef.child("Developer_answers").child(userID).setValue(developerAnswers);
+                progressDialog.dismiss();
+            }
         }
     }
     @Override
