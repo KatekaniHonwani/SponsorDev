@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Firebase
     private FirebaseAuth firebaseAuth;
     private UserInformation userInformation;
+    private DatabaseReference mRefDeveloper;
     private DatabaseReference mRef;
     private FirebaseDatabase mFirebaseDatabase;
     FirebaseAuth.AuthStateListener authStateListener;
@@ -71,36 +72,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (user != null) {
                     userID = user.getUid();
                     mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRefDeveloper = FirebaseDatabase.getInstance().getReference("Developer_answers").child(userID);
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onDataChange(final DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
 
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
                                 assert userInformation != null;
                                 //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Log.i("Ygritte", dataSnapshot.toString());
+                                //Log.i("Ygritte", dataSnapshot.toString());
 
                                 if ("Client".equalsIgnoreCase(userInformation.getType()))
                                 {
                                     //Log.i("Ygritte", userInformation.getType());
-                                    if(dataSnapshot.hasChild("answer1") && dataSnapshot.hasChild("answer2") && dataSnapshot.hasChild("answer3") && dataSnapshot.hasChild("answer4") && dataSnapshot.hasChild("answer5"))
-                                    {
-                                        startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
-                                    }else {
-                                    startActivity(new Intent(LoginActivity.this, ClientActivity.class));
-                                    }
+                                    // public DeveloperAnswers(String site_name, String adress_link, String current_computer, String developer_bio, String new_device, String qualification, String skills)
+                                    mRefDeveloper.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                                            Log.v("Ygritte",dataSnapshot1.toString());
+
+                                            if(dataSnapshot1.getChildren() != null)
+                                            {
+                                                Log.v("Ygritte",dataSnapshot1.toString());
+                                                if(dataSnapshot1.hasChild("site_name") && dataSnapshot1.hasChild("adress_link") && dataSnapshot1.hasChild("current_computer") && dataSnapshot1.hasChild("developer_bio") && dataSnapshot1.hasChild("new_device") && dataSnapshot1.hasChild("qualification") && dataSnapshot1.hasChild("skills"))
+                                                {
+
+                                                    startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
+
+                                                }else {
+                                                    startActivity(new Intent(LoginActivity.this, ClientActivity.class));
+                                                }
+                                            }else
+                                            {
+                                                Toast.makeText(LoginActivity.this, "Returns empty values", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
 
                                 }else if("Sponsor".equalsIgnoreCase(userInformation.getType())){
                                     startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
                                 }
-
-
-//                                }else  if("Sponsor".equalsIgnoreCase(userInformation.getType())) {
-//                                    startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
-//                                }
-                                //}
                             }
                         }
 
@@ -119,9 +139,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtForgotPassword.setOnClickListener(this);
 
     }
-
-
-
 
     public void LoginUser() {
         String email = edtEmail.getText().toString().trim();
