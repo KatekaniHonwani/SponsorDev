@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by Code Tribe on 2017/08/25.
  */
 
-public class UserInformation implements Parcelable {
+public class UserInformation extends DeveloperAnswers implements Parcelable {
 
     String uId;
     String userName;

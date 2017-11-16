@@ -46,7 +46,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
-    DeveloperAnswers developerAnswers;
+
     List<UserInformation> allUsers = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
@@ -86,19 +86,20 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
+                DeveloperAnswers developerAnswers = allUsers.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
+                intent.putExtra("UserProfile",developerAnswers);
                 startActivity(intent);
 
 
-                Intent intent1 = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                intent1.putExtra("UserProfile", developerAnswers);
-                startActivity(intent);
+
 
 
             }
+
 
             @Override
             public void onLongClick(View view, int position) {

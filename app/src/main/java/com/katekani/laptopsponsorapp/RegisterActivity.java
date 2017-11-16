@@ -103,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final LinearLayout myCompanyNameView;
         final LinearLayout myRegNoView;
         final LinearLayout mySurnameView;
+
         viewSwitcher1 =   findViewById(R.id.viewSwitcher1);
         viewSwitcher2 =   findViewById(R.id.viewSwitcher2);
         myNameView= findViewById(R.id.view_name);

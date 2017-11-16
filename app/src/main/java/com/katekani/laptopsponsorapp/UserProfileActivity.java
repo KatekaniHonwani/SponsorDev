@@ -30,7 +30,7 @@ public class UserProfileActivity extends AppCompatActivity {
         contacts = findViewById(R.id.contacts);
         email = findViewById(R.id.email);
         address = findViewById(R.id.address);
-       submitConfirmation= findViewById(R.id.submitConfirmation);
+
 
         submitConfirmation = findViewById(R.id.submitConfirmation);
         site_name = findViewById(R.id.user_answer1);
@@ -46,6 +46,8 @@ public class UserProfileActivity extends AppCompatActivity {
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
+
+
         //answers of the client
         site_name.setText(developerAnswers.getSite_name());
         adress_link.setText(developerAnswers.getAdress_link());
@@ -55,18 +57,9 @@ public class UserProfileActivity extends AppCompatActivity {
         qualification.setText(developerAnswers.getQualification());
         skills.setText(developerAnswers.getSkills());
 
-        /*
-        tvAnswer1 = findViewById(R.id.user_answer1);
-        tvAnswer2 = findViewById(R.id.user_answer2);
-        tvAnswer3 = findViewById(R.id.user_answer3);
-        tvAnswer4 = findViewById(R.id.user_answer4);
-        tvAnswer5 = findViewById(R.id.user_answer5);
-
-        */
 
 
 
-        //Log.i("Ygritte", tvAnswer5.toString());
 
         submitConfirmation.setOnClickListener(new View.OnClickListener() {
             @Override
