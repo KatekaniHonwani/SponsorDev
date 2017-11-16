@@ -28,7 +28,7 @@ public class UserProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         address = findViewById(R.id.address);
        submitConfirmation= findViewById(R.id.submitConfirmation);
-       sendComment = findViewById(R.id.submitFeedback);viewMoreClient = findViewById(R.id.submitMore);
+
 
         fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
         contacts.setText(userInfo.getAddress());

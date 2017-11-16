@@ -49,6 +49,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     List<UserInformation> allUsers = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
+    TextView tvNameAndSurname;
+    TextView tvEmail;
 
     NavigationView navigationView;
 
@@ -107,10 +109,19 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
+
+
+
+
+
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
 
                                 if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+
+                                    tvNameAndSurname.setText(userInformation.getCompanyName());
+                                    tvEmail.setText(userInformation.getEmail());
+
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
                                         //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
@@ -121,9 +132,16 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
 
+                                    tvNameAndSurname.setText(userInformation.getUserName());
+                                    tvEmail.setText(userInformation.getEmail());
+
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
                                     nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+
+                                    tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
+                                    tvEmail.setText(userInformation.getEmail());
+
 
 
 
@@ -185,8 +203,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 }
             }
         };
-
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View navReaderView = navigationView.getHeaderView(0);
+        tvNameAndSurname = (TextView)navReaderView.findViewById(R.id.tvNameAndSurname) ;
+        tvEmail = navReaderView.findViewById(R.id.Email);
+
+
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
 
