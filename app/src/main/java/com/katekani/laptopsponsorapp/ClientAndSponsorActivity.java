@@ -148,6 +148,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot2) {
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
+                                                Log.v("ygret", snapshot2.toString());
                                                 devices = dataSnapshot2.getValue(Devices.class);
                                                 allDEvices.add(devices);
                                             }
