@@ -135,7 +135,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                     recyclerView.setAdapter(cAdapter);
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
-                                    mDevicesReference = mFirebaseDatabase.getReference().child("Developer_answers").child(userID);
+                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices").child(userID);
                                     tvNameAndSurname.setText(userInformation.getUserName());
                                     tvEmail.setText(userInformation.getEmail());
 
@@ -149,6 +149,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         public void onDataChange(DataSnapshot dataSnapshot2) {
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
                                                 devices = dataSnapshot2.getValue(Devices.class);
+                                                Log.v("hdghjg", snapshot2.toString());
                                                 allDEvices.add(devices);
                                             }
                                             mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
@@ -160,9 +161,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         }
                                     });
-
                                 }
-
                             }
                         }
                         @Override
