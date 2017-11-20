@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="what are your skills?"/>
+            android:text="what are your skills?" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,12 +131,23 @@
             android:textColor="#000000"
             android:id="@+id/user_answer7"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:text="Devices"
+            android:id="@+id/devices"/>
 
-
+        <Spinner
+            android:id="@+id/devicelist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
         android:id="@+id/submitConfirmation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+            android:background="@drawable/input_outline"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:text="Submit confirmation" />

@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference mRefDeveloper;
     private DatabaseReference mRef;
     private FirebaseDatabase mFirebaseDatabase;
+    private static final String TAG = "MyActivity";
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     private String userID;
@@ -139,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         txtSignUp.setOnClickListener(this);
         txtForgotPassword.setOnClickListener(this);
-        
+
     }
 
 
@@ -194,6 +195,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+//    private void updateUI(FirebaseUser user)
+//    {
+//        if(user!=null)
+//        {
+//            Log.d("user signed in",user.getUid());
+//        }
+//
+//        else
+//        {
+//            Log.d("not succesful","");
+//        }
+//    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -212,6 +226,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
        firebaseAuth.addAuthStateListener(authStateListener);
+
 
     }
 
