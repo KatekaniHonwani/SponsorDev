@@ -3,6 +3,7 @@ package com.katekani.laptopsponsorapp;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,30 +87,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                UserInformation userInformation = allUsers.get(position);
-                DeveloperAnswers developerAnswers = allUsers.get(position);
-                Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
-                Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                intent.putExtra("UserProfile", userInformation);
-                intent.putExtra("UserProfile",developerAnswers);
-                startActivity(intent);
 
-
-
-
-
-            }
-
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
         valueEventListener = new ValueEventListener() {
             @Override
@@ -126,10 +104,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             if (dataSnapshot.getValue() != null) {
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
 
-
-
-
-
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
 
@@ -142,14 +116,37 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
+
                                             allUsers.add(userInformation);
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                     recyclerView.setAdapter(cAdapter);
+
+                                    recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                                        @Override
+                                        public void onClick(View view, int position) {
+                                            UserInformation userInformation = allUsers.get(position);
+                                            DeveloperAnswers developerAnswers = allUsers.get(position);
+                                            Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                                            //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                                            Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                                            intent.putExtra("UserProfile", userInformation);
+                                            intent.putExtra("UserProfile",developerAnswers);
+                                            startActivity(intent);
+
+                                        }
+
+
+                                        @Override
+                                        public void onLongClick(View view, int position) {
+
+                                        }
+                                    }));
+
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
 
-                                    mDevicesReference = mFirebaseDatabase.getReference().child("DEvices");
+                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices");
                                     tvNameAndSurname.setText(userInformation.getUserName());
                                     tvEmail.setText(userInformation.getEmail());
 
@@ -160,16 +157,42 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
+
                                     mDevicesReference.addValueEventListener(new ValueEventListener() {
+
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot2) {
+                                            allDEvices.clear();
+
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
                                                 devices = dataSnapshot2.getValue(Devices.class);
-                                                Log.v("hdghjg", snapshot2.toString());
+                                                Log.v("hdghjgkh", snapshot2.toString());
                                                 allDEvices.add(devices);
                                             }
                                             mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
                                             recyclerView.setAdapter(mAdapter);
+
+                                            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                                                @Override
+                                                public void onClick(View view, int position) {
+                                                    Devices devices = allDEvices.get(position);
+                                                    //DeveloperAnswers developerAnswers = allUsers.get(position);
+                                                    //Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
+                                                    //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
+                                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                                                    intent.putExtra("UserProfile", userInformation);
+                                                    //intent.putExtra("UserProfile",developerAnswers);
+                                                    startActivity(intent);
+
+                                                }
+
+
+                                                @Override
+                                                public void onLongClick(View view, int position) {
+
+                                                }
+                                            }));
+
                                         }
 
                                         @Override
@@ -192,53 +215,36 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
+
+        /*mDevicesReference = FirebaseDatabase.getInstance().getReference("Device");
+        mDevicesReference.addValueEventListener(new ValueEventListener() {
+
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Mobile").child(userID);
-                    mRef.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot2) {
 
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
+                for (DataSnapshot snapshot2 : dataSnapshot2.getChildren()) {
 
-                                userInformation = dataSnapshot.getValue(UserInformation.class);
-                                assert userInformation != null;
-                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Log.i("Ygritte", dataSnapshot.toString());
-
-                                if ("Client".equalsIgnoreCase(userInformation.getType()))
-                                {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                                        userInformation = snapshot.getValue(UserInformation.class);
-                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
-                                            allUsers.add(userInformation);
-                                        }
-                                    }
-                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                                }
-                                recyclerView.setAdapter(cAdapter);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-
-                        }
-                    });
+                    devices = dataSnapshot2.getValue(Devices.class);
+                    Log.v("hdghjg", devices.toString());
+                    allDEvices.add(devices);
                 }
+                mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
+                recyclerView.setAdapter(mAdapter);
             }
-        };
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+
+            }
+        });*/
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View navReaderView = navigationView.getHeaderView(0);
-        tvNameAndSurname = (TextView)navReaderView.findViewById(R.id.tvNameAndSurname) ;
+        tvNameAndSurname = navReaderView.findViewById(R.id.tvNameAndSurname) ;
         tvEmail = navReaderView.findViewById(R.id.Email);
 
 

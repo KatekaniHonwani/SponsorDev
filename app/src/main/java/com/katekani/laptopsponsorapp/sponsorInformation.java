@@ -102,7 +102,7 @@ public class sponsorInformation extends AppCompatActivity {
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
                     Devices devices = new Devices(device_name,device_description,scree_size);
-                    mCurrentUserRef.child("Devices").push().setValue(devices);
+                    mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
                     Intent intent = new Intent(sponsorInformation.this,SponsorAddItemActivity.class);
