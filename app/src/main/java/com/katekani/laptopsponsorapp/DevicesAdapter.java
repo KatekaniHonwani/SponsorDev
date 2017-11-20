@@ -23,6 +23,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     private List<Devices> deviceList;
 
     Context context;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public CircleImageView imageView;

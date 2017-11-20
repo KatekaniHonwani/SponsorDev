@@ -30,7 +30,7 @@ import java.util.List;
 
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
-public class SponsorAddItemActivity extends AppCompatActivity implements View.OnClickListener{
+public class SponsorAddItemActivity extends AppCompatActivity {
 
     private TextView notification_badge;
     FirebaseAuth firebaseAuth;
@@ -64,8 +64,8 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_add_item);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
         recyclerViewDevice = findViewById(R.id.recycler_view_device);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -73,6 +73,8 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
 
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
+
+
 
         valueEventListener = new ValueEventListener() {
             @Override
@@ -115,14 +117,17 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
             }
         };
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SponsorAddItemActivity.this,sponsorInformation.class);
+                startActivity(intent);
+            }
+        });
+
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
 
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(SponsorAddItemActivity.this,sponsorInformation.class);
-        startActivity(intent);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
