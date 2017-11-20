@@ -54,6 +54,7 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
     private DevicesAdapter mAdapter;
     TextView tvNameAndSurname;
     TextView tvEmail;
+    private RecyclerView recyclerViewDevice;
 
     NavigationView navigationView;
     Devices devices;
@@ -65,22 +66,23 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+        recyclerViewDevice = findViewById(R.id.recycler_view_device);
 
-        /*mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Devices");
 
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
 
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerView.setHasFixedSize(true);
-
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot1) {
+
+
+                recyclerViewDevice.setLayoutManager(new LinearLayoutManager(context));
+                recyclerViewDevice.setItemAnimator(new DefaultItemAnimator());
+                recyclerViewDevice.addItemDecoration(new DividerItemDecoration(SponsorAddItemActivity.this, LinearLayoutManager.VERTICAL));
+                recyclerViewDevice.setHasFixedSize(true);
 
                 firebaseAuth = FirebaseAuth.getInstance();
                 user = firebaseAuth.getCurrentUser();
@@ -95,12 +97,11 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
                             allDEvices.clear();
                             for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 devices = snapshot.getValue(Devices.class);
-                                Log.v("hdghjgkh", snapshot.toString());
                                 allDEvices.add(devices);
+                                Log.v("hdghjgkh", devices.toString());
                             }
                             mAdapter = new DevicesAdapter(SponsorAddItemActivity.this, allDEvices);
-                            recyclerView.setAdapter(mAdapter);
-
+                            recyclerViewDevice.setAdapter(mAdapter);
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -112,7 +113,9 @@ public class SponsorAddItemActivity extends AppCompatActivity implements View.On
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };*/
+        };
+
+        mUsersDatabaseReference.addValueEventListener(valueEventListener);
     }
 
     @Override
