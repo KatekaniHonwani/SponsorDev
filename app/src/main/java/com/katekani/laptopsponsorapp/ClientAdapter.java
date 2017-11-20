@@ -23,14 +23,15 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHold
     private List<UserInformation> usersList;
     Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, gender;
+        public TextView name, role,surname;
         public CircleImageView imageView;
 
         public MyViewHolder(View view) {
             super(view);
 
             name =  view.findViewById(R.id.tvName);
-            gender =  view.findViewById(R.id.tvgender);
+            surname = view.findViewById(R.id.tvName);
+            role =  view.findViewById(R.id.tvRole);
             imageView= view.findViewById(R.id.img4);
         }
     }
@@ -51,8 +52,8 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UserInformation userInformation = usersList.get(position);
-        holder.name.setText(userInformation.getUserName());
-        holder.gender.setText(userInformation.getGender());
+        holder.name.setText(userInformation.getUserName() +" " +userInformation.getUserSurname());
+        holder.role.setText(userInformation.getRole());
 
         if (userInformation.getImage().isEmpty()) {
             holder.imageView.setImageResource((R.drawable.user_photo));

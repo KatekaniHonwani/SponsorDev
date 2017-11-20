@@ -19,13 +19,15 @@
 
         <ImageView
             android:id="@+id/laptopImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/logo4" />
-            android:onClick="upload"
-            android:src="@drawable/logo4" />
+            android:layout_width="179dp"
+            android:layout_height="126dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/ic_launcher_lapto">
+
+        </ImageView>
         <TextView
             android:id="@+id/question1"
+            android:paddingTop="19dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" What kind of a device would you like to donate?" />

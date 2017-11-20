@@ -26,6 +26,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
     String type;
     String skills;
     String qualification;
+    String role;
     String regNo;
     String image = "";
     String imageResourceId = "";
@@ -41,29 +42,27 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
     }
 
 
-    public UserInformation(String companyName, String contacts,String email,  String address,int quantity, String type) {
+    public UserInformation(String companyName, String contacts,String email,  String address, String type) {
         this.email = email;
         this.companyName = companyName;
         this.address = address;
         this.contacts = contacts;
-        this.quantity = quantity;
         this.type = type;
     }
 
-    public UserInformation(String companyName, String email, String contacts, String address, int quantity, String type, String regNo)
+    public UserInformation(String companyName, String email, String contacts, String address, String type, String regNo)
     {
         this.companyName = companyName;
         this.email = email;
         this.contacts = contacts;
         this.address = address;
         this.type = type;
-        this.quantity= quantity;
         this.regNo = regNo;
     }
     private HashMap<String, String> stats;
 
 
-    public UserInformation(String name, String surname, String email,String address,String contacts, String gender, String type)
+    public UserInformation(String name, String surname, String email,String address,String contacts, String gender,String role, String type)
     {
         this.userName = name;
         this.userSurname = surname;
@@ -71,6 +70,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         this.contacts = contacts;
         this.address = address;
         this.gender = gender;
+        this.role = role;
         this.type = type;
 
     }
@@ -85,6 +85,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         result.put("address", address);
         result.put("gender", gender);
         result.put("type", type);
+        result.put("role", role);
 
         return result;
     }
@@ -94,7 +95,6 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         result.put("email",email);
         result.put("companyName",companyName);
         result.put("contacts", contacts);
-        result.put("quantity", quantity);
         result.put("type", type);
 
         return result;
@@ -124,7 +124,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         gender = in.readString();
         contacts =in.readString();
         address = in.readString();
-        quantity = in.readInt();
+        role = in.readString();
         type = in.readString();
         regNo =in.readString();
 
@@ -139,7 +139,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         dest.writeString(gender);
         dest.writeString(contacts);
         dest.writeString(address);
-        dest.writeInt(quantity);
+        dest.writeString(role);
         dest.writeString(type);
         dest.writeString(image);
         dest.writeString(regNo);
@@ -222,12 +222,12 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         this.address = address;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getRole() {
+        return role;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getType() {
