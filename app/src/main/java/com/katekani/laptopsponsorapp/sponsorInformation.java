@@ -105,7 +105,8 @@ public class sponsorInformation extends AppCompatActivity {
                     mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
-
+                    Intent intent = new Intent(sponsorInformation.this,SponsorAddItemActivity.class);
+                startActivity(intent);
             }
         });
         images.setOnClickListener(new View.OnClickListener() {
