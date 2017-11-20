@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -16,6 +18,7 @@ public class UserProfileActivity extends AppCompatActivity {
     DeveloperAnswers developerAnswers;
     TextView fullname, contacts, email, address, site_name, adress_link, current_computer, developer_bio, new_device,qualification, skills;
     Button submitConfirmation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         address = findViewById(R.id.address);
 
-
+        Spinner mySpinner=findViewById(R.id.devicelist);
         submitConfirmation = findViewById(R.id.submitConfirmation);
         site_name = findViewById(R.id.user_answer1);
         adress_link = findViewById(R.id.user_answer2);
@@ -46,7 +49,10 @@ public class UserProfileActivity extends AppCompatActivity {
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
 
-
+        //Device list
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(UserProfileActivity.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.names));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(adapter);
 
         //answers of the client
         site_name.setText(developerAnswers.getSite_name());
