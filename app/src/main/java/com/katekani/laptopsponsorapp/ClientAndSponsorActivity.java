@@ -165,7 +165,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                             allDEvices.clear();
 
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
-                                                
+
                                                 devices = dataSnapshot2.getValue(Devices.class);
                                                 Log.v("hdghjgkh", snapshot2.toString());
                                                 allDEvices.add(devices);
