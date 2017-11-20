@@ -111,13 +111,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         myRegNoView= findViewById(R.id.view_reg_no);
         mySurnameView = findViewById(R.id.view_surname);
         builder1.setNegativeButton(
-                "Client",
+                "developer",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onStart();
 
 
-                        edtRole.setVisibility(View.INVISIBLE);
+
 
                         //Start
 
@@ -137,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                        female.setVisibility(View.INVISIBLE);
                        male.setVisibility(View.INVISIBLE);
+                       edtRole.setVisibility(View.INVISIBLE);
 
                         // startActivity(new Intent(RegisterActivity.this, UpdateClientProfileActivity.class));
                         if (viewSwitcher1.getCurrentView() != myCompanyNameView && viewSwitcher2.getCurrentView()!=myRegNoView){
@@ -160,11 +161,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     String surname = edtSurname.getText().toString();
                     String address = editAddress.getText().toString();
                     String contacts = editContacts.getText().toString();
+                    String role = edtRole.getText().toString();
                     String type  = "Client";
 
                     userID = user.getUid();
                     if (!name.equals("") & !surname.equals("")) {
-                        UserInformation uinfo = new UserInformation(name, surname, user.getEmail() ,address,contacts,gender, type);
+                        UserInformation uinfo = new UserInformation(name, surname, user.getEmail() ,address,contacts,gender, role,type);
                         //Log.v("dkjvdsjk", uinfo.getUserName().toString());
 
                         mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
@@ -272,7 +274,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                     if (!companyname.equals("") & !address.equals("")) {
 
-                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address, quantity,type,regno);
+                                        UserInformation uinfo = new UserInformation(companyname,email,contacts, address,type,regno);
                                         mRef.child(userID).setValue(uinfo, new DatabaseReference.CompletionListener() {
                                             @Override
                                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

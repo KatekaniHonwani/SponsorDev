@@ -57,13 +57,18 @@
             android:label="Developer Profile" />
         <activity
             android:name=".ClientAndSponsorActivity"
-            android:label="@string/title_activity_client_and_sponsor"
+            android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AboutUsActivity"
             android:label="About Us" />
-        <activity android:name=".sponsorInformation" />
-        <activity android:name=".SponsorAddItemActivity"></activity>
+
+        <!-- <activity android:name=". " /> -->
+
+        <activity android:name=".SponsorAddItemActivity"
+            android:label="My Items">
+
+        </activity>
     </application>
 
 </manifest>

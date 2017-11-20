@@ -24,14 +24,14 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
 
     Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, gender;
+        public TextView name, role;
         public CircleImageView imageView;
 
         public MyViewHolder(View view) {
             super(view);
 
             name =  view.findViewById(R.id.tvName);
-            gender =  view.findViewById(R.id.tvgender);
+            role =  view.findViewById(R.id.tvRole);
             imageView= view.findViewById(R.id.img4);
         }
     }
