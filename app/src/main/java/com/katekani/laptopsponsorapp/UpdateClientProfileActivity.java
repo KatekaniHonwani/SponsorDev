@@ -38,7 +38,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 
     private final String TAG = UpdateClientProfileActivity.class.getName();
     UserInformation userInfo;
-    EditText etdName,etdSurname,edtContacts, etdEmail, edtAddress, edtGender,edtImage;
+    EditText etdName,etdSurname,edtContacts, etdEmail, edtAddress, edtGender,edtImage,edtRole;
     FirebaseUser user;
     String userId;
     private DatabaseReference mUserDatabaseReference;
@@ -75,6 +75,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         edtAddress = findViewById(R.id.edit_address);
         edtGender = findViewById(R.id.gender);
         imageView = findViewById(R.id.header);
+        edtRole =findViewById(R.id.edtRole);
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             if (user.getPhotoUrl() != null) {
@@ -95,6 +96,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                     edtContacts.setText(userInfo.getContacts());
                     edtAddress.setText(userInfo.getAddress());
                     edtGender.setText(userInfo.getGender());
+                    edtRole.setText(userInfo.getRole());
                 }
 
                 @Override
@@ -110,16 +112,17 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!etdName.getText().toString().isEmpty()&&!etdSurname.getText().toString().isEmpty()&&!etdEmail.getText().toString().isEmpty()&&!edtAddress.getText().toString().isEmpty()&&!edtContacts.getText().toString().isEmpty()&&!edtGender.getText().toString().isEmpty()) {
+                if (!etdName.getText().toString().isEmpty()&&!etdSurname.getText().toString().isEmpty()&&!etdEmail.getText().toString().isEmpty()&&!edtAddress.getText().toString().isEmpty()&&!edtContacts.getText().toString().isEmpty()&&!edtGender.getText().toString().isEmpty()&&!edtRole.getText().toString().isEmpty()) {
                     String name = etdName.getText().toString();
                     String surname = etdSurname.getText().toString();
                     String userEmail = etdEmail.getText().toString();
                     String userAddress = edtAddress.getText().toString();
                     String userContact = edtContacts.getText().toString();
                     String userGender = edtGender.getText().toString();
+                    String userRole = edtRole.getText().toString();
                     String type= userInfo.getType();
 
-                    writeNewPost(name,surname,userEmail,userAddress,userContact,userGender,type);
+                    writeNewPost(name,surname,userEmail,userAddress,userContact,userGender,userRole,type);
                     Toast.makeText(UpdateClientProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -172,10 +175,10 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 
     }
 
-    private void writeNewPost(String name, String surname, String email,String address,String contacts, String gender, String type) {
+    private void writeNewPost(String name, String surname, String email,String address,String contacts, String gender, String role,String type) {
         //String key = mUserDatabaseReference.child("Users").push().getKey();
         Log.i("Ygritte", name);
-        UserInformation userInformation = new UserInformation(name,surname,email,address,contacts,gender,type);
+        UserInformation userInformation = new UserInformation(name,surname,email,address,contacts,gender,role,type);
         Map<String, Object> userInforValues = userInformation.toMap();
         //Map<String, Object> childUpdates = new HashMap<>();
         //childUpdates.put("/Users/" + uuid, userInforValues);
@@ -253,7 +256,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                                         mUserDatabaseReference.child("image").setValue(userInfo.getImage());
 
                                         displayProfilePic(Uri.parse(userInfo.getImage()));
-                                        Log.d(TAG, "User profile updated.");
+                                        //Log.d(TAG, "User profile updated.");
                                     }
                                 }
                             });
