@@ -121,7 +121,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
 
                     writeNewPost(name,surname,userEmail,userAddress,userContact,userGender,type);
                     Toast.makeText(UpdateClientProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UpdateClientProfileActivity.this,ClientAndSponsorActivity.class));
+
                 } else {
                     Toast.makeText(UpdateClientProfileActivity.this, "Please fill the empty field", Toast.LENGTH_SHORT).show();
                 }

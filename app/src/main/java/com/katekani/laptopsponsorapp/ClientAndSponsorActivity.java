@@ -90,12 +90,20 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
+                DeveloperAnswers developerAnswers = allUsers.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
+                intent.putExtra("UserProfile",developerAnswers);
                 startActivity(intent);
+
+
+
+
+
             }
+
 
             @Override
             public void onLongClick(View view, int position) {
@@ -117,6 +125,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
                                 userInformation = dataSnapshot.getValue(UserInformation.class);
+
+
+
+
+
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
 
@@ -134,7 +147,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                     recyclerView.setAdapter(cAdapter);
-
                                 }else if("Client".equalsIgnoreCase(userInformation.getType())){
 
                                     mDevicesReference = mFirebaseDatabase.getReference().child("DEvices");
@@ -143,17 +155,17 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                     navigationView = findViewById(R.id.nav_view);
                                     Menu nav_Menu = navigationView.getMenu();
-                                    nav_Menu.findItem(R.id.nav_addItem).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
+
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
                                     mDevicesReference.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot2) {
-
                                             for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
-
-                                                Log.v("hdghjgweew", snapshot2.toString());
-                                                devices = snapshot2.getValue(Devices.class);
+                                                devices = dataSnapshot2.getValue(Devices.class);
+                                                Log.v("hdghjg", snapshot2.toString());
                                                 allDEvices.add(devices);
                                             }
                                             mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
@@ -165,9 +177,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         }
                                     });
-
                                 }
-
                             }
                         }
                         @Override
@@ -182,29 +192,48 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             }
         };
 
-       ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    userID = user.getUid();
+                    mRef = FirebaseDatabase.getInstance().getReference("Mobile").child(userID);
+                    mRef.addValueEventListener(new ValueEventListener() {
 
-
-        mDevicesReference = FirebaseDatabase.getInstance().getReference("Devices");
-        mDevicesReference.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot2) {
-                                for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
 
-                                    Log.v("hdghjgweew", snapshot2.toString());
-                                    devices = snapshot2.getValue(Devices.class);
-                                    allDEvices.add(devices);
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                assert userInformation != null;
+                                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Log.i("Ygritte", dataSnapshot.toString());
+
+                                if ("Client".equalsIgnoreCase(userInformation.getType()))
+                                {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                        userInformation = snapshot.getValue(UserInformation.class);
+                                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                                            allUsers.add(userInformation);
+                                        }
+                                    }
+                                    cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
                                 }
-
-                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
-                            recyclerView.setAdapter(mAdapter);
+                                recyclerView.setAdapter(cAdapter);
+                            }
                         }
+
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+
                         }
                     });
-
-       /// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                }
+            }
+        };
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -298,8 +327,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         } else if (id == R.id.nav_about_us) {
             startActivity(new Intent(ClientAndSponsorActivity.this, AboutUsActivity.class));
         }
-        else if(id == R.id.nav_addItem){
-            startActivity(new Intent(ClientAndSponsorActivity.this, sponsorInformation.class));
+        else if(id == R.id.nav_myItem){
+            startActivity(new Intent(ClientAndSponsorActivity.this, SponsorAddItemActivity.class));
         }
         else if (id == R.id.nav_signout) {
 
