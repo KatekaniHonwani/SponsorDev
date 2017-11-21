@@ -87,8 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 if ("Client".equalsIgnoreCase(userInformation.getType()))
                                 {
-                                    //Log.i("Ygritte", userInformation.getType());
-                                    // public DeveloperAnswers(String site_name, String adress_link, String current_computer, String developer_bio, String new_device, String qualification, String skills)
                                     mRefDeveloper.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
@@ -99,10 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             {
                                                 Log.v("Ygritte",dataSnapshot1.toString());
                                                 if(dataSnapshot1.hasChild("site_name") && dataSnapshot1.hasChild("adress_link") && dataSnapshot1.hasChild("current_computer") && dataSnapshot1.hasChild("developer_bio") && dataSnapshot1.hasChild("new_device") && dataSnapshot1.hasChild("qualification") && dataSnapshot1.hasChild("skills"))
-                                                {
-
-                                                    startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
-
+                                                {startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
                                                 }else {
                                                     startActivity(new Intent(LoginActivity.this, ClientActivity.class));
                                                 }
