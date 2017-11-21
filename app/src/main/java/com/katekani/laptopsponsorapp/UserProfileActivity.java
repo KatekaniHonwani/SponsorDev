@@ -42,9 +42,9 @@ public class UserProfileActivity extends AppCompatActivity {
         skills = findViewById(R.id.user_answer7);
 
         // fullnames of the client
-        fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
-        contacts.setText(userInfo.getAddress());
-        email.setText(userInfo.getGender());
+        //fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
+        //contacts.setText(userInfo.getAddress());
+        //email.setText(userInfo.getGender());
 
 
 

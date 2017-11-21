@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     private TextView notification_badge;
     FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -46,10 +47,12 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDevicesReference;
     private DatabaseReference mUsersDatabaseReference;
+    private DatabaseReference mDeviceDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
     List<UserInformation> allUsers = new ArrayList<>();
     List<Devices> allDEvices = new ArrayList<>();
+    List<String> allUsersId = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
     private DevicesAdapter mAdapter;
@@ -73,6 +76,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+        mDeviceDatabaseReference = mFirebaseDatabase.getReference().child("Devices");
 
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -87,8 +91,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-
-
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot1) {
@@ -96,27 +98,28 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 firebaseAuth = FirebaseAuth.getInstance();
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+
                     userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                             if (dataSnapshot.getValue() != null) {
-                                userInformation = dataSnapshot.getValue(UserInformation.class);
-
-                                assert userInformation != null;
+                                //userInformation = dataSnapshot.getValue(UserInformation.class);
+                                String user_type = dataSnapshot.getValue().toString();
+                                //Log.i("Ygritte", dataSnapshot.toString() );
+                                //assert userInformation != null;
                                 allUsers = new ArrayList<>();
+                                allUsersId = new ArrayList<>();
 
-                                if("Sponsor".equalsIgnoreCase(userInformation.getType())){
-
-                                    tvNameAndSurname.setText(userInformation.getCompanyName());
-                                    tvEmail.setText(userInformation.getEmail());
-
+                                if("Sponsor".equalsIgnoreCase(user_type)){
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
                                         //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
+                                        tvNameAndSurname.setText(userInformation.getCompanyName());
+                                        tvEmail.setText(userInformation.getEmail());
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
-
                                             allUsers.add(userInformation);
                                         }
                                     }
@@ -127,80 +130,20 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         @Override
                                         public void onClick(View view, int position) {
                                             UserInformation userInformation = allUsers.get(position);
-                                            DeveloperAnswers developerAnswers = allUsers.get(position);
+                                            String  user_id = allUsersId.get(position);
                                             Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                                             //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                                             Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                                             intent.putExtra("UserProfile", userInformation);
-                                            intent.putExtra("UserProfile",developerAnswers);
+                                            intent.putExtra("UserProfileId",user_id);
                                             startActivity(intent);
-
                                         }
-
 
                                         @Override
                                         public void onLongClick(View view, int position) {
 
                                         }
                                     }));
-
-                                }else if("Client".equalsIgnoreCase(userInformation.getType())){
-
-                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices");
-                                    tvNameAndSurname.setText(userInformation.getUserName());
-                                    tvEmail.setText(userInformation.getEmail());
-
-                                    navigationView = findViewById(R.id.nav_view);
-                                    Menu nav_Menu = navigationView.getMenu();
-                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
-
-                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
-                                    tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
-                                    tvEmail.setText(userInformation.getEmail());
-
-                                    mDevicesReference.addValueEventListener(new ValueEventListener() {
-
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot2) {
-                                            allDEvices.clear();
-
-                                            for(DataSnapshot snapshot2 : dataSnapshot2.getChildren()){
-
-                                                devices = dataSnapshot2.getValue(Devices.class);
-                                                Log.v("hdghjgkh", snapshot2.toString());
-                                                allDEvices.add(devices);
-                                            }
-                                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
-                                            recyclerView.setAdapter(mAdapter);
-
-                                            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-                                                @Override
-                                                public void onClick(View view, int position) {
-                                                    Devices devices = allDEvices.get(position);
-                                                    //DeveloperAnswers developerAnswers = allUsers.get(position);
-                                                    //Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
-                                                    //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
-                                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                                                    intent.putExtra("UserProfile", userInformation);
-                                                    //intent.putExtra("UserProfile",developerAnswers);
-                                                    startActivity(intent);
-
-                                                }
-
-
-                                                @Override
-                                                public void onLongClick(View view, int position) {
-
-                                                }
-                                            }));
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
                                 }
                             }
                         }
@@ -210,36 +153,78 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     });
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         };
 
-
-        /*mDevicesReference = FirebaseDatabase.getInstance().getReference("Device");
-        mDevicesReference.addValueEventListener(new ValueEventListener() {
-
+        valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot2) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot2 : dataSnapshot2.getChildren()) {
+                if (user != null) {
 
-                    devices = dataSnapshot2.getValue(Devices.class);
-                    Log.v("hdghjg", devices.toString());
-                    allDEvices.add(devices);
+                    userID = user.getUid();
+
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            if (dataSnapshot.getValue() != null) {
+
+                                String user_type = dataSnapshot.getValue().toString();
+
+                                if("Client".equalsIgnoreCase(user_type)) {
+
+                                    navigationView = findViewById(R.id.nav_view);
+
+                                    Menu nav_Menu = navigationView.getMenu();
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
+
+                                    mDevicesReference = mFirebaseDatabase.getReference().child("Devices");
+                                    allDEvices.clear();
+
+                                    mDevicesReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                for(DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+
+                                                    devices = dataSnapshot1.getValue(Devices.class);
+                                                    allDEvices.add(devices);
+                                                }
+                                            }
+                                            mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this, allDEvices);
+                                            recyclerView.setAdapter(mAdapter);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
                 }
-                mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
-                recyclerView.setAdapter(mAdapter);
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-
+            public void onCancelled(DatabaseError databaseError) {
             }
-        });*/
-
+        };
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -250,20 +235,21 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
 
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
+        mDeviceDatabaseReference.addValueEventListener(valueEventListener);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mUsersDatabaseReference.addValueEventListener(valueEventListener);
-
+        mDeviceDatabaseReference.addValueEventListener(valueEventListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mUsersDatabaseReference.removeEventListener(valueEventListener);
-
+        mDeviceDatabaseReference.removeEventListener(valueEventListener);
     }
 
     @Override
