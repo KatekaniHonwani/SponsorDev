@@ -115,10 +115,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                 if("Sponsor".equalsIgnoreCase(user_type)){
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
-                                        //Log.v("Ygritteeee", dataSnapshot.toString());
+
                                         userInformation = snapshot1.getValue(UserInformation.class);
                                         tvNameAndSurname.setText(userInformation.getCompanyName());
                                         tvEmail.setText(userInformation.getEmail());
+
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                         }
@@ -145,6 +146,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         }
                                     }));
                                 }
+                            }else {
+                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                tvNameAndSurname.setText(userInformation.getUserSurname());
+                                tvEmail.setText(userInformation.getEmail());
                             }
                         }
                         @Override
