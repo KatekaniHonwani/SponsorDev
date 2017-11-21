@@ -69,6 +69,11 @@
             android:label="My Items">
 
         </activity>
+
+        <activity android:name=".sponsorInformation"
+            android:label="Add Laptop">
+
+        </activity>
     </application>
 
 </manifest>

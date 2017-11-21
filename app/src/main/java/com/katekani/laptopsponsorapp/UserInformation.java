@@ -32,10 +32,6 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
     String imageResourceId = "";
     //String variebles that will store user answers
 
-
-
-
-
     public UserInformation()
     {
 

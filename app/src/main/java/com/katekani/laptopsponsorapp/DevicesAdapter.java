@@ -23,15 +23,15 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     private List<Devices> deviceList;
 
     Context context;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, role;
+        public TextView name;
         public CircleImageView imageView;
 
         public MyViewHolder(View view) {
             super(view);
 
             name =  view.findViewById(R.id.tvName);
-            role =  view.findViewById(R.id.tvRole);
             imageView= view.findViewById(R.id.img4);
         }
     }

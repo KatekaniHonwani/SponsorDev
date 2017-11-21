@@ -74,7 +74,7 @@ public class sponsorInformation extends AppCompatActivity {
 //            displayProfilePic(firebaseUser.getPhotoUrl());
 //        }
         mCurrentUserRef = firebaseDatabase.getInstance().getReference();
-        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
