@@ -1,34 +1,36 @@
 package com.katekani.laptopsponsorapp;
 
-import android.util.Log;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import android.widget.Toast;
-import android.view.MenuItem;
-import android.content.Intent;
-import android.content.Context;
-import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
-import android.support.annotation.NonNull;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.app.AppCompatActivity;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import android.support.design.widget.NavigationView;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +50,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     UserInformation userInformation;
 
     List<UserInformation> allUsers = new ArrayList<>();
+    List<String> allUsersId = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
     TextView tvNameAndSurname;
@@ -86,14 +89,15 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             @Override
             public void onClick(View view, int position) {
                 UserInformation userInformation = allUsers.get(position);
-                DeveloperAnswers developerAnswers = allUsers.get(position);
+                String  user_id = allUsersId.get(position);
                 Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                 Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                 intent.putExtra("UserProfile", userInformation);
-                intent.putExtra("UserProfile",developerAnswers);
+                intent.putExtra("userProfileId",user_id);
+                //intent.putExtra("UserProfile",developerAnswers);
                 startActivity(intent);
-
+                Toast.makeText(ClientAndSponsorActivity.this,user_id+" IS CLICKED",Toast.LENGTH_LONG).show();
 
 
 
@@ -115,34 +119,37 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
-                                userInformation = dataSnapshot.getValue(UserInformation.class);
+                                //userInformation = dataSnapshot.getValue(UserInformation.class);
 
-
-
-
+                                String user_type = dataSnapshot.getValue().toString();
+                                Log.i("Ygritte", dataSnapshot.toString() );
 
                                 assert userInformation != null;
                                 allUsers = new ArrayList<>();
+                                allUsersId = new ArrayList<>();
 
-                                if("Sponsor".equalsIgnoreCase(userInformation.getType())){
+                                if("Sponsor".equalsIgnoreCase(user_type)){
 
-                                    tvNameAndSurname.setText(userInformation.getCompanyName());
-                                    tvEmail.setText(userInformation.getEmail());
+                                    //tvNameAndSurname.setText(userInformation.getCompanyName());
+                                    //tvEmail.setText(userInformation.getEmail());
 
                                     for (DataSnapshot snapshot1 : dataSnapshot1.getChildren()) {
                                         //Log.v("Ygritteeee", dataSnapshot.toString());
                                         userInformation = snapshot1.getValue(UserInformation.class);
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
+                                            allUsersId.add(snapshot1.getKey().toString());
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
-                                }else if("Client".equalsIgnoreCase(userInformation.getType())){
+                                }
+
+                                /*else if("Client".equalsIgnoreCase(user_type)){
 
                                     tvNameAndSurname.setText(userInformation.getUserName());
                                     tvEmail.setText(userInformation.getEmail());
@@ -154,11 +161,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                                     tvNameAndSurname.setText(userInformation.getUserName() + " " + userInformation.getUserSurname());
                                     tvEmail.setText(userInformation.getEmail());
-
-
-
-
                                 }
+                                */
                                 recyclerView.setAdapter(cAdapter);
                             }
                         }

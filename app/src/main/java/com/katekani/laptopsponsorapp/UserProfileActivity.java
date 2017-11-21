@@ -2,21 +2,29 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class UserProfileActivity extends AppCompatActivity {
 
     UserInformation userInfo;
-    DeveloperAnswers developerAnswers;
+    String userProfileId;
     TextView fullname, contacts, email, address, site_name, adress_link, current_computer, developer_bio, new_device,qualification, skills;
     Button submitConfirmation;
-
+    ValueEventListener valueEventListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mRef;
+   // private DatabaseReference mUsersDatabaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +32,9 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         userInfo = intent.getParcelableExtra("UserProfile");
-        developerAnswers = intent.getParcelableExtra("UserProfile");
-
+        userProfileId = intent.getStringExtra("userProfileId");
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mRef = mFirebaseDatabase.getReference("Developer_answers").child(userProfileId);
         fullname = findViewById(R.id.fullnames);
         contacts = findViewById(R.id.contacts);
         email = findViewById(R.id.email);
@@ -45,10 +54,32 @@ public class UserProfileActivity extends AppCompatActivity {
         fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
         contacts.setText(userInfo.getAddress());
         email.setText(userInfo.getGender());
+        //===================================================================================
 
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              DeveloperAnswers developerAnswers = dataSnapshot.getValue(DeveloperAnswers.class);
+                site_name.setText(developerAnswers.getSite_name());
+                adress_link.setText(developerAnswers.getAdress_link());
+                current_computer.setText(developerAnswers.getCurrent_computer());
+                developer_bio.setText(developerAnswers.getDeveloper_bio());
+                new_device.setText(developerAnswers.getNew_device());
+                qualification.setText(developerAnswers.getQualification());
+                skills.setText(developerAnswers.getSkills());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mRef.addValueEventListener(valueEventListener);
+        //============================================================================
 
 
         //answers of the client
+        /*
         site_name.setText(developerAnswers.getSite_name());
         adress_link.setText(developerAnswers.getAdress_link());
         current_computer.setText(developerAnswers.getCurrent_computer());
@@ -56,7 +87,7 @@ public class UserProfileActivity extends AppCompatActivity {
         new_device.setText(developerAnswers.getNew_device());
         qualification.setText(developerAnswers.getQualification());
         skills.setText(developerAnswers.getSkills());
-
+        */
 
 
 
@@ -89,6 +120,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
