@@ -33,7 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private TextView notification_badge;
     FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -46,10 +45,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private ClientAdapter clientAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDevicesReference;
-    private DatabaseReference mUsersDatabaseReference;
     private DatabaseReference mDeviceDatabaseReference;
+    private DatabaseReference mUsersDatabaseReference;
     private ValueEventListener valueEventListener;
     UserInformation userInformation;
+
     List<UserInformation> allUsers = new ArrayList<>();
     List<Devices> allDEvices = new ArrayList<>();
     List<String> allUsersId = new ArrayList<>();
@@ -76,7 +76,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
-        mDeviceDatabaseReference = mFirebaseDatabase.getReference().child("Devices");
 
         firebaseAuth = getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -100,7 +99,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                 if (user != null) {
 
                     userID = user.getUid();
-                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
+                    mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -122,6 +121,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
+                                            allUsersId.add(snapshot1.getKey().toString());
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
@@ -131,14 +131,16 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         @Override
                                         public void onClick(View view, int position) {
                                             UserInformation userInformation = allUsers.get(position);
-                                            String  user_id = allUsersId.get(position);
+                                            DeveloperAnswers developerAnswers = allUsers.get(position);
                                             Toast.makeText(context, userInformation.getUserSurname() + " is selected!", Toast.LENGTH_SHORT).show();
                                             //startActivity(new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class));
                                             Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
                                             intent.putExtra("UserProfile", userInformation);
-                                            intent.putExtra("UserProfileId",user_id);
+                                            intent.putExtra("UserProfile",developerAnswers);
                                             startActivity(intent);
+
                                         }
+
 
                                         @Override
                                         public void onLongClick(View view, int position) {
@@ -228,8 +230,34 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         };
+
+
+        /*mDevicesReference = FirebaseDatabase.getInstance().getReference("Device");
+        mDevicesReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot2) {
+
+                for (DataSnapshot snapshot2 : dataSnapshot2.getChildren()) {
+
+                    devices = dataSnapshot2.getValue(Devices.class);
+                    Log.v("hdghjg", devices.toString());
+                    allDEvices.add(devices);
+                }
+                mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+
+            }
+        });*/
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
