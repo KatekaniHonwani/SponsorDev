@@ -2,10 +2,12 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -22,19 +24,34 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
 
     private List<Devices> deviceList;
 
+
+   public DevicesAdapter(List<Devices>deviceList)
+    {
+        this.deviceList = deviceList;
+    }
+
+
     Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
-        public CircleImageView imageView;
+        public TextView name,status,model,screenSize,storage;
+        //public CircleImageView imageView;
+        CardView cv;
+        ImageView img;
 
         public MyViewHolder(View view) {
             super(view);
 
-            name =  view.findViewById(R.id.tvName);
-            imageView= view.findViewById(R.id.img4);
+            cv = (CardView)view.findViewById(R.id.cardview);
+            name =  view.findViewById(R.id.deciveName);
+            img= view.findViewById(R.id.deviceImg);
+            status = view.findViewById(R.id.decivestatus);
+            model = view.findViewById(R.id.deciveModel);
+            screenSize = view.findViewById(R.id.deciveScreenSize);
+            storage = view.findViewById(R.id.deciveStorage);
         }
     }
+
 
     public DevicesAdapter(Context context,List<Devices> deviceList) {
         this.deviceList = deviceList;
@@ -44,7 +61,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     @Override
     public DevicesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_layout, parent, false);
+                .inflate(R.layout.card_row_xml, parent, false);
 
         return new DevicesAdapter.MyViewHolder(itemView);
     }
@@ -53,10 +70,17 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Devices devices = deviceList.get(position);
         holder.name.setText(devices.getDevice_name());
+        holder.status.setText(devices.getStatus());
+        holder.model.setText(devices.getDevice_model());
+        holder.screenSize.setText(devices.getScreen_size());
+        holder.storage.setText(devices.getStorage());
+        holder.img.setImageResource(R.drawable.user_photo);
+
     }
 
     @Override
     public int getItemCount() {
         return deviceList.size();
     }
+
 }

@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SponsorDev.iml" filepath="$PROJECT_DIR$/SponsorDev.iml" />
+      <module fileurl="file://C:\Users\codetribe\Desktop\SponsorDev\SponsorDev.iml" filepath="C:\Users\codetribe\Desktop\SponsorDev\SponsorDev.iml" />
+      <module fileurl="file://C:\Users\CodeTribeStudent\AndroidStudioProjects\SponsorDev\SponsorDev.iml" filepath="C:\Users\CodeTribeStudent\AndroidStudioProjects\SponsorDev\SponsorDev.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\CodeTribeStudent\AndroidStudioProjects\SponsorDev\app\app.iml" filepath="C:\Users\CodeTribeStudent\AndroidStudioProjects\SponsorDev\app\app.iml" />
     </modules>
   </component>
 </project>
