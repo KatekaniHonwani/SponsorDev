@@ -11,146 +11,172 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="10dp">
 
-        <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:id="@+id/fullnames"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:id="@+id/contacts"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:id="@+id/email"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:id="@+id/address"/>
-    <TextView
-        android:id="@+id/question1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="where have you heard about us?"
-        android:paddingBottom="10dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_answer1"
-        android:textColor="#000000"
-        android:paddingBottom="10dp" />
-
-
-    <TextView
-        android:id="@+id/question2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="paste your gitHub Link"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:textColor="#000000"
-        android:id="@+id/user_answer2"/>
-
-
-    <TextView
-        android:id="@+id/question3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="what kind of a computer do you own ?"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:textColor="#000000"
-        android:id="@+id/user_answer3"/>
-
-
-
-    <TextView
-        android:id="@+id/question4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="why should we sponsor you?"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:id="@+id/user_answer4"/>
-
-
-    <TextView
-        android:id="@+id/question5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="what kind of a Laptop are you looking for? (inluding requirements)"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:textColor="#000000"
-        android:id="@+id/user_answer5"/>
-
-
-        <TextView
-            android:id="@+id/question6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="what qualification do you have?"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:id="@+id/user_answer6"/>
-
-
-        <TextView
-            android:id="@+id/question7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="what are your skills?" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:textColor="#000000"
-            android:id="@+id/user_answer7"/>
+            android:id="@+id/fullnames"
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:textColor="#000000"
-            android:text="Devices"
-            android:id="@+id/devices"/>
-
-        <Spinner
-            android:id="@+id/devicelist"
+            android:id="@+id/contacts"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:id="@+id/email"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:id="@+id/address"/>
+
+    </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/question1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:text=" 1.where have you heard about us?"/>
+
+
+                <TextView
+                    android:id="@+id/user_answer1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000" />
+                <TextView
+                    android:id="@+id/question2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="2.paste your gitHub Link"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000"
+                    android:id="@+id/user_answer2"/>
+                <TextView
+                    android:id="@+id/question3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="3.what kind of a computer do you own ?"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000"
+                    android:id="@+id/user_answer3"/>
+
+                <TextView
+                    android:id="@+id/question4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="4.why should we sponsor you?"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000"
+                    android:id="@+id/user_answer4"/>
+
+                <TextView
+                    android:id="@+id/question5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="5.what kind of a Laptop are you looking for? (inluding requirements)"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000"
+                    android:id="@+id/user_answer5"/>
+
+                <TextView
+                    android:id="@+id/question6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="6.what qualification do you have?"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:paddingBottom="20dp"
+                    android:id="@+id/user_answer6"/>
+                <TextView
+                    android:id="@+id/question7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="italic"
+                    android:text="7.what are your skills?" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:textColor="#000000"
+                    android:id="@+id/user_answer7"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textColor="#000000"
+                    android:text="Devices"
+                    android:id="@+id/devices"/>
+                <Spinner
+                    android:id="@+id/devicelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
 
         <Button
-        android:id="@+id/submitConfirmation"
-        android:layout_width="match_parent"
+            android:id="@+id/submitConfirmation"
+            android:layout_width="match_parent"
             android:background="@drawable/input_outline"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="Submit confirmation" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Submit confirmation" />
 
 
 
