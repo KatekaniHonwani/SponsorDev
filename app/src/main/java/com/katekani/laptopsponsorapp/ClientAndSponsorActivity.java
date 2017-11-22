@@ -102,22 +102,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                UserInformation userInformation = allUsers.get(position);
-                String uuid = allUsersId.get(position);
-                Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                intent.putExtra("UserProfile", userInformation);
-                intent.putExtra("userProfileId",uuid);
-                startActivity(intent);
-            }
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -171,6 +156,23 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 }
                             });
 
+                            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                                @Override
+                                public void onClick(View view, int position) {
+                                    UserInformation userInformation = allUsers.get(position);
+                                    String uuid = allUsersId.get(position);
+                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                                    intent.putExtra("UserProfile", userInformation);
+                                    intent.putExtra("userProfileId",uuid);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onLongClick(View view, int position) {
+
+                                }
+                            }));
+
                         } else if ("Client".equalsIgnoreCase(user_type)) {
                            // Toast.makeText(context, "I a client with user email " + user.getEmail() + " :  user type => " + user_type, Toast.LENGTH_LONG).show();
 
@@ -182,6 +184,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         {
                                             devices = dataSnapshot1.getValue(Devices.class);
                                             allDEvices.add(devices);
+                                            allUsersId.add(dataSnapshot1.getKey().toString());
                                         }
 
                                         mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
@@ -195,6 +198,23 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 }
                             };
                             mDeviceDatabaseReference.addValueEventListener(valueEventListener);
+
+                            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+                                @Override
+                                public void onClick(View view, int position) {
+                                    Devices devices = allDEvices.get(position);
+                                    String uuid = allUsersId.get(position);
+                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
+                                    intent.putExtra("deviceInfo", devices);
+                                    intent.putExtra("deviceProfileId",uuid);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onLongClick(View view, int position) {
+
+                                }
+                            }));
                         }
                     }
                 }

@@ -39,11 +39,6 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
         CardView cv;
         ImageView img;
 
-
-
-
-
-
         public MyViewHolder(View view) {
             super(view);
 
@@ -81,19 +76,11 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
         holder.storage.setText(devices.getStorage());
         holder.img.setImageResource(R.drawable.user_photo);
 
-
-
     }
-
-
-
 
     @Override
     public int getItemCount() {
         return deviceList.size();
     }
-
-
-
 
 }
