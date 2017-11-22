@@ -43,6 +43,8 @@ public class UserProfileActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     Spinner spinner;
     Context context;
+
+    boolean donated;
    // private DatabaseReference mUsersDatabaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity {
         new_device = findViewById(R.id.user_answer5);
         qualification = findViewById(R.id.user_answer6);
         skills = findViewById(R.id.user_answer7);
-
+//        donated = devices.isDonated();
         // fullnames of the client
         fullname.setText(userInfo.getUserName() + " " + userInfo.getUserSurname());
         contacts.setText(userInfo.getAddress());
@@ -116,7 +118,13 @@ public class UserProfileActivity extends AppCompatActivity {
         submitConfirmation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                //=-=======================================
+//                donated = true;
+//                if (donated)
+//                {
+//                    //Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
+//                }
+//                //=========================================
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Confirmation regarding laptop request" );
@@ -173,6 +181,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     }
+
 
 
 
