@@ -120,8 +120,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         if (user != null) {
 
             userID = user.getUid();
-            //tvEmail.setText(user.getEmail());
-            //tvNameAndSurname.setText(user.getDisplayName());
+            tvEmail.setText(user.getEmail());
+            tvNameAndSurname.setText(user.getDisplayName());
+
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
 
@@ -140,16 +141,18 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     allUsers = new ArrayList<>();
                                     allUsersId = new ArrayList<>();
-                                    Log.i("Ygritte", dataSnapshot.toString());
+
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                                         userInformation = snapshot.getValue(UserInformation.class);
-                                        tvNameAndSurname.setText(userInformation.getCompanyName());
+                                        //tvNameAndSurname.setText(userInformation.getCompanyName());
+                                        Log.i("Ygritte", dataSnapshot.toString());
                                         tvEmail.setText(userInformation.getEmail());
 
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                             allUsersId.add(snapshot.getKey().toString());
+
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
@@ -188,11 +191,12 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
+                                        allUsersId.add(dataSnapshot.getKey().toString());
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
                                             devices = dataSnapshot1.getValue(Devices.class);
                                             allDEvices.add(devices);
-                                            allUsersId.add(dataSnapshot1.getKey().toString());
+
                                         }
 
                                         mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
