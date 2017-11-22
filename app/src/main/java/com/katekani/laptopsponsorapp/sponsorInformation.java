@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 public class sponsorInformation extends AppCompatActivity {
 
-    private EditText edtAnswer1,edtAnswer2,edtAnswer3,edtAnswer4;
+    private EditText edtAnswer1,edtAnswer2,edtAnswer5,edtAnswer4,edtAnswer6;
     private ImageView images;
     private Button submit;
     private FirebaseUser firebaseUser;
@@ -60,6 +60,8 @@ public class sponsorInformation extends AppCompatActivity {
         edtAnswer1=findViewById(R.id.answer1);
         edtAnswer2=findViewById(R.id.answer2);
         edtAnswer4=findViewById(R.id.answer4);
+        edtAnswer5 = findViewById(R.id.answer5);
+        edtAnswer6 = findViewById(R.id.answer6);
         submit=findViewById(R.id.submit);
         images=findViewById(R.id.laptopImage);
         progressDialog = new ProgressDialog(this);
@@ -80,28 +82,38 @@ public class sponsorInformation extends AppCompatActivity {
             public void onClick(View view) {
 
                 String device_name = edtAnswer1.getText().toString();
-                String device_description = edtAnswer2.getText().toString();
-                String scree_size = edtAnswer4.getText().toString();
+                String device_model = edtAnswer2.getText().toString();
+                String scree_size= edtAnswer4.getText().toString();
+                String storage = edtAnswer5.getText().toString();
+                String status = edtAnswer6.getText().toString();
+
 
 
 
                 if (TextUtils.isEmpty(device_name)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 1", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(device_description)) {
+                } else if (TextUtils.isEmpty(device_model)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 2", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (TextUtils.isEmpty(scree_size)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 3", Toast.LENGTH_SHORT).show();
                     return;
+                }else  if(TextUtils.isEmpty(storage)) {
+
+                    Toast.makeText(getApplicationContext(), "provide answer for question 4", Toast.LENGTH_SHORT).show();
+
+                }else if(TextUtils.isEmpty(status)){
+                    Toast.makeText(getApplicationContext(), "provide answer for question 5", Toast.LENGTH_SHORT).show();
+
                 }
 
 
-                if (!"".equals(device_name) && !"".equals(device_description) && !"".equals(scree_size)  ) {
+                if (!"".equals(device_name) && !"".equals(device_model) && !"".equals(scree_size)&& !"".equals(storage)&& !"".equals(status)  ) {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
-                    Devices devices = new Devices(device_name,device_description,scree_size);
+                    Devices devices = new Devices(device_name,device_model,scree_size,storage,status);
                     mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }

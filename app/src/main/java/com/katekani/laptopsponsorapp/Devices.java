@@ -11,29 +11,50 @@ import com.firebase.client.snapshot.BooleanNode;
 
 public class Devices implements Parcelable{
 
-    String device_name, device_description, screen_size;
+    String device_name, device_model, screen_size,storage,status,image;
 
     public Devices(){
 
     }
-    public Devices (String device_name,String device_description,String screen_size) {
+    public Devices (String device_name,String device_model,String screen_size,String storage,String status ) {
         this.device_name = device_name;
-        this.device_description = device_description;
+        this.device_model = device_model;
         this.screen_size = screen_size;
+        this.storage = storage;
+        this.status = status;
+
+    }
+
+    public Devices (String device_name,String device_model,String screen_size,String storage,String status,String imageResourceId ) {
+        this.device_name = device_name;
+        this.device_model = device_model;
+        this.screen_size = screen_size;
+        this.storage = storage;
+        this.status = status;
+        this.image = imageResourceId;
 
     }
 
     protected Devices(Parcel in) {
         device_name= in.readString();
-        device_description = in.readString();
+        device_model = in.readString();
         screen_size = in.readString();
+        storage=in.readString();
+        status=in.readString();
+
 
     }
     @Override
     public void writeToParcel(Parcel dest, int i) {
         dest.writeString(device_name);
-        dest.writeString(device_description);
+        dest.writeString(device_model);
         dest.writeString(screen_size);
+        dest.writeString(storage);
+        dest.writeString(status);
+        dest.writeString(image);
+
+
+
     }
 
     public String getDevice_name() {
@@ -44,12 +65,12 @@ public class Devices implements Parcelable{
         this.device_name = device_name;
     }
 
-    public String getDevice_description() {
-        return device_description;
+    public String getDevice_model() {
+        return device_model;
     }
 
-    public void setDevice_description(String device_description) {
-        this.device_description = device_description;
+    public void setDevice_model(String device_description) {
+        this.device_model = device_description;
     }
 
     public String getScreen_size() {
@@ -58,6 +79,27 @@ public class Devices implements Parcelable{
 
     public void setScreen_size(String screen_size) {
         this.screen_size = screen_size;
+    }
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String screen_size) {
+        this.storage = screen_size;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String screen_size) {
+        this.status = screen_size;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 
