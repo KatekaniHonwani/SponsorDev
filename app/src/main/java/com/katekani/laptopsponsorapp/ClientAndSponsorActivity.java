@@ -89,7 +89,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView = findViewById(R.id.recycler_view);
         navigationView = findViewById(R.id.nav_view);
 
-        nav_Menu = navigationView.getMenu();
+
 
         //nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
 
@@ -120,10 +120,11 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         if (user != null) {
 
             userID = user.getUid();
-            tvEmail.setText(user.getEmail());
-            tvNameAndSurname.setText(user.getDisplayName());
+            //tvEmail.setText(user.getEmail());
+            //tvNameAndSurname.setText(user.getDisplayName());
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
+
             mUserLoggedRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -143,8 +144,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                                         userInformation = snapshot.getValue(UserInformation.class);
-                                        //tvNameAndSurname.setText(userInformation.getCompanyName());
-                                        //tvEmail.setText(userInformation.getEmail());
+                                        tvNameAndSurname.setText(userInformation.getCompanyName());
+                                        tvEmail.setText(userInformation.getEmail());
+
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                             allUsersId.add(snapshot.getKey().toString());
@@ -179,7 +181,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                         } else if ("Client".equalsIgnoreCase(user_type)) {
                            // Toast.makeText(context, "I a client with user email " + user.getEmail() + " :  user type => " + user_type, Toast.LENGTH_LONG).show();
+                            nav_Menu = navigationView.getMenu();
                             nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
+
                             valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
