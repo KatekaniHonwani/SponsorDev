@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
        firebaseAuth.addAuthStateListener(authStateListener);
@@ -235,5 +235,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStop() {
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
-    }
+    }*/
 }

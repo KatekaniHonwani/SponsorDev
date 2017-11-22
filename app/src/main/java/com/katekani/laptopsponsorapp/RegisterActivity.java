@@ -160,9 +160,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (user != null) {
 
                     String name = edtName.getText().toString();
+                    validation.isNameSurnameValid(name);
+
                     String surname = edtSurname.getText().toString();
+                    validation.isNameSurnameValid(name);
+
                     String address = editAddress.getText().toString();
                     String contacts = editContacts.getText().toString();
+                    validation.isPhoneValid(contacts);
+                    validation.isPhoneValid2(contacts);
                     String role = edtRole.getText().toString();
                     String type  = "Client";
 
