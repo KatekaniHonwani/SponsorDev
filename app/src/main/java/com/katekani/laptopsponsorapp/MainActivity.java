@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-
+            
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
@@ -172,26 +172,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return alertBuilder;
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //firebaseAuth.addAuthStateListener(authStateListener);
-//        user.reload();
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
 
     }
 
