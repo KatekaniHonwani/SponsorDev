@@ -60,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int GALLERY_INTENT=2;
     private FirebaseAuth.AuthStateListener mAuthListener;
     String useremail, userpassword, gender;
+    private Validation validation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edtRole =  findViewById(R.id.edtRole);
         editReg = findViewById(R.id.editRegno);
         progressDialog = new ProgressDialog(this);
+        validation = new Validation();
 
 
         mAuth = FirebaseAuth.getInstance();
