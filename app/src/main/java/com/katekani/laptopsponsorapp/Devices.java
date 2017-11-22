@@ -3,8 +3,6 @@ package com.katekani.laptopsponsorapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.firebase.client.snapshot.BooleanNode;
-
 /**
  * Created by codetribe on 11/16/2017.
  */
@@ -12,7 +10,7 @@ import com.firebase.client.snapshot.BooleanNode;
 public class Devices implements Parcelable{
 
     String device_name, device_model, screen_size,storage,status,image;
-
+    boolean isDonated =false;
     public Devices(){
 
     }
@@ -120,5 +118,11 @@ public class Devices implements Parcelable{
         return 0;
     }
 
+    public boolean isDonated() {
+        return isDonated;
+    }
 
+    public void setDonated(boolean donated) {
+        isDonated = donated;
+    }
 }

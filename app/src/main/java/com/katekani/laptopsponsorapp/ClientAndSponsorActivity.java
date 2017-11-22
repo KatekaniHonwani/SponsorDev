@@ -152,6 +152,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                             allUsersId.add(snapshot.getKey().toString());
+
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
