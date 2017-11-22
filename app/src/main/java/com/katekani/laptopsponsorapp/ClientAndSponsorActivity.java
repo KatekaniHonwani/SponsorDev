@@ -74,7 +74,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     DrawerLayout drawer;
     NavigationView navigationView;
     Devices devices;
-
+    Menu nav_Menu;
     ActionBarDrawerToggle toggle;
 
     @Override
@@ -89,6 +89,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView = findViewById(R.id.recycler_view);
         navigationView = findViewById(R.id.nav_view);
 
+        nav_Menu = navigationView.getMenu();
+
+        //nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -128,6 +131,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     if (dataSnapshot.getValue() != null) {
                         user_type = dataSnapshot.getValue().toString();
                         if ("Sponsor".equalsIgnoreCase(user_type)) {
+
                             Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
 
                             myClientsQuery.addValueEventListener(new ValueEventListener() {
@@ -175,7 +179,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                         } else if ("Client".equalsIgnoreCase(user_type)) {
                            // Toast.makeText(context, "I a client with user email " + user.getEmail() + " :  user type => " + user_type, Toast.LENGTH_LONG).show();
-
+                            nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
                             valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
