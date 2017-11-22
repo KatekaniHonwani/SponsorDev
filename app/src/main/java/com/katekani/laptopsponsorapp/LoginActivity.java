@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     FirebaseUser user;
     private String userID;
     private ProgressDialog progressDialog;
-
+Validation validation = new Validation();
     private ChildEventListener mChildEventListener;
     //google buttons
     @Override
@@ -142,7 +142,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void LoginUser() {
         String email = edtEmail.getText().toString().trim();
+        validation.isEmailValid(email);
+
         String password = edtPassword.getText().toString().trim();
+        validation.isPasswordValid(password);
+
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,6 +46,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 email = edtResetPasword.getText().toString().trim();
+                Validation validation = new Validation();
+                validation.isEmailValid(email);
 
                 if (TextUtils.isEmpty(email)) {
 
