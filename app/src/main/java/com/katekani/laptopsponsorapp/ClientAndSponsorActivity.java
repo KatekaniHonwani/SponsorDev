@@ -195,7 +195,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 }
                             };
                             mDeviceDatabaseReference.addValueEventListener(valueEventListener);
-
                         }
                     }
                 }
