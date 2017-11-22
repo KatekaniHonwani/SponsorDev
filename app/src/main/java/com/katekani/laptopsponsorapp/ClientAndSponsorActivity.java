@@ -139,11 +139,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                                         userInformation = snapshot.getValue(UserInformation.class);
-                                        //tvNameAndSurname.setText(userInformation.getCompanyName());
+                                        tvNameAndSurname.setText(userInformation.getCompanyName());
                                         //tvEmail.setText(userInformation.getEmail());
+
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
                                             allUsersId.add(snapshot.getKey().toString());
+
                                         }
                                     }
                                     cAdapter = new ClientAdapter(ClientAndSponsorActivity.this,allUsers);
