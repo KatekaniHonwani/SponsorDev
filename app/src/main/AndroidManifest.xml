@@ -13,8 +13,8 @@
         android:name=".Person"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="SponsorDev"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="Sponsor A Developer"
+        android:roundIcon="@drawable/untitledtfhb"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -71,7 +71,7 @@
         </activity>
 
         <activity android:name=".sponsorInformation"
-            android:label="Add Laptop">
+            android:label="Add Devices">
 
         </activity>
     </application>

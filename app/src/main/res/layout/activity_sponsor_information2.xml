@@ -30,7 +30,7 @@
             android:paddingTop="19dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" What kind of a device would you like to donate?" />
+            android:text=" name of device?" />
 
         <EditText
             android:id="@+id/answer1"
@@ -41,7 +41,7 @@
             android:id="@+id/question2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="please describe the device in terms of the memory,the size and the speed . " />
+            android:text="what kind of a model is your device.? " />
 
         <EditText
             android:id="@+id/answer2"
@@ -53,12 +53,35 @@
             android:id="@+id/question4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Please specify the screen size." />
+            android:text="please the device specify the screen size." />
 
         <EditText
             android:id="@+id/answer4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/question5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="please specify the device storage."/>
+
+        <EditText
+            android:id="@+id/answer5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/question6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="state the devices status"/>
+
+        <EditText
+            android:id="@+id/answer6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
         <Button
             android:id="@+id/submit"

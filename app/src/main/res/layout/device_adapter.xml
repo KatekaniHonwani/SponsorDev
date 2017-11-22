@@ -17,4 +17,6 @@
         android:layout_toRightOf="@+id/img4"
         android:textStyle="bold" />
 
+
+
 </RelativeLayout>
