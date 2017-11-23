@@ -292,6 +292,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             if ("Sponsor".equalsIgnoreCase(user_type)) {
                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateSponsorActivity.class));
             } else if ("Client".equalsIgnoreCase(user_type)) {
+             
                 startActivity(new Intent(ClientAndSponsorActivity.this, UpdateClientProfileActivity.class));
             }
 
