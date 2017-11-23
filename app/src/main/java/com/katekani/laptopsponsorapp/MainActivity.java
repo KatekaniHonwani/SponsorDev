@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private int progressBarStatus = 0;
     private Handler handler = new Handler();
 
-
+    private String user_type;
     private FirebaseAuth firebaseAuth;
     private UserInformation userInformation;
     private DatabaseReference mRefDeveloper;
@@ -45,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
 
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userID = user.getUid();
-            mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+            //mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
+
+            mRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
             mRefDeveloper = FirebaseDatabase.getInstance().getReference("Developer_answers").child(userID);
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -57,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
 
-                        userInformation = dataSnapshot.getValue(UserInformation.class);
+                        //userInformation = dataSnapshot.getValue(UserInformation.class);
+                        user_type = dataSnapshot.getValue().toString();
                         //assert userInformation != null;
-                        if ("Client".equalsIgnoreCase(userInformation.getType())) {
+                        if ("Client".equalsIgnoreCase(user_type)) {
                             mRefDeveloper.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot1) {
@@ -67,8 +69,11 @@ public class MainActivity extends AppCompatActivity {
                                     Log.v("Ygritte", dataSnapshot1.toString());
 
                                     if (dataSnapshot1.getChildren() != null) {
+
                                         if (dataSnapshot1.hasChild("site_name") && dataSnapshot1.hasChild("adress_link") && dataSnapshot1.hasChild("current_computer") && dataSnapshot1.hasChild("developer_bio") && dataSnapshot1.hasChild("new_device") && dataSnapshot1.hasChild("qualification") && dataSnapshot1.hasChild("skills")) {
+
                                             startActivity(new Intent(MainActivity.this, ClientAndSponsorActivity.class));
+
                                         } else {
                                             startActivity(new Intent(MainActivity.this, ClientActivity.class));
                                         }
