@@ -109,8 +109,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
-        tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
+
+
+        //tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
+        //tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -133,6 +135,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     if (dataSnapshot.getValue() != null) {
                         user_type = dataSnapshot.getValue().toString();
                         if ("Sponsor".equalsIgnoreCase(user_type)) {
+
 
                             Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
 
