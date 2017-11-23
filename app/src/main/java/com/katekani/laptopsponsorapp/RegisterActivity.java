@@ -294,7 +294,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 }
                                             }
                                         });
-                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        startActivity(new Intent(RegisterActivity.this, ClientAndSponsorActivity.class));
                                         finish();
                                         progressDialog.dismiss();
                                     }
