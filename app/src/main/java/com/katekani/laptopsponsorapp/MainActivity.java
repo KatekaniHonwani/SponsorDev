@@ -1,19 +1,15 @@
 package com.katekani.laptopsponsorapp;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,8 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class MainActivity extends AppCompatActivity {
     // private Button btnContinue;
@@ -43,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     private String userID;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +97,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+             /* New Handler to start the Menu-Activity
+         * and close this Splash-Screen after some seconds.*/
+            new Handler().postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                /* Create an Intent that will start the Menu-Activity. */
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    MainActivity.this.finish();
+                }
+            }, SPLASH_DISPLAY_LENGTH);
+
         }
 
         if (!isConnected(MainActivity.this))builder(MainActivity.this).show();
