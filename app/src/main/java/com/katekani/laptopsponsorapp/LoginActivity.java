@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                     startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
 
                                                 }else {
-                                                    startActivity(new Intent(LoginActivity.this, ClientActivity.class));
+                                                    startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
                                                 }
                                             }else
                                             {
