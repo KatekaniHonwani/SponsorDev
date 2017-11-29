@@ -25,7 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
@@ -56,6 +59,7 @@ public class SponsorAddItemActivity extends AppCompatActivity {
     TextView tvEmail;
     private RecyclerView recyclerViewDevice;
 
+
     NavigationView navigationView;
     Devices devices;
 
@@ -65,6 +69,7 @@ public class SponsorAddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sponsor_add_item);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FloatingActionButton fab = findViewById(R.id.fab);
+
 
         recyclerViewDevice = findViewById(R.id.recycler_view_device);
 
