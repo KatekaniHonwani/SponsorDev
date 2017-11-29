@@ -68,7 +68,7 @@ public class UserInformation extends DeveloperAnswers implements Parcelable {
         this.gender = gender;
         this.role = role;
         this.type = type;
-
+ 
     }
     @Exclude
     public Map<String, Object> toMap() {
