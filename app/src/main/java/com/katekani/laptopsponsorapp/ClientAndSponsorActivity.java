@@ -63,6 +63,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
     List<UserInformation> allUsers = new ArrayList<>();
     List<Devices> allDEvices = new ArrayList<>();
+    List<String> allDeviceId = new ArrayList<>();
     List<String> allUsersId = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
@@ -144,6 +145,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     allUsers = new ArrayList<>();
                                     allUsersId = new ArrayList<>();
+                                    allDeviceId = new ArrayList<>();
 
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
@@ -194,9 +196,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
-                                        allUsersId.add(dataSnapshot.getKey().toString());
+                                        allUsersId.add(snapshot1.getKey().toString());
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
+                                            allDeviceId.add(dataSnapshot1.getKey().toString());
                                             devices = dataSnapshot1.getValue(Devices.class);
                                             allDEvices.add(devices);
 
@@ -204,6 +207,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
                                         recyclerView.setAdapter(mAdapter);
+
                                     }
                                 }
 
@@ -217,11 +221,15 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    Devices devices = allDEvices.get(position);
+                                    //devices = allDEvices.get(position);
                                     String uuid = allUsersId.get(position);
-                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                                    intent.putExtra("deviceInfo", devices);
-                                    intent.putExtra("deviceProfileId",uuid);
+                                    String duid = allDeviceId.get(position);
+                                   // Log.v("yugjksd",uuid);
+                                    //Log.v("yugjksdss",duid);
+                                    Intent intent = new Intent(ClientAndSponsorActivity.this, DeviceFullProfileActivity.class);
+                                    //intent.putExtra("deviceInfo", devices);
+                                    intent.putExtra("userProfileId",uuid);
+                                    intent.putExtra("deviceProfileId",duid);
                                     startActivity(intent);
                                 }
 
