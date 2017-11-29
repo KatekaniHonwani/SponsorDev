@@ -89,7 +89,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         drawer = findViewById(R.id.drawer_layout);
         recyclerView = findViewById(R.id.recycler_view);
         navigationView = findViewById(R.id.nav_view);
-        
+
         //nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

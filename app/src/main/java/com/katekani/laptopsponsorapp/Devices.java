@@ -44,6 +44,10 @@ public class Devices implements Parcelable{
         dest.writeString(storage);
         dest.writeString(status);
         dest.writeString(image);
+        dest.writeString(image);
+        dest.writeString(image);
+        dest.writeString(image);
+
     }
 
 
