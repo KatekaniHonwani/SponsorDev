@@ -82,9 +82,11 @@
             android:textAlignment="center"
             android:textSize="15sp"/>
 
-
-
-
+        <com.katekani.laptopsponsorapp.RelativeTimeTextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_primary" />
 
     </RelativeLayout>
 

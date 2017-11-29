@@ -11,6 +11,7 @@ public class Devices implements Parcelable{
 
     String device_name, device_model, screen_size,storage,status,image;
     boolean isDonated =false;
+    public long timestamp;
     public Devices(){
 
     }
@@ -20,6 +21,15 @@ public class Devices implements Parcelable{
         this.screen_size = screen_size;
         this.storage = storage;
         this.status = status;
+        //this.timestamp = timestamp;
+
+    } public Devices (String device_name,String device_model,String screen_size,String storage,String status, long timestamp ) {
+        this.device_name = device_name;
+        this.device_model = device_model;
+        this.screen_size = screen_size;
+        this.storage = storage;
+        this.status = status;
+        this.timestamp = timestamp;
 
     }
 
