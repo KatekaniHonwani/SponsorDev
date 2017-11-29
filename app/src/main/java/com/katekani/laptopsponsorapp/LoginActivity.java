@@ -100,7 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             {
                                                 //Log.v("Ygritte",dataSnapshot1.toString());
 
-                                                if(dataSnapshot1.hasChild("site_name") && dataSnapshot1.hasChild("adress_link") && dataSnapshot1.hasChild("current_computer") && dataSnapshot1.hasChild("developer_bio") && dataSnapshot1.hasChild("new_device") && dataSnapshot1.hasChild("qualification") && dataSnapshot1.hasChild("skills"))
+                                                if(dataSnapshot1.hasChild("site_name") && dataSnapshot1.hasChild("adress_link") && dataSnapshot1.hasChild("current_computer")
+                                                        && dataSnapshot1.hasChild("developer_bio") && dataSnapshot1.hasChild("new_device") && dataSnapshot1.hasChild("qualification")
+                                                        && dataSnapshot1.hasChild("skills"))
                                                 {
                                                     startActivity(new Intent(LoginActivity.this, ClientAndSponsorActivity.class));
 
