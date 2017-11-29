@@ -176,7 +176,8 @@
             android:background="@drawable/input_outline"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="Submit confirmation" />
+            android:text="Submit confirmation"
+            android:onClick="submit"/>
 
 
 
