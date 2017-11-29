@@ -39,6 +39,7 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
     private EditText Qualification;
     private ProgressDialog progressDialog;
     private FirebaseUser firebaseUser;
+    Validation validation = new Validation();
     DatabaseReference mCurrentUserRef;
 
 
@@ -101,12 +102,19 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         editAnswer1 = edtAnswer1.getText().toString().trim();
+        validation.isNameSurnameValid(editAnswer1);
         editAnswer2 = edtAnswer2.getText().toString().trim();
+        validation.isNameSurnameValid(editAnswer2);
         editAnswer3 = edtAnswer3.getText().toString().trim();
+        validation.isNameSurnameValid(editAnswer3);
         editAnswer4 = edtAnswer4.getText().toString().trim();
+        validation.isNameSurnameValid(editAnswer4);
         editAnswer5 = edtAnswer5.getText().toString().trim();
+        validation.isNameSurnameValid(editAnswer5);
         skils =Skills.getText().toString().trim();
+        validation.isNameSurnameValid(skils);
         qual = Qualification.getText().toString().trim();
+        validation.isNameSurnameValid(qual);
 
         //validation
         if (TextUtils.isEmpty(editAnswer1)) {

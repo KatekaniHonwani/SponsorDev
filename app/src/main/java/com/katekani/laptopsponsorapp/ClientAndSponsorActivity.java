@@ -53,6 +53,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
     List<UserInformation> allUsers = new ArrayList<>();
     List<Devices> allDEvices = new ArrayList<>();
+    List<String> allDeviceId = new ArrayList<>();
     List<String> allUsersId = new ArrayList<>();
     private RecyclerView recyclerView;
     private ClientAdapter cAdapter;
@@ -79,8 +80,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView = findViewById(R.id.recycler_view);
         navigationView = findViewById(R.id.nav_view);
 
-
-
         //nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -99,8 +98,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
-        tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
+
+
+        //tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
+        //tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -110,8 +111,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         if (user != null) {
 
             userID = user.getUid();
-            tvEmail.setText(user.getEmail());
-            tvNameAndSurname.setText(user.getDisplayName());
+            //tvEmail.setText(user.getEmail());
+           // tvNameAndSurname.setText(user.getDisplayName());
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
@@ -124,6 +125,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                         user_type = dataSnapshot.getValue().toString();
                         if ("Sponsor".equalsIgnoreCase(user_type)) {
 
+
                             Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
 
                             myClientsQuery.addValueEventListener(new ValueEventListener() {
@@ -131,13 +133,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     allUsers = new ArrayList<>();
                                     allUsersId = new ArrayList<>();
+                                    allDeviceId = new ArrayList<>();
 
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                                         userInformation = snapshot.getValue(UserInformation.class);
                                         //tvNameAndSurname.setText(userInformation.getCompanyName());
                                         Log.i("Ygritte", dataSnapshot.toString());
-                                        tvEmail.setText(userInformation.getEmail());
+                                        //tvEmail.setText(userInformation.getEmail());
 
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);
@@ -180,10 +183,16 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    allUsersId = new ArrayList<>();
+                                    allDeviceId = new ArrayList<>();
+                                    allDEvices = new ArrayList<>();
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
-                                        allUsersId.add(dataSnapshot.getKey().toString());
+                                        allUsersId.add(snapshot1.getKey().toString());
+
+
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
+                                            allDeviceId.add(dataSnapshot1.getKey().toString());
                                             devices = dataSnapshot1.getValue(Devices.class);
                                             allDEvices.add(devices);
 
@@ -191,6 +200,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
                                         recyclerView.setAdapter(mAdapter);
+
                                     }
                                 }
 
@@ -204,11 +214,15 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    Devices devices = allDEvices.get(position);
+                                    //devices = allDEvices.get(position);
                                     String uuid = allUsersId.get(position);
-                                    Intent intent = new Intent(ClientAndSponsorActivity.this, UserProfileActivity.class);
-                                    intent.putExtra("deviceInfo", devices);
-                                    intent.putExtra("deviceProfileId",uuid);
+                                    String duid = allDeviceId.get(position);
+                                   // Log.v("yugjksd",uuid);
+                                    //Log.v("yugjksdss",duid);
+                                    Intent intent = new Intent(ClientAndSponsorActivity.this, DeviceFullProfileActivity.class);
+                                    //intent.putExtra("deviceInfo", devices);
+                                    intent.putExtra("userProfileId",uuid);
+                                    intent.putExtra("deviceProfileId",duid);
                                     startActivity(intent);
                                 }
 

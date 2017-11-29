@@ -38,17 +38,19 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
         //public CircleImageView imageView;
         CardView cv;
         ImageView img;
+        RelativeTimeTextView tvTimestamp;
 
         public MyViewHolder(View view) {
             super(view);
 
-            cv = (CardView)view.findViewById(R.id.cardview);
+            cv = view.findViewById(R.id.cardview);
             name =  view.findViewById(R.id.deciveName);
             img= view.findViewById(R.id.deviceImg);
             status = view.findViewById(R.id.decivestatus);
             model = view.findViewById(R.id.deciveModel);
             screenSize = view.findViewById(R.id.deciveScreenSize);
             storage = view.findViewById(R.id.deciveStorage);
+            tvTimestamp = view.findViewById(R.id.timestamp);
         }
     }
 
@@ -69,12 +71,16 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Devices devices = deviceList.get(position);
+
         holder.name.setText(devices.getDevice_name());
         holder.status.setText(devices.getStatus());
         holder.model.setText(devices.getDevice_model());
         holder.screenSize.setText(devices.getScreen_size());
         holder.storage.setText(devices.getStorage());
         holder.img.setImageResource(R.drawable.user_photo);
+       // holder.tvTimestamp.setReferenceTime(1511958012000L);
+
+       holder.tvTimestamp.setReferenceTime(devices.getTimestamp());
 
     }
 

@@ -45,6 +45,16 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/decivestatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/deciveName"
+            android:textStyle="bold"
+            android:layout_marginLeft="60dp"
+            android:textSize="15sp"/>
+
+
+        <TextView
             android:id="@+id/deciveStorage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,15 +73,6 @@
             android:textSize="15sp"/>
 
 
-        <TextView
-            android:id="@+id/decivestatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/deviceImg"
-            android:layout_alignParentBottom="true"
-            android:textStyle="bold"
-            android:layout_marginLeft="75dp"
-            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/deciveModel"
@@ -82,9 +83,14 @@
             android:textAlignment="center"
             android:textSize="15sp"/>
 
-
-
-
+        <com.katekani.laptopsponsorapp.RelativeTimeTextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/deciveModel"
+            android:layout_marginBottom="@dimen/margin_primary"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="130dp"/>
 
     </RelativeLayout>
 
