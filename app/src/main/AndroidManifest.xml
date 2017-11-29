@@ -63,16 +63,15 @@
             android:name=".AboutUsActivity"
             android:label="About Us" />
 
-        <!-- <activity android:name=". " /> -->
+        <activity
+            android:name=".SponsorAddItemActivity"
+            android:label="My Items"></activity>
+        <activity
+            android:name=".sponsorInformation"
+            android:label="Add Devices"></activity>
 
-        <activity android:name=".SponsorAddItemActivity"
-            android:label="My Items">
-
-        </activity>
-
-        <activity android:name=".sponsorInformation"
-            android:label="Add Devices">
-
+        <activity android:name=".DeviceFullProfileActivity"
+            android:label="Device Information">
         </activity>
     </application>
 
