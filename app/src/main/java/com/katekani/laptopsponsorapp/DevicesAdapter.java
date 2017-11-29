@@ -78,7 +78,9 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
         holder.screenSize.setText(devices.getScreen_size());
         holder.storage.setText(devices.getStorage());
         holder.img.setImageResource(R.drawable.user_photo);
-        holder.tvTimestamp.setReferenceTime(devices.timestamp);
+       // holder.tvTimestamp.setReferenceTime(1511958012000L);
+
+       holder.tvTimestamp.setReferenceTime(devices.getTimestamp());
 
     }
 

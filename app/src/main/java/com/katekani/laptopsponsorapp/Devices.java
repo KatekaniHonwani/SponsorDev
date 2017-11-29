@@ -15,32 +15,16 @@ public class Devices implements Parcelable{
     public Devices(){
 
     }
-    public Devices (String device_name,String device_model,String screen_size,String storage,String status ) {
-        this.device_name = device_name;
-        this.device_model = device_model;
-        this.screen_size = screen_size;
-        this.storage = storage;
-        this.status = status;
-        //this.timestamp = timestamp;
 
-    } public Devices (String device_name,String device_model,String screen_size,String storage,String status, long timestamp ) {
+    public Devices(String device_name, String device_model, String screen_size, String storage, String status, String image, boolean isDonated, long timestamp) {
         this.device_name = device_name;
         this.device_model = device_model;
         this.screen_size = screen_size;
         this.storage = storage;
         this.status = status;
+        this.image = image;
+        this.isDonated = isDonated;
         this.timestamp = timestamp;
-
-    }
-
-    public Devices (String device_name,String device_model,String screen_size,String storage,String status,String imageResourceId ) {
-        this.device_name = device_name;
-        this.device_model = device_model;
-        this.screen_size = screen_size;
-        this.storage = storage;
-        this.status = status;
-        this.image = imageResourceId;
-
     }
 
     protected Devices(Parcel in) {
@@ -60,9 +44,15 @@ public class Devices implements Parcelable{
         dest.writeString(storage);
         dest.writeString(status);
         dest.writeString(image);
+    }
 
 
+    public long getTimestamp() {
+        return timestamp;
+    }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getDevice_name() {
