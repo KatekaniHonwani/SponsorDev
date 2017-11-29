@@ -110,8 +110,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
-        tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
+
+
+        //tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
+        //tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -121,8 +123,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         if (user != null) {
 
             userID = user.getUid();
-            tvEmail.setText(user.getEmail());
-            tvNameAndSurname.setText(user.getDisplayName());
+            //tvEmail.setText(user.getEmail());
+           // tvNameAndSurname.setText(user.getDisplayName());
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
@@ -134,6 +136,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                     if (dataSnapshot.getValue() != null) {
                         user_type = dataSnapshot.getValue().toString();
                         if ("Sponsor".equalsIgnoreCase(user_type)) {
+
 
                             Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
 
@@ -149,7 +152,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         userInformation = snapshot.getValue(UserInformation.class);
                                         //tvNameAndSurname.setText(userInformation.getCompanyName());
                                         Log.i("Ygritte", dataSnapshot.toString());
-                                        tvEmail.setText(userInformation.getEmail());
+                                        //tvEmail.setText(userInformation.getEmail());
 
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
                                             allUsers.add(userInformation);

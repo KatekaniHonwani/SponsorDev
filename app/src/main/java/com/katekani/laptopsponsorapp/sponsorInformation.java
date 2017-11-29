@@ -75,6 +75,8 @@ public class sponsorInformation extends AppCompatActivity {
 //            Log.i(TAG, firebaseUser.getPhotoUrl().toString());
 //            displayProfilePic(firebaseUser.getPhotoUrl());
 //        }
+
+
         mCurrentUserRef = firebaseDatabase.getInstance().getReference();
         databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
         submit.setOnClickListener(new View.OnClickListener() {
