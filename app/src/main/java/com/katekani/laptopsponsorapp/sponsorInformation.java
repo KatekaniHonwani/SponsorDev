@@ -115,7 +115,10 @@ public class sponsorInformation extends AppCompatActivity {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
                     Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
-                    Devices devices = new Devices(device_name,device_model,scree_size,storage,status);
+
+                    // public Devices(String device_name, String device_model, String screen_size, String storage, String status, String image, boolean isDonated, long timestamp) {
+
+                    Devices devices = new Devices(device_name,device_model,scree_size,storage,status, "", false, System.currentTimeMillis());
                     mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }

@@ -195,8 +195,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    allUsersId = new ArrayList<>();
+                                    allDeviceId = new ArrayList<>();
+                                    allDEvices = new ArrayList<>();
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
                                         allUsersId.add(snapshot1.getKey().toString());
+
+
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
                                             allDeviceId.add(dataSnapshot1.getKey().toString());
