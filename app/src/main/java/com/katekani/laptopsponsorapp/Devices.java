@@ -3,13 +3,16 @@ package com.katekani.laptopsponsorapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by codetribe on 11/16/2017.
  */
 
 public class Devices implements Parcelable{
 
-    String device_name, device_model, screen_size,storage,status,image;
+    String  uId, device_name, device_model, screen_size,storage,status,image;
     boolean isDonated =false;
     public long timestamp;
     public Devices(){
@@ -25,6 +28,18 @@ public class Devices implements Parcelable{
         this.image = image;
         this.isDonated = isDonated;
         this.timestamp = timestamp;
+    }
+
+    public Map<String, Object> mapDevice() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uId", uId);
+        result.put("device_model",device_model);
+        result.put("device_name",device_name);
+        result.put("donated", isDonated);
+        result.put("screen_size", screen_size);
+        result.put("status", status);
+        result.put("storage", storage);
+        return result;
     }
 
     protected Devices(Parcel in) {
@@ -44,6 +59,10 @@ public class Devices implements Parcelable{
         dest.writeString(storage);
         dest.writeString(status);
         dest.writeString(image);
+        dest.writeString(image);
+        dest.writeString(image);
+        dest.writeString(image);
+
     }
 
 
