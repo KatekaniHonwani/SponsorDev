@@ -52,24 +52,26 @@ public class sponsorInformation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_information2);
 
-        mStorageRef= FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Device Details");
-        edtAnswer1=findViewById(R.id.answer1);
-        edtAnswer2=findViewById(R.id.answer2);
-        edtAnswer4=findViewById(R.id.answer4);
+        edtAnswer1 = findViewById(R.id.answer1);
+        edtAnswer2 = findViewById(R.id.answer2);
+        edtAnswer4 = findViewById(R.id.answer4);
         edtAnswer5 = findViewById(R.id.answer5);
         edtAnswer6 = findViewById(R.id.answer6);
-        submit=findViewById(R.id.submit);
-        images=findViewById(R.id.laptopImage);
+        submit = findViewById(R.id.submit);
+        images = findViewById(R.id.laptopImage);
         progressDialog = new ProgressDialog(this);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Devices");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
+
+
             userID = firebaseUser.getUid();
-        }
+
 //
 //        if (firebaseUser.getPhotoUrl() != null) {
 //            Log.i(TAG, firebaseUser.getPhotoUrl().toString());
@@ -77,19 +79,18 @@ public class sponsorInformation extends AppCompatActivity {
 //        }
 
 
-        mCurrentUserRef = firebaseDatabase.getInstance().getReference();
-        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
+            mCurrentUserRef = firebaseDatabase.getInstance().getReference();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String device_name = edtAnswer1.getText().toString();
                 String device_model = edtAnswer2.getText().toString();
-                String scree_size= edtAnswer4.getText().toString();
+                String scree_size = edtAnswer4.getText().toString();
                 String storage = edtAnswer5.getText().toString();
                 String status = edtAnswer6.getText().toString();
-
-
 
 
                 if (TextUtils.isEmpty(device_name)) {
@@ -101,31 +102,33 @@ public class sponsorInformation extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(scree_size)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 3", Toast.LENGTH_SHORT).show();
                     return;
-                }else  if(TextUtils.isEmpty(storage)) {
+                } else if (TextUtils.isEmpty(storage)) {
 
                     Toast.makeText(getApplicationContext(), "provide answer for question 4", Toast.LENGTH_SHORT).show();
 
-                }else if(TextUtils.isEmpty(status)){
+                } else if (TextUtils.isEmpty(status)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 5", Toast.LENGTH_SHORT).show();
 
                 }
 
 
-                if (!"".equals(device_name) && !"".equals(device_model) && !"".equals(scree_size)&& !"".equals(storage)&& !"".equals(status)  ) {
+                if (!"".equals(device_name) && !"".equals(device_model) && !"".equals(scree_size) && !"".equals(storage) && !"".equals(status)) {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
-                    Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "UUID : " + userID, Toast.LENGTH_SHORT).show();
 
                     // public Devices(String device_name, String device_model, String screen_size, String storage, String status, String image, boolean isDonated, long timestamp) {
 
-                    Devices devices = new Devices(device_name,device_model,scree_size,storage,status, "", false, System.currentTimeMillis());
+                    Devices devices = new Devices(device_name, device_model, scree_size, storage, status, "", false, System.currentTimeMillis());
                     mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
-                    Intent intent = new Intent(sponsorInformation.this,SponsorAddItemActivity.class);
+                Intent intent = new Intent(sponsorInformation.this, SponsorAddItemActivity.class);
                 startActivity(intent);
             }
         });
+
+
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,13 +176,17 @@ public class sponsorInformation extends AppCompatActivity {
 
                     if(firebaseUser!=null)
                     {
+                       
                         firebaseUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    displayProfilePic(downloadUri);
+
+                                    userInfo.setImage(String.valueOf(downloadUri));
+                                    databaseReference.child("image").setValue(userInfo.getImage());
+                                    displayProfilePic(Uri.parse(userInfo.getImage()));
                                     //databaseReference.child("image").setValue(userInfo.getImage());
-                                    Log.d(TAG, "User profile updated.");
+
                                 }
                             }
                         });

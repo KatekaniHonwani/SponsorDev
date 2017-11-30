@@ -35,6 +35,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     ValueEventListener valueEventListener,spinnerValueEventListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRef;
+    private DatabaseReference mRefImages;
 
     FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -57,11 +58,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         //Log.v("yugjksd",uuid);
 
         duid = intent.getStringExtra("deviceProfileId");
-
-
-
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
         deviceNam = findViewById(R.id.textDeviceName);
         model = findViewById(R.id.deviceModel);
         screenSize = findViewById(R.id.dviceScreenSize);
@@ -72,7 +69,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         if (user != null) {
             //userID = user.getUid();
             mRef = mFirebaseDatabase.getReference("Devices").child(uuid).child(duid);
-
+            mRefImages = mFirebaseDatabase.getReference("Device_Images").child(uuid).child(duid);
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
