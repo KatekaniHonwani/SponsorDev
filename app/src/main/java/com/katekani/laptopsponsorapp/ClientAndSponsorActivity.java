@@ -94,16 +94,10 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-
-
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
-
-//        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
-//        tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
+        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
+        tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -113,20 +107,22 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         if (user != null) {
 
             userID = user.getUid();
-//            tvEmail.setText(user.getEmail());
-//           tvNameAndSurname.setText(user.getDisplayName());
+            tvEmail.setText(user.getEmail());
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
-            mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
+            mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
             mUserLoggedRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.getValue() != null) {
-                        user_type = dataSnapshot.getValue().toString();
-                        if ("Sponsor".equalsIgnoreCase(user_type)) {
 
+                    if (dataSnapshot.getValue() != null) {
+                        //user_type = dataSnapshot.getValue().toString();
+                        Log.v("yugjksdss",dataSnapshot.toString());
+                        userInformation = dataSnapshot.getValue(UserInformation.class);
+                        if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
+                            //tvNameAndSurname.setText(userInformation.getType());
 
                             Query myClientsQuery = databaseReference.child("Users").orderByChild("type").equalTo("Client");
 
@@ -139,9 +135,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                                        userInformation = snapshot.getValue(UserInformation.class);
-                                       // tvNameAndSurname.setText(userInformation.getCompanyName());
-                                        Log.i("Ygritte", dataSnapshot.toString());
+                                       // userInformation = snapshot.getValue(UserInformation.class);
+                                        //vNameAndSurname.setText(userInformation.getCompanyName());
+                                        //Log.i("Ygritte", tvNameAndSurname.toString());
                                         //tvEmail.setText(userInformation.getEmail());
 
                                         if ("Client".equalsIgnoreCase(userInformation.getType())) {
@@ -177,7 +173,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                 }
                             }));
 
-                        } else if ("Client".equalsIgnoreCase(user_type)) {
+                        } else if ("Client".equalsIgnoreCase(userInformation.getType())) {
                            // Toast.makeText(context, "I a client with user email " + user.getEmail() + " :  user type => " + user_type, Toast.LENGTH_LONG).show();
                             nav_Menu = navigationView.getMenu();
                             nav_Menu.findItem(R.id.nav_myItem).setVisible(false);
@@ -190,8 +186,6 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     allDEvices = new ArrayList<>();
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()){
                                         allUsersId.add(snapshot1.getKey().toString());
-
-
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
                                             allDeviceId.add(dataSnapshot1.getKey().toString());
@@ -220,7 +214,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                     String uuid = allUsersId.get(position);
                                     String duid = allDeviceId.get(position);
                                    // Log.v("yugjksd",uuid);
-                                    //Log.v("yugjksdss",duid);
+
                                     Intent intent = new Intent(ClientAndSponsorActivity.this, DeviceFullProfileActivity.class);
                                     //intent.putExtra("deviceInfo", devices);
                                     intent.putExtra("userProfileId",uuid);
