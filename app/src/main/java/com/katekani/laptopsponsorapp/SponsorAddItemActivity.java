@@ -104,7 +104,7 @@ public class SponsorAddItemActivity extends AppCompatActivity {
                             allDEvices.clear();
                             for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 devices = snapshot.getValue(Devices.class);
-                                allDEvices.add(devices);  
+                                allDEvices.add(devices);
                                 Log.v("hdghjgkh", devices.toString());
                             }
                             mAdapter = new DevicesAdapter(SponsorAddItemActivity.this, allDEvices);

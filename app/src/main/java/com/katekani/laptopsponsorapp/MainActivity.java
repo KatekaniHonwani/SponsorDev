@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                             });
 
 
-                        } else if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
-                            startActivity(new Intent(MainActivity.this, ClientAndSponsorActivity.class));
-                        }
+                        }// else if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
+                         //   startActivity(new Intent(MainActivity.this, ClientAndSponsorActivity.class));
+                        //}
                     }
                 }
 
