@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
 
-                        //userInformation = dataSnapshot.getValue(UserInformation.class);
+//                       userInformation = dataSnapshot.getValue(UserInformation.class);
                         user_type = dataSnapshot.getValue().toString();
-                        //assert userInformation != null;
+                      //  assert userInformation != null;
                         if ("Client".equalsIgnoreCase(user_type)) {
                             mRefDeveloper.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                             });
 
 
-                        }// else if ("Sponsor".equalsIgnoreCase(userInformation.getType())) {
-                         //   startActivity(new Intent(MainActivity.this, ClientAndSponsorActivity.class));
-                        //}
+                        } else if ("Sponsor".equalsIgnoreCase(user_type)) {
+                            startActivity(new Intent(MainActivity.this, ClientAndSponsorActivity.class));
+                        }
                     }
                 }
 
