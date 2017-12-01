@@ -82,6 +82,7 @@ public class UpdateClientProfileActivity extends AppCompatActivity {
                 Log.i(TAG, user.getPhotoUrl().toString());
                 displayProfilePic(user.getPhotoUrl());
             }
+
             userId = user.getUid();
             mUserDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
             postListener = new ValueEventListener() {

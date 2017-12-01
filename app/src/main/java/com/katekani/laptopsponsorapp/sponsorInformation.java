@@ -43,54 +43,58 @@ public class sponsorInformation extends AppCompatActivity {
     private Uri downloadUri;
    // String userId;
    //FirebaseUser user;
-    UserInformation userInfo;
+    Devices devices;
     private final String TAG = sponsorInformation.class.getName();
     private FirebaseDatabase firebaseDatabase;
+    String image_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_information2);
 
-        mStorageRef= FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Device Details");
-        edtAnswer1=findViewById(R.id.answer1);
-        edtAnswer2=findViewById(R.id.answer2);
-        edtAnswer4=findViewById(R.id.answer4);
+        edtAnswer1 = findViewById(R.id.answer1);
+        edtAnswer2 = findViewById(R.id.answer2);
+        edtAnswer4 = findViewById(R.id.answer4);
         edtAnswer5 = findViewById(R.id.answer5);
         edtAnswer6 = findViewById(R.id.answer6);
-        submit=findViewById(R.id.submit);
-        images=findViewById(R.id.laptopImage);
+        submit = findViewById(R.id.submit);
+        images = findViewById(R.id.laptopImage);
         progressDialog = new ProgressDialog(this);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Devices");
+        mCurrentUserRef = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
+
+            if (firebaseUser.getPhotoUrl() != null) {
+                displayProfilePic(firebaseUser.getPhotoUrl());
+
+            }
+
             userID = firebaseUser.getUid();
-        }
+
 //
 //        if (firebaseUser.getPhotoUrl() != null) {
 //            Log.i(TAG, firebaseUser.getPhotoUrl().toString());
 //            displayProfilePic(firebaseUser.getPhotoUrl());
 //        }
-
-
-        mCurrentUserRef = firebaseDatabase.getInstance().getReference();
-        databaseReference=FirebaseDatabase.getInstance().getReference().child("Users");
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+            Log.v("asdfghj",firebaseUser.toString());
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String device_name = edtAnswer1.getText().toString();
                 String device_model = edtAnswer2.getText().toString();
-                String scree_size= edtAnswer4.getText().toString();
+                String scree_size = edtAnswer4.getText().toString();
                 String storage = edtAnswer5.getText().toString();
                 String status = edtAnswer6.getText().toString();
-
-
-
+                String image = images.toString();
 
                 if (TextUtils.isEmpty(device_name)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 1", Toast.LENGTH_SHORT).show();
@@ -101,31 +105,34 @@ public class sponsorInformation extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(scree_size)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 3", Toast.LENGTH_SHORT).show();
                     return;
-                }else  if(TextUtils.isEmpty(storage)) {
+                } else if (TextUtils.isEmpty(storage)) {
 
                     Toast.makeText(getApplicationContext(), "provide answer for question 4", Toast.LENGTH_SHORT).show();
 
-                }else if(TextUtils.isEmpty(status)){
+                } else if (TextUtils.isEmpty(status)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 5", Toast.LENGTH_SHORT).show();
 
                 }
 
 
-                if (!"".equals(device_name) && !"".equals(device_model) && !"".equals(scree_size)&& !"".equals(storage)&& !"".equals(status)  ) {
+                if (!"".equals(device_name) && !"".equals(device_model) && !"".equals(scree_size) && !"".equals(storage) && !"".equals(status)) {
                     //mCurrentUserRef.child("Users").child(userID);
                     startActivity(new Intent(sponsorInformation.this, ClientAndSponsorActivity.class));
-                    Toast.makeText(getApplicationContext(), "UUID : "+userID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "UUID : " + userID, Toast.LENGTH_SHORT).show();
 
                     // public Devices(String device_name, String device_model, String screen_size, String storage, String status, String image, boolean isDonated, long timestamp) {
 
-                    Devices devices = new Devices(device_name,device_model,scree_size,storage,status, "", false, System.currentTimeMillis());
+                     devices = new Devices(device_name, device_model, scree_size, storage, status,image, false, System.currentTimeMillis());
+
                     mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
-                    Intent intent = new Intent(sponsorInformation.this,SponsorAddItemActivity.class);
+                Intent intent = new Intent(sponsorInformation.this, SponsorAddItemActivity.class);
                 startActivity(intent);
             }
         });
+
+
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +150,6 @@ public class sponsorInformation extends AppCompatActivity {
 
 
 
-            progressDialog.setMessage("Uploading image...");
             progressDialog.show();
             Uri uri=data.getData();
             StorageReference filepath=mStorageRef.child(userID).child(uri.getLastPathSegment());
@@ -153,23 +159,8 @@ public class sponsorInformation extends AppCompatActivity {
                     progressDialog.dismiss();
                     Toast.makeText(sponsorInformation.this,"Uploading done",Toast.LENGTH_LONG).show();
                     downloadUri=taskSnapshot.getDownloadUrl();
-                    //Picasso.with(UpdateClientProfileActivity.this).load(downloadUri).fit().centerCrop().into(imageView);
-
-                    UserProfileChangeRequest profileUpdates=new UserProfileChangeRequest.Builder()
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setPhotoUri(downloadUri).build();
-//
-//                    if(user!=null) {
-//                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                if (task.isSuccessful()) {
-//                                    userInfo.setImage(String.valueOf(downloadUri));
-//                                    displayProfilePic(Uri.parse(userInfo.getImage()));
-//                                    Log.d(TAG, "User profile updated.");
-//                                }
-//                            }
-//                        });
-//                    }
 
                     if(firebaseUser!=null)
                     {
@@ -177,14 +168,16 @@ public class sponsorInformation extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    displayProfilePic(downloadUri);
-                                    //databaseReference.child("image").setValue(userInfo.getImage());
-                                    Log.d(TAG, "User profile updated.");
+//                                        //store image on the database
+                                    //DatabaseReference newPost = mUserDatabaseReference.push();
+                                    devices.setImage(String.valueOf(downloadUri));
+                                    mCurrentUserRef.child("image").setValue(devices.getImage());
+                                    displayProfilePic(Uri.parse(devices.getImage()));
+                                    //Log.d(TAG, "User profile updated.");
                                 }
                             }
                         });
                     }
-
                 }
             });
         }

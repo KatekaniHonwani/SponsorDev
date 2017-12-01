@@ -40,6 +40,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     ValueEventListener valueEventListener,spinnerValueEventListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRef;
+    private DatabaseReference mRefImages;
 
     FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -64,9 +65,6 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         //Log.v("yugjksd",uuid);
 
         duid = intent.getStringExtra("deviceProfileId");
-
-
-
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         sendRequest = findViewById(R.id.send_request);
         deviceNam = findViewById(R.id.textDeviceName);
@@ -76,37 +74,10 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         status = findViewById(R.id.deviceStatus);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            String channelId  = getString(R.string.default_notification_channel_id);
-            String channelName = getString(R.string.default_notification_channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));
-        }
-
-        // If a notification message is tapped, any data accompanying the notification
-        // message is available in the intent extras. In this sample the launcher
-        // intent is fired when the notification is tapped, so any accompanying data would
-        // be handled here. If you want a different intent fired, set the click_action
-        // field of the notification message to the desired intent. The launcher intent
-        // is used when no click_action is specified.
-        //
-        // Handle possible data accompanying notification message.
-        // [START handle_data_extras]
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                Log.d(TAG, "Key: " + key + " Value: " + value);
-            }
-        }
-        // [END handle_data_extras]
-
         if (user != null) {
             //userID = user.getUid();
             mRef = mFirebaseDatabase.getReference("Devices").child(uuid).child(duid);
-
+            mRefImages = mFirebaseDatabase.getReference("Device_Images").child(uuid).child(duid);
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
