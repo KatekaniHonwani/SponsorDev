@@ -23,27 +23,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHolder> {
 
     private List<Devices> deviceList;
-
-
-   public DevicesAdapter(List<Devices>deviceList)
-    {
-        this.deviceList = deviceList;
-    }
-
-
     Context context;
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name,status,model,screenSize,storage;
-        //public CircleImageView imageView;
-        CardView cv;
-        ImageView img;
+       public ImageView img;
         RelativeTimeTextView tvTimestamp;
 
         public MyViewHolder(View view) {
             super(view);
 
-            cv = view.findViewById(R.id.cardview);
             name =  view.findViewById(R.id.deciveName);
             img= view.findViewById(R.id.deviceImg);
             status = view.findViewById(R.id.decivestatus);
@@ -61,11 +49,11 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     }
 
     @Override
-    public DevicesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_row_xml, parent, false);
 
-        return new DevicesAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
@@ -77,7 +65,13 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
         holder.model.setText(devices.getDevice_model());
         holder.screenSize.setText(devices.getScreen_size());
         holder.storage.setText(devices.getStorage());
-        holder.img.setImageResource(R.drawable.user_photo);
+
+        if (devices.getImage().isEmpty()) {
+            holder.img.setImageResource(R.drawable.user_photo);
+        }else {
+            Picasso.with(context).load(Uri.parse(devices.getImage())).into(holder.img );
+        }
+
        // holder.tvTimestamp.setReferenceTime(1511958012000L);
 
        holder.tvTimestamp.setReferenceTime(devices.getTimestamp());
