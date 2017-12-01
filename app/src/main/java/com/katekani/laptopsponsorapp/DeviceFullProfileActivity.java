@@ -1,9 +1,12 @@
 package com.katekani.laptopsponsorapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +49,13 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     Context context;
 
+    private static final String TAG = "DeviceFullProfile";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_full_profile);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -61,13 +68,40 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
+        sendRequest = findViewById(R.id.send_request);
         deviceNam = findViewById(R.id.textDeviceName);
         model = findViewById(R.id.deviceModel);
         screenSize = findViewById(R.id.dviceScreenSize);
         storage = findViewById(R.id.deviceStorage);
         status = findViewById(R.id.deviceStatus);
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+        // If a notification message is tapped, any data accompanying the notification
+        // message is available in the intent extras. In this sample the launcher
+        // intent is fired when the notification is tapped, so any accompanying data would
+        // be handled here. If you want a different intent fired, set the click_action
+        // field of the notification message to the desired intent. The launcher intent
+        // is used when no click_action is specified.
+        //
+        // Handle possible data accompanying notification message.
+        // [START handle_data_extras]
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.d(TAG, "Key: " + key + " Value: " + value);
+            }
+        }
+        // [END handle_data_extras]
 
         if (user != null) {
             //userID = user.getUid();
@@ -101,10 +135,10 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
        }
 
 
-/*        sendRequest.setOnClickListener(new View.OnClickListener() {
+        sendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                /*Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Confirmation regarding laptop request" );
                 intent.putExtra(Intent.EXTRA_TEXT, "Congratulation "  + ",After a long selection process,\n" +
@@ -119,10 +153,19 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }
+                }*/
+
+                // [START subscribe_topics]
+                FirebaseMessaging.getInstance().subscribeToTopic("news");
+                // [END subscribe_topics]
+
+                // Log and toast
+                String msg = getString(R.string.msg_subscribed);
+                Log.d(TAG, msg);
+                Toast.makeText(DeviceFullProfileActivity.this, msg, Toast.LENGTH_SHORT).show();
 
             }
-        });*/
+        });
 
 
 
