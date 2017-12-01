@@ -20,6 +20,8 @@ android {
 }
 
 dependencies {
+    compile 'br.com.liveo:navigationdrawer-material:2.5'
+    compile 'br.com.liveo:navigationdrawer-material:2.5.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -40,7 +42,6 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:cardview-v7:26.1.0'
-}
+    implementation 'com.android.support:cardview-v7:26.1.0'}
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'

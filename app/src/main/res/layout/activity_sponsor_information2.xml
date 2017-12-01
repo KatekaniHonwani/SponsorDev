@@ -22,7 +22,7 @@
             android:layout_width="179dp"
             android:layout_height="126dp"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_launcher_lapto">
+            android:background="@drawable/ic_add_a_addphoto">
 
         </ImageView>
         <TextView
