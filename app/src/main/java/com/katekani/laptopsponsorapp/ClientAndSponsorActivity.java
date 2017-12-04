@@ -2,6 +2,7 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.liveo.ui.RoundedImageView;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,6 +63,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private DevicesAdapter mAdapter;
     TextView tvNameAndSurname;
     TextView tvEmail;
+    private RoundedImageView roundedImageView;
     String user_type;
 
     DrawerLayout drawer;
@@ -99,12 +103,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-
-
-        tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
+        //tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
         tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
-
+        roundedImageView = navigationView.getHeaderView(0).findViewById(R.id.imageView);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -114,8 +115,8 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
             userID = user.getUid();
             tvEmail.setText(user.getEmail());
-           // tvNameAndSurname.setText(userInformation.getCompanyName());
-
+          //tvNameAndSurname.setText(user.getDisplayName());
+             roundedImageView.setImageURI(user.getPhotoUrl());
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
