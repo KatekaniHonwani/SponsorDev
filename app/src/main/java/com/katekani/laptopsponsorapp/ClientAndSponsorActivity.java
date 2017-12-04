@@ -116,7 +116,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
             userID = user.getUid();
             tvEmail.setText(user.getEmail());
           //tvNameAndSurname.setText(user.getDisplayName());
-             roundedImageView.setImageURI(user.getPhotoUrl());
+             //roundedImageView.setImageURI(user.getPhotoUrl());
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
             mUserLoggedRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("type");
