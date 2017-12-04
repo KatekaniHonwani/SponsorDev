@@ -194,7 +194,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
                                             allDeviceId.add(dataSnapshot1.getKey().toString());
-                                                 devices = dataSnapshot1.getValue(Devices.class);
+                                            devices = dataSnapshot1.getValue(Devices.class);
                                             allDEvices.add(devices);
 
                                         }
@@ -215,14 +215,14 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    //devices = allDEvices.get(position);
-                                    String uuid = allUsersId.get(position);
+                                    devices = allDEvices.get(position);
+//                                  String uuid = allUsersId.get(position);
                                     String duid = allDeviceId.get(position);
                                    // Log.v("yugjksd",uuid);
                                     //Log.v("yugjksdss",duid);
                                     Intent intent = new Intent(ClientAndSponsorActivity.this, DeviceFullProfileActivity.class);
-                                    //intent.putExtra("deviceInfo", devices);
-                                    intent.putExtra("userProfileId",uuid);
+                                    intent.putExtra("deviceInfo", devices);
+                                    //intent.putExtra("userProfileId",uuid);
                                     intent.putExtra("deviceProfileId",duid);
                                     startActivity(intent);
                                 }

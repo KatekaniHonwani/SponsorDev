@@ -61,7 +61,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         //deviceLists = intent.getParcelableExtra("deviceInfo");
-        uuid = intent.getStringExtra("userProfileId");
+//        uuid = intent.getStringExtra("userProfileId");
         //Log.v("yugjksd",uuid);
 
         duid = intent.getStringExtra("deviceProfileId");
@@ -137,9 +137,6 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
     }
     @Override
