@@ -30,6 +30,17 @@ public class Devices implements Parcelable{
         this.timestamp = timestamp;
     }
 
+    public Devices(String device_name, String device_model, String screen_size, String storage, String status, boolean isDonated, long timestamp) {
+        this.device_name = device_name;
+        this.device_model = device_model;
+        this.screen_size = screen_size;
+        this.storage = storage;
+        this.status = status;
+        this.image = image;
+        this.isDonated = isDonated;
+        this.timestamp = timestamp;
+    }
+
     public Map<String, Object> mapDevice() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uId", uId);
