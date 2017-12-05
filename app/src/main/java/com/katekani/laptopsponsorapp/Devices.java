@@ -59,6 +59,7 @@ public class Devices implements Parcelable{
         screen_size = in.readString();
         storage=in.readString();
         status=in.readString();
+        image = in.readString();
 
 
     }
@@ -70,9 +71,7 @@ public class Devices implements Parcelable{
         dest.writeString(storage);
         dest.writeString(status);
         dest.writeString(image);
-        dest.writeString(image);
-        dest.writeString(image);
-        dest.writeString(image);
+
 
     }
 
