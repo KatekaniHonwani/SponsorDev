@@ -8,45 +8,96 @@
     android:padding="16dp"
     tools:context="com.katekani.laptopsponsorapp.DeviceFullProfileActivity">
 
-    <TextView
-        android:id="@+id/deviceStorage"
-        android:layout_width="104dp"
-        android:layout_height="34dp"
-        android:text="Testing" />
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
+        android:layout_height="164dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/device_image_id"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/untitled"
+            android:layout_alignParentLeft="true" />
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
+        android:layout_height="58dp"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textDeviceName"
+                android:layout_width="162dp"
+                android:layout_height="match_parent"
+                android:text="Testing" />
+
+            <TextView
+                android:id="@+id/deviceModel"
+                android:layout_width="194dp"
+                android:layout_height="match_parent"
+                android:text="Testing" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
+        android:layout_height="58dp"
+        android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textDeviceName"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:id="@+id/deviceStorage"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
             android:text="Testing" />
+
 
         <TextView
             android:id="@+id/dviceScreenSize"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_width="181dp"
+            android:layout_height="match_parent"
             android:text="Testing" />
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/deviceModel"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="Testing" />
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
+        android:layout_height="58dp"
+        android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/deviceStatus"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:text="Testing" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>
 
+    <Button
+        android:id="@+id/send_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_outline"
+        android:text="Request"
+        android:textAllCaps="false" />
 
-         <Button
-             android:id="@+id/send_request"
-             android:layout_width="match_parent"
-             android:layout_height="67dp"
-             android:text="Request"
-             android:background="@drawable/input_outline"
-             android:textAllCaps="false"
-             />
-
-
- </LinearLayout>
+</LinearLayout>

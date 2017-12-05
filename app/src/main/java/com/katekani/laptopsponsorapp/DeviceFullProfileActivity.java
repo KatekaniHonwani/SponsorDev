@@ -75,7 +75,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         screenSize = findViewById(R.id.dviceScreenSize);
         storage = findViewById(R.id.deviceStorage);
         status = findViewById(R.id.deviceStatus);
-       // device_image = findViewById(R.id.device_image_id);
+       device_image = findViewById(R.id.device_image_id);
 
 
         if (user != null) {
@@ -88,13 +88,13 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
 
 
                     devices = dataSnapshot.getValue(Devices.class);
+                    Picasso.with(context).load(Uri.parse(devices.getImage())).into(device_image);
+                    deviceNam.setText("Device name : " + devices.getDevice_name());
+                    model.setText("Device Model : " + devices.getDevice_model());
+                    screenSize.setText("Device screen size :" + devices.getScreen_size());
+                    storage.setText("Device HHD size : " + devices.getStorage());
+                    status.setText("Device status :s" + devices.getStatus());
 
-                    deviceNam.setText(devices.getDevice_name());
-                    model.setText(devices.getDevice_model());
-                    screenSize.setText(devices.getScreen_size());
-                    storage.setText(devices.getStorage());
-                    status.setText(devices.getStatus());
-                    //Picasso.with(context).load(Uri.parse(devices.getImage())).into(device_image);
 
                 }
                 @Override

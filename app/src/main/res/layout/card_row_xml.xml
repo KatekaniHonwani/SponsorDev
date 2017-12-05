@@ -42,9 +42,6 @@
             android:textColor="#2196F3"
             android:textAlignment="center"
             android:textSize="20sp"/>
-
-
-
     <TextView
             android:id="@+id/decivestatus"
             android:layout_width="wrap_content"
@@ -57,9 +54,6 @@
             android:textStyle="bold"
             android:layout_marginLeft="30dp"
             android:textSize="15sp"/>
-
-
-
 
     <TextView
             android:id="@+id/deciveStorage"
@@ -97,7 +91,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
-            android:paddingLeft="50dp" />
+            android:paddingLeft="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp" />
 
 
 
