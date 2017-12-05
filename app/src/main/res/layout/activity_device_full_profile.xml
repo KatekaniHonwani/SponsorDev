@@ -8,37 +8,36 @@
     android:padding="16dp"
     tools:context="com.katekani.laptopsponsorapp.DeviceFullProfileActivity">
 
-     <TextView
-         android:id="@+id/textDeviceName"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         />
+    <TextView
+        android:id="@+id/deviceStorage"
+        android:layout_width="104dp"
+        android:layout_height="34dp"
+        android:text="Testing" />
 
-         <TextView
-             android:id="@+id/deviceModel"
-             android:layout_width="match_parent"
-             android:layout_height="67dp"
+        <TextView
+            android:id="@+id/textDeviceName"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Testing" />
 
-             />
-         <TextView
-             android:id="@+id/dviceScreenSize"
-             android:layout_width="match_parent"
-             android:layout_height="67dp"
+        <TextView
+            android:id="@+id/dviceScreenSize"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Testing" />
 
-             />
+        <TextView
+            android:id="@+id/deviceModel"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Testing" />
 
-         <TextView
-             android:id="@+id/deviceStorage"
-             android:layout_width="match_parent"
-             android:layout_height="67dp"
+        <TextView
+            android:id="@+id/deviceStatus"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Testing" />
 
-             />
-         <TextView
-             android:id="@+id/deviceStatus"
-             android:layout_width="match_parent"
-             android:layout_height="67dp"
-
-             />
 
          <Button
              android:id="@+id/send_request"
@@ -48,5 +47,6 @@
              android:background="@drawable/input_outline"
              android:textAllCaps="false"
              />
+
 
  </LinearLayout>

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     String duid;
     TextView deviceNam, model, screenSize, storage,status;
     Button sendRequest;
+    ImageView device_image;
     ValueEventListener valueEventListener,spinnerValueEventListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRef;
@@ -61,10 +64,10 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         //deviceLists = intent.getParcelableExtra("deviceInfo");
-//        uuid = intent.getStringExtra("userProfileId");
-        //Log.v("yugjksd",uuid);
 
+        uuid = intent.getStringExtra("userProfileId");
         duid = intent.getStringExtra("deviceProfileId");
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         sendRequest = findViewById(R.id.send_request);
         deviceNam = findViewById(R.id.textDeviceName);
@@ -72,31 +75,26 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
         screenSize = findViewById(R.id.dviceScreenSize);
         storage = findViewById(R.id.deviceStorage);
         status = findViewById(R.id.deviceStatus);
+       // device_image = findViewById(R.id.device_image_id);
 
 
         if (user != null) {
-            //userID = user.getUid();
+
             mRef = mFirebaseDatabase.getReference("Devices").child(uuid).child(duid);
             mRefImages = mFirebaseDatabase.getReference("Device_Images").child(uuid).child(duid);
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    /*for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if (snapshot.getValue() != null ) {
-                            devices = snapshot.getValue(Devices.class);
-                            //allDEvices.add(devices);
-                        }
-                    }*/
 
                     devices = dataSnapshot.getValue(Devices.class);
-                    Log.v("yjfryjr",devices.toString());
 
                     deviceNam.setText(devices.getDevice_name());
                     model.setText(devices.getDevice_model());
                     screenSize.setText(devices.getScreen_size());
                     storage.setText(devices.getStorage());
                     status.setText(devices.getStatus());
+                    //Picasso.with(context).load(Uri.parse(devices.getImage())).into(device_image);
 
                 }
                 @Override
