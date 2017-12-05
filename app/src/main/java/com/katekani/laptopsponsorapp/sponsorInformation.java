@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,8 +47,8 @@ public class sponsorInformation extends AppCompatActivity {
     Devices devices;
     private final String TAG = sponsorInformation.class.getName();
     private FirebaseDatabase firebaseDatabase;
-    String image_url;
-
+    Task<Uri> image_url;
+    String uploadeImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,7 @@ public class sponsorInformation extends AppCompatActivity {
         submit = findViewById(R.id.submit);
         images = findViewById(R.id.laptopImage);
         progressDialog = new ProgressDialog(this);
-        mCurrentUserRef = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Devices");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
 
@@ -76,13 +77,24 @@ public class sponsorInformation extends AppCompatActivity {
             }
 
             userID = firebaseUser.getUid();
-
+           // databaseReference.child("Devices").child(userID).push().setValue(devices.getImage());
+//            image_url = mStorageRef.child("device_images").child(userID).child("image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    uploadeImage = String.valueOf(uri);
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//
+//                }
+//            });
 //
 //        if (firebaseUser.getPhotoUrl() != null) {
 //            Log.i(TAG, firebaseUser.getPhotoUrl().toString());
 //            displayProfilePic(firebaseUser.getPhotoUrl());
 //        }
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+
             Log.v("asdfghj",firebaseUser.toString());
         }
         submit.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +106,7 @@ public class sponsorInformation extends AppCompatActivity {
                 String scree_size = edtAnswer4.getText().toString();
                 String storage = edtAnswer5.getText().toString();
                 String status = edtAnswer6.getText().toString();
-                String image = images.toString();
+                String image = firebaseUser.getPhotoUrl().toString();
 
                 if (TextUtils.isEmpty(device_name)) {
                     Toast.makeText(getApplicationContext(), "provide answer for question 1", Toast.LENGTH_SHORT).show();
@@ -124,7 +136,7 @@ public class sponsorInformation extends AppCompatActivity {
 
                      devices = new Devices(device_name, device_model, scree_size, storage, status,image, false, System.currentTimeMillis());
 
-                    mCurrentUserRef.child("Devices").child(userID).push().setValue(devices);
+                    databaseReference.child(userID).push().setValue(devices);
                     progressDialog.dismiss();
                 }
                 Intent intent = new Intent(sponsorInformation.this, SponsorAddItemActivity.class);
@@ -152,7 +164,7 @@ public class sponsorInformation extends AppCompatActivity {
 
             progressDialog.show();
             Uri uri=data.getData();
-            StorageReference filepath=mStorageRef.child(userID).child(uri.getLastPathSegment());
+            StorageReference filepath =mStorageRef.child("device_images").child(userID).child("image");
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -170,8 +182,10 @@ public class sponsorInformation extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 //                                        //store image on the database
                                     //DatabaseReference newPost = mUserDatabaseReference.push();
+                                    devices = new Devices();
                                     devices.setImage(String.valueOf(downloadUri));
-                                    mCurrentUserRef.child("image").setValue(devices.getImage());
+                                   // databaseReference.child("Devices").child(userID).push().child("image").setValue(devices.getImage());
+                                   // databaseReference.child(userID).setValue(devices.getImage());
                                     displayProfilePic(Uri.parse(devices.getImage()));
                                     //Log.d(TAG, "User profile updated.");
                                 }
