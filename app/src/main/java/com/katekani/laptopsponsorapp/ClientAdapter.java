@@ -14,7 +14,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Code Tribe on 2017/08/28
+ * Created by Code Tribe on 2017/08/28.
  */
 
 public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.MyViewHolder>{

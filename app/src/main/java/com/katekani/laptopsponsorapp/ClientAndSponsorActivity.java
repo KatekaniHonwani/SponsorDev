@@ -2,7 +2,6 @@ package com.katekani.laptopsponsorapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,8 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import br.liveo.ui.RoundedImageView;
 
 public class ClientAndSponsorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,8 +60,9 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
     private DevicesAdapter mAdapter;
     TextView tvNameAndSurname;
     TextView tvEmail;
-    private RoundedImageView roundedImageView;
-    String user_type;
+    //private RoundedImageView roundedImageView;
+    String user_type, uuid, duid;
+
 
     DrawerLayout drawer;
     NavigationView navigationView;
@@ -105,7 +103,7 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
         //tvNameAndSurname = navigationView.getHeaderView(0).findViewById(R.id.tvNameAndSurname);
         tvEmail = navigationView.getHeaderView(0).findViewById(R.id.Email);
-        roundedImageView = navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        //roundedImageView = navigationView.getHeaderView(0).findViewById(R.id.imageView);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -194,10 +192,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
 
                                         for(DataSnapshot dataSnapshot1 : snapshot1.getChildren())
                                         {
-                                            allDeviceId.add(dataSnapshot1.getKey().toString());
-                                                 devices = dataSnapshot1.getValue(Devices.class);
-                                            allDEvices.add(devices);
 
+                                            devices = dataSnapshot1.getValue(Devices.class);
+
+                                            if(devices.isDonated()) {
+                                                allDeviceId.add(dataSnapshot1.getKey().toString());
+                                                allDEvices.add(devices);
+                                            }
                                         }
 
                                         mAdapter = new DevicesAdapter(ClientAndSponsorActivity.this,allDEvices);
@@ -216,13 +217,13 @@ public class ClientAndSponsorActivity extends AppCompatActivity implements Navig
                             recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    //devices = allDEvices.get(position);
-                                    String uuid = allUsersId.get(position);
-                                    String duid = allDeviceId.get(position);
-                                   // Log.v("yugjksd",uuid);
+                                    devices = allDEvices.get(position);
+                                    uuid = allUsersId.get(position);
+                                    duid = allDeviceId.get(position);
+                                   //Log.v("yugjksd",uuid);
                                     //Log.v("yugjksdss",duid);
                                     Intent intent = new Intent(ClientAndSponsorActivity.this, DeviceFullProfileActivity.class);
-                                    //intent.putExtra("deviceInfo", devices);
+                                    intent.putExtra("deviceInfo", devices);
                                     intent.putExtra("userProfileId",uuid);
                                     intent.putExtra("deviceProfileId",duid);
                                     startActivity(intent);

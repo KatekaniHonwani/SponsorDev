@@ -8,91 +8,92 @@
 
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
 
-
-        <ImageView
-            android:id="@+id/laptopImage"
-            android:layout_width="179dp"
-            android:layout_height="126dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_add_a_addphoto">
-
-        </ImageView>
-        <TextView
-            android:id="@+id/question1"
-            android:paddingTop="19dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=" name of device?" />
-
-        <EditText
-            android:id="@+id/answer1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/question2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="what kind of a model is your device.? " />
-
-        <EditText
-            android:id="@+id/answer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
 
-        <TextView
-            android:id="@+id/question4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="please the device specify the screen size." />
+            <ImageView
+                android:id="@+id/laptopImage"
+                android:layout_width="179dp"
+                android:layout_height="126dp"
+                android:layout_gravity="center"
+                android:background="@mipmap/ic_launcher_lapto">
 
-        <EditText
-            android:id="@+id/answer4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            </ImageView>
 
-        <TextView
-            android:id="@+id/question5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="please specify the device storage."/>
+            <TextView
+                android:id="@+id/question1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="19dp"
+                android:text=" name of device?" />
 
-        <EditText
-            android:id="@+id/answer5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/question6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="state the devices status"/>
+            <TextView
+                android:id="@+id/question2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="what kind of a model is your device.? " />
 
-        <EditText
-            android:id="@+id/answer6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/input_outline"
-            android:text="Submit"
-
-            />
+            <EditText
+                android:id="@+id/answer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/question4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="please the device specify the screen size." />
+
+            <EditText
+                android:id="@+id/answer4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/question5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="please specify the device storage." />
+
+            <EditText
+                android:id="@+id/answer5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/question6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="state the devices status" />
+
+            <EditText
+                android:id="@+id/answer6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input_outline"
+                android:text="Submit"
+
+                />
+        </LinearLayout>
+
 
 </ScrollView>

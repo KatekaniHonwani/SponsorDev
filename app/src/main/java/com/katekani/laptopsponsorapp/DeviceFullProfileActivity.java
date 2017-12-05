@@ -1,9 +1,12 @@
 package com.katekani.laptopsponsorapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,7 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     String duid;
     TextView deviceNam, model, screenSize, storage,status;
     Button sendRequest;
+    ImageView device_image;
     ValueEventListener valueEventListener,spinnerValueEventListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRef;
@@ -45,50 +53,48 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     Context context;
 
+    private static final String TAG = "DeviceFullProfile";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_full_profile);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         //deviceLists = intent.getParcelableExtra("deviceInfo");
-        uuid = intent.getStringExtra("userProfileId");
-        //Log.v("yugjksd",uuid);
 
+        uuid = intent.getStringExtra("userProfileId");
         duid = intent.getStringExtra("deviceProfileId");
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        sendRequest = findViewById(R.id.send_request);
         deviceNam = findViewById(R.id.textDeviceName);
         model = findViewById(R.id.deviceModel);
         screenSize = findViewById(R.id.dviceScreenSize);
         storage = findViewById(R.id.deviceStorage);
         status = findViewById(R.id.deviceStatus);
+       device_image = findViewById(R.id.device_image_id);
 
 
         if (user != null) {
-            //userID = user.getUid();
+
             mRef = mFirebaseDatabase.getReference("Devices").child(uuid).child(duid);
             mRefImages = mFirebaseDatabase.getReference("Device_Images").child(uuid).child(duid);
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    /*for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if (snapshot.getValue() != null ) {
-                            devices = snapshot.getValue(Devices.class);
-                            //allDEvices.add(devices);
-                        }
-                    }*/
 
                     devices = dataSnapshot.getValue(Devices.class);
-                    Log.v("yjfryjr",devices.toString());
+                    Picasso.with(context).load(Uri.parse(devices.getImage())).into(device_image);
+                    deviceNam.setText("Device name : " + devices.getDevice_name());
+                    model.setText("Device Model : " + devices.getDevice_model());
+                    screenSize.setText("Device screen size :" + devices.getScreen_size());
+                    storage.setText("Device HHD size : " + devices.getStorage());
+                    status.setText("Device status :s" + devices.getStatus());
 
-                    deviceNam.setText(devices.getDevice_name());
-                    model.setText(devices.getDevice_model());
-                    screenSize.setText(devices.getScreen_size());
-                    storage.setText(devices.getStorage());
-                    status.setText(devices.getStatus());
 
                 }
                 @Override
@@ -98,10 +104,10 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
        }
 
 
-/*        sendRequest.setOnClickListener(new View.OnClickListener() {
+        sendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                /*Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Confirmation regarding laptop request" );
                 intent.putExtra(Intent.EXTRA_TEXT, "Congratulation "  + ",After a long selection process,\n" +
@@ -116,13 +122,19 @@ public class DeviceFullProfileActivity extends AppCompatActivity {
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }
+                }*/
+
+                // [START subscribe_topics]
+                FirebaseMessaging.getInstance().subscribeToTopic("news");
+                // [END subscribe_topics]
+
+                // Log and toast
+                String msg = getString(R.string.msg_subscribed);
+                Log.d(TAG, msg);
+                Toast.makeText(DeviceFullProfileActivity.this, msg, Toast.LENGTH_SHORT).show();
 
             }
-        });*/
-
-
-
+        });
 
     }
     @Override
