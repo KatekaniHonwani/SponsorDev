@@ -3,12 +3,16 @@ package com.katekani.laptopsponsorapp;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +43,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
             screenSize = view.findViewById(R.id.deciveScreenSize);
             storage = view.findViewById(R.id.deciveStorage);
             tvTimestamp = view.findViewById(R.id.timestamp);
+
         }
     }
 
@@ -57,9 +62,9 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Devices devices = deviceList.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
+        Devices devices = deviceList.get(position);
         holder.name.setText(devices.getDevice_name());
         holder.status.setText(devices.getStatus());
         holder.model.setText(devices.getDevice_model());
@@ -72,11 +77,18 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.MyViewHo
             Picasso.with(context).load(Uri.parse(devices.getImage())).into(holder.img );
         }
 
+
+
        // holder.tvTimestamp.setReferenceTime(1511958012000L);
 
        holder.tvTimestamp.setReferenceTime(devices.getTimestamp());
 
     }
+    /**
+     * Showing popup menu when tapping on 3 dots
+     */
+
+
 
     @Override
     public int getItemCount() {
