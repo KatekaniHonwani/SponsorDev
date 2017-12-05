@@ -112,7 +112,8 @@ public class UpdateSponsorActivity extends AppCompatActivity{
                     final String type= userInfo.getType();
 
                     writeNewPost(companyName,companyTelephone,companyEmail,companyAddress,type);
-                    Toast.makeText(UpdateSponsorActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(UpdateSponsorActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(UpdateSponsorActivity.this, ClientAndSponsorActivity.class));
 
                 } else {
                     Toast.makeText(UpdateSponsorActivity.this, "Please fill the empty field", Toast.LENGTH_SHORT).show();
