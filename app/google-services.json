@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "806055809403-o81lroshnv86j4cg1jp8mreov82kv7n9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.katekani.laptopsponsorapp",
+            "certificate_hash": "70cfb3becb0cf22cc9bc53b31acc6a0e2c3015f8"
+          }
+        },
+        {
           "client_id": "806055809403-tohav06gr72gdmkt6b4j6kes9iudhk12.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
